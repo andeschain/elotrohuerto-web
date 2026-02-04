@@ -3,243 +3,327 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>El Otro Huerto</title>
+    <title>El Otro Huerto | Comunidad & Educación</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Newsreader:ital,wght@1,300;1,400&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --text-color: #ffffff;
-            --overlay: rgba(0, 0, 0, 0.4); /* Oscuridad de la foto */
-            --overlay-hover: rgba(0, 0, 0, 0.2);
-            --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            /* Variables de Diseño Premium */
+            --font-serif: 'Newsreader', serif;
+            --font-sans: 'Inter', sans-serif;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.6);
+            --accent-border: rgba(255, 255, 255, 0.3);
+            /* Esta es la curva de animación secreta de las apps modernas */
+            --transition-smooth: all 0.7s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #000;
-            color: var(--text-color);
+            background-color: #0a0a0a;
+            font-family: var(--font-sans);
+            color: var(--text-primary);
             height: 100vh;
             width: 100vw;
             overflow: hidden;
-            -webkit-font-smoothing: antialiased;
+            -webkit-font-smoothing: antialiased; /* Texto nítido en Mac */
         }
 
-        /* --- LAYOUT --- */
-        .container {
+        /* --- LAYOUT PRINCIPAL --- */
+        .main-container {
             display: flex;
             width: 100%;
             height: 100%;
+            position: relative;
         }
 
-        .panel {
+        /* Paneles Individuales */
+        .split-panel {
             position: relative;
-            flex: 1;
+            flex: 1; /* 50% cada uno */
             height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: flex 0.6s ease;
             overflow: hidden;
-            border-right: 1px solid rgba(255,255,255,0.1);
+            border-right: 1px solid rgba(255,255,255,0.08);
+            transition: var(--transition-smooth);
         }
 
-        .panel:last-child { border-right: none; }
+        .split-panel:last-child { border-right: none; }
 
-        /* --- FONDOS --- */
-        .bg {
+        /* --- CAPA DE IMAGEN (Background) --- */
+        .bg-layer {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             background-size: cover;
             background-position: center;
-            z-index: 1;
-            filter: grayscale(100%); /* Elegancia B/N inicial */
+            /* Estado inicial: B/N y un poco de zoom */
+            filter: grayscale(100%) brightness(0.7);
             transform: scale(1.05);
-            transition: var(--transition);
+            transition: var(--transition-smooth);
+            z-index: 1;
         }
 
-        .panel.left .bg { background-image: url('huerto.jpg'); }
-        .panel.right .bg { background-image: url('educacion.jpg'); }
+        .panel-left .bg-layer { background-image: url('huerto.jpg'); }
+        .panel-right .bg-layer { background-image: url('educacion.jpg'); }
 
-        /* La capa oscura para que el texto se lea siempre */
-        .overlay {
+        /* --- CAPA DE VIDRIO (Glassmorphism Overlay) --- */
+        .glass-overlay {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--overlay);
+            background: rgba(0,0,0,0.2); /* Sombra sutil */
+            backdrop-filter: blur(0px); /* Blur inicial */
             z-index: 2;
-            transition: var(--transition);
-            backdrop-filter: blur(0px);
+            transition: var(--transition-smooth);
         }
 
-        /* --- INTERACCIÓN --- */
-        .panel:hover { flex: 1.3; } /* Se agranda sutilmente */
-        
-        .panel:hover .bg { 
-            filter: grayscale(0%); /* Vuelve el color */
-            transform: scale(1);
-        }
-        
-        .panel:hover .overlay {
-            background: rgba(0,0,0,0.3);
-            backdrop-filter: blur(3px); /* Efecto vidrio sutil */
-        }
-
-        /* --- CONTENIDO (TEXTO) --- */
-        .content {
+        /* --- CONTENIDO CENTRAL --- */
+        .content-wrapper {
             position: relative;
             z-index: 10;
             text-align: center;
-            width: 80%;
-            max-width: 380px;
+            width: 85%;
+            max-width: 420px;
+            /* Estado inicial: ligeramente más abajo y transparente */
+            transform: translateY(20px);
+            opacity: 0.8;
+            transition: var(--transition-smooth);
         }
 
-        h2 {
+        /* --- TIPOGRAFÍA EDITORIAL --- */
+        .subtitle {
+            font-family: var(--font-sans);
             font-size: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 4px;
             font-weight: 500;
-            opacity: 0.7;
+            color: var(--text-secondary);
             margin-bottom: 1.5rem;
+            display: block;
         }
 
-        h1 {
-            font-family: 'Newsreader', serif;
+        .big-title {
+            font-family: var(--font-serif);
             font-style: italic;
             font-weight: 300;
-            font-size: 3.5rem; /* Tamaño Granola.ai */
-            line-height: 1.1;
-            margin-bottom: 2.5rem;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            font-size: 4rem; /* Tamaño gigante tipo Granola */
+            line-height: 1.05;
+            margin-bottom: 3rem;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
         }
 
-        /* --- FORMULARIO SUPER LIMPIO --- */
-        .input-wrapper {
+        /* --- INPUT "INVISIBLE" --- */
+        .input-group {
             position: relative;
-            margin-bottom: 1.5rem;
-            transition: transform 0.3s ease;
+            margin-bottom: 2.5rem;
+            width: 100%;
         }
 
-        input {
+        .minimal-input {
             width: 100%;
             background: transparent;
             border: none;
-            border-bottom: 1px solid rgba(255,255,255,0.3);
-            color: white;
-            font-family: 'Inter', sans-serif;
+            /* Solo una línea sutil abajo */
+            border-bottom: 1px solid var(--accent-border);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
             font-size: 1.1rem;
             padding: 12px 0;
             text-align: center;
             outline: none;
-            transition: border-color 0.3s;
+            transition: border-color 0.4s ease, transform 0.4s ease;
         }
 
-        input::placeholder {
-            color: rgba(255,255,255,0.4);
+        .minimal-input::placeholder {
+            color: var(--text-secondary);
             font-weight: 300;
+            letter-spacing: 1px;
+            transition: color 0.4s ease;
         }
 
-        input:focus {
+        /* Estado Focus del Input */
+        .minimal-input:focus {
             border-bottom-color: #ffffff;
+            transform: translateY(-2px);
         }
+        .minimal-input:focus::placeholder { color: transparent; }
 
-        /* Botón Sutil */
-        button {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: 1px solid rgba(255,255,255,0.2);
-            padding: 10px 24px;
-            border-radius: 50px; /* Pill shape tipo Fintual */
-            font-family: 'Inter', sans-serif;
+        /* --- BOTÓN TIPO "PILL" (Cápsula) --- */
+        .pill-button {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--accent-border);
+            padding: 14px 32px;
+            border-radius: 100px; /* Redondo completo */
+            font-family: var(--font-sans);
             font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 1px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        button:hover {
+        .pill-button:hover {
             background: white;
             color: black;
             border-color: white;
+            transform: scale(1.03);
+            box-shadow: 0 10px 20px -10px rgba(255,255,255,0.3);
         }
 
-        .error-msg {
+        /* Mensaje de error sutil */
+        .error-toast {
+            position: absolute;
+            bottom: -30px;
+            left: 0;
+            width: 100%;
             font-size: 0.8rem;
-            color: #ffcccc;
-            margin-top: 10px;
-            height: 15px;
+            color: #ff9494;
             opacity: 0;
-            transition: opacity 0.3s;
+            transform: translateY(10px);
+            transition: var(--transition-smooth);
+        }
+        .error-toast.active {
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        /* --- MOBILE --- */
-        @media (max-width: 768px) {
-            .container { flex-direction: column; }
-            .panel { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
-            h1 { font-size: 2.5rem; }
+        /* --- INTERACCIONES (HOVER STATES) --- */
+        /* Al pasar el mouse sobre un panel: */
+        .split-panel:hover .bg-layer {
+            filter: grayscale(0%) brightness(0.9); /* Vuelve el color */
+            transform: scale(1); /* Zoom out suave */
+        }
+        
+        .split-panel:hover .glass-overlay {
+            backdrop-filter: blur(8px); /* Efecto vidrio empañado */
+            background: rgba(0,0,0,0.1);
+        }
+        
+        .split-panel:hover .content-wrapper {
+            opacity: 1;
+            transform: translateY(0); /* Sube a su posición final */
         }
 
+        /* El panel NO hovoreado se atenúa un poco */
+        .main-container:hover .split-panel:not(:hover) {
+            opacity: 0.6;
+        }
+
+
+        /* --- RESPONSIVE MOBILE --- */
+        @media (max-width: 850px) {
+            .main-container { flex-direction: column; }
+            .split-panel { 
+                flex: auto; height: 50%; 
+                border-right: none; 
+                border-bottom: 1px solid rgba(255,255,255,0.08);
+            }
+            .big-title { font-size: 3rem; margin-bottom: 2rem; }
+            .content-wrapper { transform: translateY(0); opacity: 1; }
+            .glass-overlay { backdrop-filter: blur(3px); }
+            /* En mobile quitamos el efecto B/N inicial para que se vea vivo siempre */
+            .bg-layer { filter: grayscale(20%) brightness(0.8); transform: scale(1); }
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
+    <main class="main-container">
         
-        <div class="panel left">
-            <div class="bg"></div>
-            <div class="overlay"></div>
-            <div class="content">
-                <h2>Membresía</h2>
-                <h1>Comunidad &<br>Huerto</h1>
+        <section class="split-panel panel-left">
+            <div class="bg-layer"></div>
+            <div class="glass-overlay"></div>
+            
+            <div class="content-wrapper">
+                <span class="subtitle">Membresía 2026</span>
+                <h1 class="big-title">Comunidad<br>& Huerto</h1>
                 
-                <div class="input-wrapper">
-                    <input type="password" id="passHuerto" placeholder="Ingresa tu clave">
-                    <div id="errorHuerto" class="error-msg">Clave incorrecta</div>
+                <div class="input-group">
+                    <input type="password" id="passHuerto" class="minimal-input" placeholder="Clave de acceso" autocomplete="off">
+                    <div id="errorHuerto" class="error-toast">Clave incorrecta</div>
                 </div>
-                <button onclick="checkHuerto()">Entrar</button>
-            </div>
-        </div>
-
-        <div class="panel right">
-            <div class="bg"></div>
-            <div class="overlay"></div>
-            <div class="content">
-                <h2>Alianza Escolar</h2>
-                <h1>Aula Viva &<br>Pedagogía</h1>
                 
-                <div class="input-wrapper">
-                    <input type="password" id="passEdu" placeholder="Clave institucional">
-                    <div id="errorEdu" class="error-msg">Clave incorrecta</div>
-                </div>
-                <button onclick="checkEdu()">Ingresar</button>
+                <button class="pill-button" onclick="checkHuerto()">Entrar</button>
             </div>
-        </div>
+        </section>
 
-    </div>
+        <section class="split-panel panel-right">
+            <div class="bg-layer"></div>
+            <div class="glass-overlay"></div>
+            
+            <div class="content-wrapper">
+                <span class="subtitle">Alianza Escolar</span>
+                <h1 class="big-title">Aula Viva<br>& Pedagogía</h1>
+                
+                <div class="input-group">
+                    <input type="password" id="passEdu" class="minimal-input" placeholder="Clave institucional" autocomplete="off">
+                    <div id="errorEdu" class="error-toast">Clave incorrecta</div>
+                </div>
+                
+                <button class="pill-button" onclick="checkEdu()">Ingresar</button>
+            </div>
+        </section>
+
+    </main>
 
     <script>
+        // --- CONFIGURACIÓN ---
+        // Reemplaza los links de Notion aquí cuando los tengas
         const CONFIG = {
-            huerto: { pass: "familia2026", url: "https://quillagua.notion.site/Comunidad-El-Otro-Huerto-2f17a196a68580b8a5f3f0f51d5450c6" },
-            educacion: { pass: "waldorf2026", url: "LINK_DE_EDUCACION_AQUI" }
+            huerto: { 
+                pass: "familia2026", 
+                url: "https://quillagua.notion.site/Comunidad-El-Otro-Huerto-2f17a196a68580b8a5f3f0f51d5450c6" 
+            },
+            educacion: { 
+                pass: "waldorf2026", 
+                // ¡IMPORTANTE! Pega aquí el link real de tu Notion de Educación
+                url: "#" 
+            }
         };
+
+        // --- LÓGICA DE ACCESO ---
+        function showError(elementId) {
+            const err = document.getElementById(elementId);
+            err.classList.add('active');
+            setTimeout(() => err.classList.remove('active'), 2500);
+        }
 
         function checkHuerto() {
             const input = document.getElementById('passHuerto');
-            const err = document.getElementById('errorHuerto');
-            if(input.value === CONFIG.huerto.pass) window.location.href = CONFIG.huerto.url;
-            else { err.style.opacity = '1'; setTimeout(()=>err.style.opacity='0', 2000); }
+            if(input.value === CONFIG.huerto.pass) {
+                // Efecto de salida antes de redirigir
+                document.body.style.opacity = '0';
+                setTimeout(() => window.location.href = CONFIG.huerto.url, 500);
+            } else {
+                showError('errorHuerto');
+                input.value = '';
+                input.focus();
+            }
         }
 
         function checkEdu() {
             const input = document.getElementById('passEdu');
-            const err = document.getElementById('errorEdu');
-            if(input.value === CONFIG.educacion.pass) window.location.href = CONFIG.educacion.url;
-            else { err.style.opacity = '1'; setTimeout(()=>err.style.opacity='0', 2000); }
+            if(input.value === CONFIG.educacion.pass) {
+                 // Efecto de salida antes de redirigir
+                document.body.style.opacity = '0';
+                setTimeout(() => window.location.href = CONFIG.educacion.url, 500);
+            } else {
+                showError('errorEdu');
+                input.value = '';
+                input.focus();
+            }
         }
 
+        // Permitir tecla Enter
         document.getElementById("passHuerto").addEventListener("keyup", (e) => {if(e.key==="Enter") checkHuerto()});
         document.getElementById("passEdu").addEventListener("keyup", (e) => {if(e.key==="Enter") checkEdu()});
     </script>
-
 </body>
 </html>
