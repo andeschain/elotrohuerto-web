@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso | El Otro Huerto</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Lora:ital,wght@1,500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Colores Inspirados en SeedProd */
+            --green-primary: #5c7c64;
+            --green-hover: #4a6350;
+            --blue-primary: #4b6cb7;
+            --blue-hover: #3a5591;
+            --card-bg: #ffffff;
+            --input-bg: #f3f4f6;
+            --text-dark: #1f2937;
+            --text-gray: #6b7280;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', sans-serif; /* Fuente muy usada en Startups */
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+        }
+
+        /* --- CONTENEDOR DIVIDIDO --- */
+        .split-container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        .section {
+            flex: 1;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            border-right: 1px solid rgba(0,0,0,0.1);
+        }
+        .section:last-child { border-right: none; }
+
+        /* --- FONDOS --- */
+        .bg-image {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover;
+            background-position: center;
+            /* Efecto Blur para resaltar la tarjeta */
+            filter: blur(4px) brightness(0.9); 
+            transform: scale(1.1);
+            transition: transform 0.8s ease;
+            z-index: 1;
+        }
+
+        /* FOTOS TEMPORALES (Cámbialas por las tuyas: huerto.jpg y educacion.jpg) */
+        .left .bg-image { background-image: url('https://images.unsplash.com/photo-1595246757053-43d9426c117e?q=80&w=1920&auto=format&fit=crop'); }
+        .right .bg-image { background-image: url('https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=1920&auto=format&fit=crop'); }
+
+        .section:hover .bg-image { transform: scale(1.0); /* Zoom out suave al hover */ }
+
+        /* --- LA TARJETA (Login Card) --- */
+        .login-card {
+            position: relative;
+            z-index: 10;
+            background: var(--card-bg);
+            width: 85%;
+            max-width: 380px;
+            padding: 40px 30px;
+            border-radius: 16px; /* Bordes redondeados modernos */
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2); /* Sombra flotante */
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section:hover .login-card {
+            transform: translateY(-5px); /* Se levanta un poco al pasar el mouse */
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+        }
+
+        /* --- TIPOGRAFÍA --- */
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        /* Badge Colores */
+        .left .badge { background: #e6f4ea; color: var(--green-primary); }
+        .right .badge { background: #e0e7ff; color: var(--blue-primary); }
+
+        h1 {
+            font-family: 'Lora', serif; /* Toque elegante */
+            font-size: 2rem;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+
+        p {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+        }
+
+        /* --- INPUTS ESTILO SEEDPROD --- */
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+            margin-left: 4px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            background-color: var(--input-bg);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            font-size: 1rem;
+            color: var(--text-dark);
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        input:focus {
+            background-color: white;
+            border-color: #d1d5db;
+            box-shadow: 0 0 0 4px rgba(0,0,0,0.05);
+        }
+
+        /* --- BOTONES SÓLIDOS --- */
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .left button { background-color: var(--green-primary); }
+        .left button:hover { background-color: var(--green-hover); }
+
+        .right button { background-color: var(--blue-primary); }
+        .right button:hover { background-color: var(--blue-hover); }
+
+        /* --- ERROR --- */
+        .error-msg {
+            font-size: 0.85rem;
+            color: #ef4444;
+            margin-top: 10px;
+            display: none; /* Oculto por defecto */
+        }
+        .error-msg.visible { display: block; animation: shake 0.3s; }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+
+        /* --- MOBILE --- */
+        @media (max-width: 850px) {
+            body { flex-direction: column; overflow-y: auto; }
+            .split-container { flex-direction: column; }
+            .section { min-height: 100vh; padding: 20px 0; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="split-container">
+        
+        <div class="section left">
+            <div class="bg-image"></div>
+            
+            <div class="login-card">
+                <span class="badge">Acceso Socios</span>
+                <h1>Comunidad y<br>Huerto</h1>
+                <p>Bienvenido a casa. Ingresa tu clave para ver la agenda y actividades.</p>
+                
+                <div class="input-group">
+                    <label>Contraseña</label>
+                    <input type="password" id="passHuerto" placeholder="••••••••">
+                    <div id="errHuerto" class="error-msg">Contraseña incorrecta</div>
+                </div>
+                
+                <button onclick="checkHuerto()">Entrar a la Comunidad</button>
+            </div>
+        </div>
+
+        <div class="section right">
+            <div class="bg-image"></div>
+            
+            <div class="login-card">
+                <span class="badge">Institucional</span>
+                <h1>Alianza<br>Pedagógica</h1>
+                <p>Portal exclusivo para docentes y directivos del Colegio Michelangelo.</p>
+                
+                <div class="input-group">
+                    <label>Código de Acceso</label>
+                    <input type="password" id="passEdu" placeholder="••••••••">
+                    <div id="errEdu" class="error-msg">Código inválido</div>
+                </div>
+                
+                <button onclick="checkEdu()">Ingresar al Aula Viva</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // CONFIGURACIÓN (Tus Links y Claves)
+        const CONFIG = {
+            huerto: { 
+                pass: "familia2026", 
+                url: "https://quillagua.notion.site/Comunidad-El-Otro-Huerto-2f17a196a68580b8a5f3f0f51d5450c6" 
+            },
+            educacion: { 
+                pass: "waldorf2026", 
+                url: "#" // PEGA AQUÍ TU LINK DE NOTION COLEGIO
+            }
+        };
+
+        function checkHuerto() {
+            const input = document.getElementById('passHuerto');
+            const err = document.getElementById('errHuerto');
+            if(input.value === CONFIG.huerto.pass) {
+                window.location.href = CONFIG.huerto.url;
+            } else {
+                err.classList.add('visible');
+                setTimeout(() => err.classList.remove('visible'), 2000);
+            }
+        }
+
+        function checkEdu() {
+            const input = document.getElementById('passEdu');
+            const err = document.getElementById('errEdu');
+            if(input.value === CONFIG.educacion.pass) {
+                window.location.href = CONFIG.educacion.url;
+            } else {
+                err.classList.add('visible');
+                setTimeout(() => err.classList.remove('visible'), 2000);
+            }
+        }
+
+        // Enter Key
+        document.getElementById("passHuerto").addEventListener("keyup", (e) => {if(e.key==="Enter") checkHuerto()});
+        document.getElementById("passEdu").addEventListener("keyup", (e) => {if(e.key==="Enter") checkEdu()});
+    </script>
+
+</body>
+</html>
