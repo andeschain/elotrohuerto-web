@@ -22,7 +22,7 @@
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
       "name": "El Otro Huerto",
-      "image": "https://andeschain.github.io/elotrohuerto-web/educacion.jpg",
+      "image": "https://andeschain.github.io/elotrohuerto-web/assets/educacion.jpg",
       "description": "Refugio agrícola-familiar en Paine, enfocado en reconectar a las familias de Santiago con la naturaleza, la producción orgánica y la vida de campo compartida.",
       "address": {
         "@type": "PostalAddress",
@@ -255,7 +255,6 @@
 
         </article>
 
-
         <article id="private-view" class="container hidden fade-in">
             
             <header>
@@ -305,11 +304,9 @@
     </main>
 
     <script>
-        // La palabra "cosecha2026" ha sido transformada mediante un cifrado simple.
-        // Ahora es imposible leerla a simple vista en el código fuente.
+        // La palabra "cosecha2026" cifrada
         const OBFUSCATED_HASH = "6874786a686d663735373b"; 
 
-        // Función que transforma lo que el usuario escribe al mismo formato ofuscado
         function hashInput(str) {
             return Array.from(str)
                 .map(char => (char.charCodeAt(0) + 5).toString(16))
@@ -322,7 +319,6 @@
             const publicView = document.getElementById("public-view");
             const privateView = document.getElementById("private-view");
             
-            // Comparamos el input ofuscado con nuestro hash guardado
             if(hashInput(input) === OBFUSCATED_HASH) {
                 publicView.classList.add("hidden");
                 privateView.classList.remove("hidden");
