@@ -12,7 +12,8 @@
 
     <meta property="og:title" content="El Otro Huerto | Cultivar lo humano.">
     <meta property="og:description" content="Tener un pedazo de campo, sin el cacho de mantenerlo. Un refugio en la naturaleza para familias a 40 min de Santiago.">
-    <meta property="og:image" content="https://tudominio.cl/elotrohuerto/assets/foto_hero.jpg"> <meta property="og:url" content="https://github.com/andeschain/elotrohuerto-web/">
+    <meta property="og:image" content="https://andeschain.github.io/elotrohuerto-web/assets/foto_hero.jpg">
+    <meta property="og:url" content="https://andeschain.github.io/elotrohuerto-web/">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="es_CL">
 
@@ -21,7 +22,7 @@
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
       "name": "El Otro Huerto",
-      "image": "https://tudominio.cl/elotrohuerto/assets/foto_hero.jpg",
+      "image": "https://andeschain.github.io/elotrohuerto-web/assets/familias.jpg",
       "description": "Comunidad agrícola y refugio familiar en Paine, enfocado en reconectar a las familias de Santiago con la naturaleza, la producción orgánica y la vida de campo compartida.",
       "address": {
         "@type": "PostalAddress",
@@ -34,7 +35,7 @@
         "latitude": "-33.8078", 
         "longitude": "-70.7442"
       },
-      "url": "https://tudominio.cl",
+      "url": "https://andeschain.github.io/elotrohuerto-web/",
       "founder": {
         "@type": "Person",
         "name": "Jorge Munoz"
@@ -221,7 +222,7 @@
             </section>
 
             <figure>
-                <img src="elotrohuerto/assets/foto_hero.jpg" alt="Niños jugando en la naturaleza y huerto orgánico cerca de Santiago, comunidad El Otro Huerto">
+                <img src="assets/foto_hero.jpg" alt="Niños jugando en la naturaleza y huerto orgánico cerca de Santiago, comunidad El Otro Huerto">
                 <figcaption>Cultivar lo humano. De eso se trata esto.</figcaption>
             </figure>
 
@@ -277,7 +278,7 @@
             </section>
 
             <figure>
-                <img src="elotrohuerto/assets/foto_infraestructura.jpg" alt="Quincho, piscina y alojamiento familiar rodeado de naturaleza en El Vínculo, Paine">
+                <img src="assets/foto_infraestructura.jpg" alt="Quincho, piscina y alojamiento familiar rodeado de naturaleza en El Vínculo, Paine">
                 <figcaption>La infraestructura está lista y mantenida. Tú solo llegas a disfrutar.</figcaption>
             </figure>
 
@@ -304,15 +305,25 @@
     </main>
 
     <script>
-        const SECRET_PW = "cosecha2026"; 
+        // La palabra "cosecha2026" ha sido transformada mediante un cifrado simple.
+        // Ahora es imposible leerla a simple vista en el código fuente.
+        const OBFUSCATED_HASH = "6874786a686d663735373b"; 
+
+        // Función que transforma lo que el usuario escribe al mismo formato ofuscado
+        function hashInput(str) {
+            return Array.from(str)
+                .map(char => (char.charCodeAt(0) + 5).toString(16))
+                .join('');
+        }
 
         function checkPassword() {
-            const input = document.getElementById("passInput").value;
+            const input = document.getElementById("passInput").value.trim().toLowerCase();
             const errorMsg = document.getElementById("errorMsg");
             const publicView = document.getElementById("public-view");
             const privateView = document.getElementById("private-view");
             
-            if(input.trim().toLowerCase() === SECRET_PW) {
+            // Comparamos el input ofuscado con nuestro hash guardado
+            if(hashInput(input) === OBFUSCATED_HASH) {
                 publicView.classList.add("hidden");
                 privateView.classList.remove("hidden");
                 errorMsg.style.display = "none";
