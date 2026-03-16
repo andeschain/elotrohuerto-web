@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Otro Huerto | Cultivar lo humano</title>
+    <meta name="description" content="Tener un pedazo de campo, sin el cacho de mantenerlo. Refugio agrícola familiar en Paine fundado por Jorge Munoz.">
+    
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <meta property="og:title" content="El Otro Huerto | Cultivar lo humano.">
+    <meta property="og:image" content="https://andeschain.github.io/elotrohuerto-web/assets/familias.jpg">
+    <meta property="og:url" content="https://andeschain.github.io/elotrohuerto-web/">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-page: #FDFCFB; 
+            --text-main: #1D1D1F; 
+            --text-muted: #515154; 
+            --accent: #4A5D23; 
+            --border: #EAEAEA;
+            --nav-bg: rgba(253, 252, 251, 0.95);
+        }
+
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-page); color: var(--text-main); margin: 0; padding: 0; line-height: 1.6; scroll-behavior: smooth; }
+        h1, h2, h3 { font-family: 'Lora', serif; color: var(--text-main); margin-top: 0; line-height: 1.25; }
+        a { color: var(--text-main); text-decoration: none; transition: color 0.2s; }
+        a:hover { color: var(--accent); }
+
+        /* HEADER & MENÚ NAV ACTUALIZADO */
+        header.main-nav {
+            position: sticky; top: 0; background: var(--nav-bg); backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border); z-index: 100; padding: 16px 24px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .logo-container { display: flex; align-items: center; gap: 12px; font-family: 'Lora', serif; font-weight: 600; font-size: 22px; }
+        .logo-container img { height: 32px; width: auto; }
+
+        /* El nuevo menú */
+        .desktop-menu { display: none; align-items: center; gap: 24px; }
+        @media(min-width: 768px) { .desktop-menu { display: flex; } }
+        
+        .nav-link { font-size: 15px; font-weight: 500; color: var(--text-muted); }
+        .nav-link:hover { color: var(--text-main); }
+
+        .nav-login-btn { font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; padding: 8px 16px; border: 1px solid var(--border); border-radius: 20px; background: transparent; cursor: pointer; transition: all 0.2s; }
+        .nav-login-btn:hover { border-color: var(--text-main); background: var(--text-main); color: #fff; }
+
+        .container { max-width: 1080px; margin: 0 auto; padding: 60px 24px; }
+        .magazine-grid { display: grid; grid-template-columns: 1fr; gap: 60px; }
+        @media(min-width: 768px) {
+            .magazine-grid { grid-template-columns: repeat(12, 1fr); }
+            .hero-article { grid-column: span 12; border-bottom: 1px solid var(--border); padding-bottom: 60px; }
+            .sub-article-1 { grid-column: span 7; padding-right: 40px; border-right: 1px solid var(--border); }
+            .sub-article-2 { grid-column: span 5; }
+        }
+
+        /* IMÁGENES Y GALERÍA */
+        article img { width: 100%; height: auto; border-radius: 4px; margin-bottom: 24px; object-fit: cover; }
+        .hero-article img { max-height: 500px; }
+        
+        /* Nueva Galería Mosaico */
+        .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 40px 0; }
+        .gallery-item { width: 100%; height: 200px; object-fit: cover; border-radius: 4px; }
+        .gallery-item.large { grid-column: span 2; height: 300px; }
+
+        .tag { font-family: 'Inter', sans-serif; text-transform: uppercase; font-size: 12px; font-weight: 600; color: var(--accent); letter-spacing: 1px; margin-bottom: 12px; display: block; }
+        .article-title { font-size: 40px; margin-bottom: 16px; }
+        .sub-article-title { font-size: 28px; margin-bottom: 12px; }
+        .btn-primary { display: inline-block; background-color: var(--accent); color: #FFFFFF; padding: 14px 24px; border-radius: 6px; font-weight: 500; text-align: center; border: none; cursor: pointer; }
+        .btn-primary:hover { opacity: 0.9; color: #fff;}
+
+        #login-section { background: #F4F4F4; padding: 40px; border-radius: 8px; margin-top: 40px; }
+        input[type="password"] { width: 100%; padding: 14px 16px; font-size: 16px; border: 1px solid var(--border); border-radius: 6px; margin-bottom: 16px; }
+        #errorMsg { color: #D93025; font-size: 14px; display: none; margin-top: 8px;}
+        .hidden { display: none !important; }
+        .fade-in { animation: fadeIn 0.4s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <header class="main-nav">
+        <div class="logo-container">
+            <img src="assets/logo.svg" alt="Icono" onerror="this.style.display='none'">
+            El Otro Huerto.
+        </div>
+        
+        <nav class="desktop-menu">
+            <a href="#historia" class="nav-link">Nuestra Historia</a>
+            <a href="#comunidad" class="nav-link">La Comunidad</a>
+            <button class="nav-login-btn" onclick="document.getElementById('login-section').scrollIntoView({behavior: 'smooth'})">Ingreso Familias</button>
+        </nav>
+    </header>
+
+    <main>
+        <div id="public-view" class="container fade-in">
+            <div class="magazine-grid">
+                
+                <article class="hero-article" id="comunidad">
+                    <span class="tag">La Comunidad</span>
+                    <h1 class="article-title">Tener un pedazo de campo cerca de Santiago, sin el cacho de mantenerlo.</h1>
+                    
+                    <figure>
+                        <img src="assets/familias.jpg" alt="Familias en la naturaleza, El Otro Huerto">
+                    </figure>
+
+                    <p style="font-size: 18px; max-width: 800px; margin: 0 auto; color: var(--text-muted);">
+                        Nos pasó lo que probablemente te está pasando a ti: la ciudad agota. Pero seamos honestos: comprar y mantener una parcela solos es caro y un problema. Llegas el viernes a descansar y terminas cortando el pasto. Por eso decidimos abrir nuestra hectárea en Paine y armar una tribu. Nosotros mantenemos la piscina, el huerto y el quincho. Tú te encargas de ir, ensuciarte las manos si quieres, y descansar.
+                    </p>
+                </article>
+
+                <article class="sub-article-1" id="historia">
+                    <span class="tag">Nuestra Historia</span>
+                    <h2 class="sub-article-title">De vender software corporativo a vivir 11 años de la tierra.</h2>
+                    <p>Soy Jorge. A los 26 años estaba cerrando contratos de millones de dólares en Oracle y trabajando en la vorágine corporativa de IBM. Tenía éxito, pero sentía que me faltaba tierra.</p>
+                    <p>El 2013 renuncié a todo, tomé un sabático y me fui a vivir solo a mi parcela en El Vínculo, Paine. Ahí fundé Quillagua conectando el campo con las oficinas de Santiago. Hoy, con familia, decidimos que esa necesidad vital de tocar la tierra es colectiva.</p>
+                    
+                    <div class="gallery-grid">
+                        <img src="assets/quincho.jpg" class="gallery-item large" alt="Vista del Quincho">
+                        <img src="assets/educacion.jpg" class="gallery-item" alt="Niños en el huerto">
+                        <img src="assets/familias.jpg" class="gallery-item" alt="Descanso en la naturaleza">
+                    </div>
+                </article>
+
+                <article class="sub-article-2">
+                    <span class="tag">Transparencia</span>
+                    <h2 class="sub-article-title">¿Quieres saber cómo funciona?</h2>
+                    <p style="color: var(--text-muted); margin-bottom: 30px;">
+                        Para cuidar la confianza y la privacidad del grupo, la información logística, ubicación exacta, infraestructura y el modelo de suscripción están en una sección privada.
+                    </p>
+                    
+                    <a href="URL_DE_TU_FORMULARIO" class="btn-primary" target="_blank" style="display: block; width: 100%; box-sizing: border-box; margin-bottom: 40px;">Solicitar llave de acceso</a>
+
+                    <div id="login-section">
+                        <h3 style="font-size: 18px; margin-bottom: 8px;">¿Ya tienes tu llave?</h3>
+                        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 16px;">Ingresa la clave que te enviamos para ver los detalles.</p>
+                        <input type="password" id="passInput" placeholder="Tu contraseña">
+                        <button class="nav-login-btn" onclick="checkPassword()" style="width: 100%; background: #fff;">Entrar a la comunidad</button>
+                        <p id="errorMsg">Clave incorrecta. Revisa si hay un error de tipeo.</p>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+
+        <div id="private-view" class="container hidden fade-in">
+             <div style="max-width: 800px; margin: 0 auto;">
+                <span class="tag">Información Exclusiva</span>
+                <h1 style="font-size: 42px; margin-bottom: 16px;">Qué bueno que entraste.</h1>
+                <p style="font-size: 20px; color: var(--text-muted);">Aquí están los números, la logística y cómo funciona esto por dentro. Cero letra chica.</p>
+                <hr style="margin: 40px 0;">
+                <h3>Dónde estamos y qué hay</h3>
+                <p>El campo está ubicado en El Vínculo, Paine. A unos 40 minutos de Santiago. Ya contamos con toda la infraestructura de mis años en turismo rural con Quillagua.</p>
+                <ul>
+                    <li><strong>Parque y Piscina:</strong> Una piscina de 15x5 metros.</li>
+                    <li><strong>Quincho y Fuego:</strong> Quincho full equipado con cocina y horno de barro.</li>
+                    <li><strong>El Huerto:</strong> Derecho a recolectar fruta y verdura de estación.</li>
+                </ul>
+                <figure>
+                    <img src="assets/quincho.jpg" alt="Quincho y piscina en El Vínculo, Paine">
+                </figure>
+                <h3 style="margin-top: 60px;">El modelo de suscripción</h3>
+                <div style="background: #F4F4F4; padding: 24px; border-radius: 8px; margin-bottom: 40px;">
+                    <ul style="margin-bottom: 0;">
+                        <li><strong>Suscripción Mensual:</strong> $150.000 por familia.</li>
+                        <li><strong>Cuota de Incorporación:</strong> $0 para las primeras 7 familias. $50.000 para las siguientes.</li>
+                    </ul>
+                </div>
+                <h3>El siguiente paso</h3>
+                <a href="https://wa.me/56958799778?text=Hola%20Jorge.%20Estuve%20leyendo%20la%20web%20privada%20y%20me%20gustaría%20ir%20a%20conocer%20El%20Otro%20Huerto" class="btn-primary" target="_blank" style="margin-top: 16px;">Háblame por WhatsApp y agendemos</a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const OBFUSCATED_HASH = "6874786a686d663735373b"; 
+        function hashInput(str) { return Array.from(str).map(char => (char.charCodeAt(0) + 5).toString(16)).join(''); }
+        function checkPassword() {
+            const input = document.getElementById("passInput").value.trim().toLowerCase();
+            if(hashInput(input) === OBFUSCATED_HASH) {
+                document.getElementById("public-view").classList.add("hidden");
+                document.getElementById("private-view").classList.remove("hidden");
+                document.getElementById("errorMsg").style.display = "none";
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                document.getElementById("errorMsg").style.display = "block";
+            }
+        }
+        document.getElementById("passInput").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") { event.preventDefault(); checkPassword(); }
+        });
+    </script>
+</body>
+</html>
