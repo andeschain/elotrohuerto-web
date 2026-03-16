@@ -94,17 +94,71 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* ==========================================
+           NUEVO HERO CON IMAGEN DE FONDO
+        =========================================== */
+        .hero-section {
+            position: relative;
+            background-image: url('assets/jardin.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: 120px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFFFFF; /* Texto blanco para resaltar */
+        }
+        
+        /* Capa oscura para asegurar la lectura del texto */
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.45); /* Ajusta el 0.45 para más o menos oscuridad */
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 800px;
+        }
+
+        .hero-content h1 {
+            color: #FFFFFF;
+            font-size: 56px;
+            margin-bottom: 24px;
+            line-height: 1.1;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3); /* Sombra suave para legibilidad */
+        }
+
+        .hero-content p {
+            color: #FDFCFB;
+            font-size: 22px;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+        }
+
+        /* ==========================================
            MEDIA QUERIES
         =========================================== */
         @media(min-width: 768px) {
             .desktop-menu { display: flex; }
             section { padding: 120px 24px; }
+            .hero-section { padding: 160px 24px; } /* Más espacio en escritorio */
             .grid-2 { grid-template-columns: 1fr 1fr; gap: 80px; }
             .img-right .text-content { order: 1; }
             .img-right .img-content { order: 2; }
             .img-left .text-content { order: 2; }
             .img-left .img-content { order: 1; }
             .section-title { font-size: 44px; }
+        }
+        
+        @media(max-width: 767px) {
+             .hero-content h1 { font-size: 42px; }
+             .hero-content p { font-size: 18px; }
         }
     </style>
 </head>
@@ -128,10 +182,11 @@
     <main>
         <div id="public-view" class="fade-in">
             
-            <section style="padding-top: 60px; padding-bottom: 60px;">
-                <div class="container text-center" style="text-align: center; max-width: 800px;">
-                    <h1 style="font-size: 56px; margin-bottom: 24px; line-height: 1.1;">Cultivar lo humano.</h1>
-                    <p class="section-text" style="font-size: 22px;">No somos solo un pedazo de tierra en Paine. Somos un ecosistema donde las familias respiran, los colegios aprenden y la tierra nos alimenta.</p>
+            <section class="hero-section">
+                <div class="hero-overlay"></div>
+                <div class="container hero-content">
+                    <h1>Cultivar lo humano.</h1>
+                    <p class="section-text">No somos solo un pedazo de tierra en Paine. Somos un ecosistema donde las familias respiran, los colegios aprenden y la tierra nos alimenta.</p>
                 </div>
             </section>
 
