@@ -245,4 +245,101 @@
                         <span class="tag">Producción Local</span>
                         <h2 class="section-title">Lo que nos da la tierra, directo a tu barrio.</h2>
                         <p class="section-text">No somos un supermercado. Respetamos los tiempos de la tierra, por lo que nuestras cosechas son por temporada, limitadas y honestas.</p>
-                        <p class="section-text">
+                        <p class="section-text">Actualmente estamos cosechando <strong>papa astrid y zapallos variedades Guarda de Paine y Pato, semillas antiguas libres de químicos.</strong>. Vendemos directamente a vecinos y pequeñas tiendas de especialidad en el barrio Plaza Las Lilas, y alrededores.</p>
+                        
+                        <div style="margin-top: 32px;">
+                            <a href="https://wa.me/56958799778?text=Hola%20Jorge,%20me%20gustaría%20coordinar%20compra%20esta%20semana" class="btn-primary" target="_blank">Coordina aquí por WhatsApp</a>
+                        </div>
+                    </div>
+                    <div class="img-content">
+                        <img src="assets/cosecha.jpg" alt="Papa Astrid, zapallo de guarda de Paine y zapallo pato de esta temporada." class="section-img">
+                    </div>
+                </div>
+            </section>
+
+            <section id="historia" class="img-left">
+                <div class="container grid-2">
+                    <div class="img-content">
+                        <img src="assets/historia.jpg" alt="Historia de Jorge en el huerto" class="section-img">
+                    </div>
+                    <div class="text-content">
+                        <span class="tag">Nuestra Historia</span>
+                        <h2 class="section-title">De los servidores a la tierra.</h2>
+                        <p class="section-text">Soy Jorge. A los 26 años cerraba contratos millonarios de tecnología corporativa (IBM, Oracle), pero sentía que me faltaba tierra.</p>
+                        <p class="section-text">El 2013 dejé ese mundo y me fui a vivir a una parcela en El Vínculo, Paine. Ahí fundé Quillagua, dedicando 11 años a conectar a pequeños agricultores con corporaciones en Santiago. Aprendí del campo a la fuerza, entendiendo el valor de un tomate con sabor a tomate.</p>
+                        <p class="section-text">Hoy, de vuelta en la ciudad con mi familia, descubrí que esa necesidad vital de tocar la tierra, ensuciarse las manos y bajar el ritmo, es colectiva. Así nace este proyecto.</p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <div id="private-view" class="container hidden fade-in" style="padding-top: 60px; padding-bottom: 100px;">
+             <div style="max-width: 800px; margin: 0 auto;">
+                <button onclick="logout()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:14px; margin-bottom:20px; text-decoration:underline;">← Volver al sitio público</button>
+                
+                <span class="tag">Dashboard Familias</span>
+                <h1 style="font-size: 42px; margin-bottom: 16px;">Qué bueno verte por aquí.</h1>
+                <p style="font-size: 20px; color: var(--text-muted);">Bienvenido al espacio exclusivo para la tribu. Aquí está la logística y cómo funciona esto por dentro.</p>
+                
+                <hr style="margin: 40px 0;">
+                
+                <h3>Nuestra Infraestructura</h3>
+                <p>El Vínculo, Paine. A unos 40 minutos de Santiago.</p>
+                <ul>
+                    <li><strong>Parque y Piscina:</strong> Piscina de 15x5 mts, uso libre.</li>
+                    <li><strong>Quincho y Fuego:</strong> Quincho full equipado con horno de barro.</li>
+                    <li><strong>Alojamiento:</strong> Opción de alojar un finde cada tres meses en sala acondicionada.</li>
+                </ul>
+                
+                <figure style="margin: 40px 0;">
+                    <img src="assets/quincho.jpg" alt="Quincho en El Vínculo" style="width:100%; border-radius:8px;">
+                </figure>
+                
+                <h3>Modelo de suscripción</h3>
+                <div style="background: #F4F4F4; padding: 24px; border-radius: 8px; margin-bottom: 40px;">
+                    <ul style="margin-bottom: 0;">
+                        <li><strong>Fee Mensual:</strong> $150.000 por familia (acceso ilimitado fines de semana).</li>
+                        <li><strong>Incorporación:</strong> $0 para las primeras 7 familias. $50.000 para las siguientes.</li>
+                    </ul>
+                </div>
+                
+                <a href="https://wa.me/56958799778?text=Hola%20Jorge.%20Quiero%20agendar%20mi%20visita%20al%20huerto%20este%20fin%20de%20semana" class="btn-primary" target="_blank">Agendar ida al campo (WhatsApp)</a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        if(window.innerWidth >= 768) { document.getElementById('mobile-login-btn').style.display = 'none'; }
+
+        const OBFUSCATED_HASH = "6874786a686d663735373b"; 
+
+        function hashInput(str) { 
+            return Array.from(str).map(char => (char.charCodeAt(0) + 5).toString(16)).join(''); 
+        }
+
+        function checkPassword() {
+            const input = document.getElementById("passInput").value.trim().toLowerCase();
+            if(hashInput(input) === OBFUSCATED_HASH) {
+                document.getElementById("public-view").classList.add("hidden");
+                document.getElementById("private-view").classList.remove("hidden");
+                document.getElementById("errorMsg").style.display = "none";
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                document.getElementById("errorMsg").style.display = "block";
+            }
+        }
+
+        function logout() {
+            document.getElementById("passInput").value = "";
+            document.getElementById("private-view").classList.add("hidden");
+            document.getElementById("public-view").classList.remove("hidden");
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        document.getElementById("passInput").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") { event.preventDefault(); checkPassword(); }
+        });
+    </script>
+</body>
+</html>
