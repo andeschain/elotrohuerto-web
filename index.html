@@ -68,7 +68,7 @@
         .nav-login-btn:hover { border-color: var(--text-main); background: var(--text-main); color: #fff; }
 
         /* ==========================================
-           NUEVO HERO CON IMAGEN DE FONDO
+           NUEVO HERO CON IMAGEN DE FONDO (Optimizado)
         =========================================== */
         .hero-section {
             position: relative;
@@ -126,14 +126,27 @@
         .container { max-width: 1080px; margin: 0 auto; }
         .grid-2 { display: grid; grid-template-columns: 1fr; gap: 40px; align-items: center; }
         
-        .section-img { width: 100%; height: auto; border-radius: 8px; object-fit: cover; aspect-ratio: 4/3; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .section-img { 
+            width: 100%; height: auto; border-radius: 8px; object-fit: cover; aspect-ratio: 4/3; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
+            transition: transform 0.4s ease, box-shadow 0.4s ease; /* Micro-interacción */
+        }
+        .section-img:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        }
 
         .tag { font-family: 'Inter', sans-serif; text-transform: uppercase; font-size: 12px; font-weight: 600; color: var(--accent); letter-spacing: 1px; margin-bottom: 12px; display: block; }
         .section-title { font-size: 36px; margin-bottom: 20px; }
         .section-text { font-size: 18px; color: var(--text-muted); margin-bottom: 24px; }
 
-        .btn-primary { display: inline-block; background-color: var(--accent); color: #FFFFFF; padding: 14px 24px; border-radius: 6px; font-weight: 500; text-align: center; border: none; cursor: pointer; }
+        .btn-primary { 
+            display: inline-block; background-color: var(--accent); color: #FFFFFF; 
+            padding: 14px 24px; border-radius: 6px; font-weight: 500; text-align: center; border: none; cursor: pointer; 
+            transition: transform 0.2s ease, background-color 0.2s ease; /* Micro-interacción */
+        }
         .btn-primary:hover { opacity: 0.9; color: #fff;}
+        .btn-primary:active { transform: scale(0.98); }
 
         .login-box { background: #fff; padding: 24px; border-radius: 8px; border: 1px solid var(--border); margin-top: 24px; }
         input[type="password"] { width: 100%; padding: 12px 16px; font-size: 16px; border: 1px solid var(--border); border-radius: 6px; margin-bottom: 12px; box-sizing: border-box; }
@@ -187,8 +200,11 @@
             <section class="hero-section">
                 <div class="hero-overlay"></div>
                 <div class="container hero-content">
-                    <h1>Cultivar lo humano.</h1>
-                    <p class="section-text">No somos solo un pedazo de tierra en Paine. Somos un ecosistema donde las familias respiran, los colegios aprenden y la tierra nos alimenta.</p>
+                    <h1>
+                        <span style="display: block; font-size: 18px; font-family: 'Inter', sans-serif; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: #EAEAEA; margin-bottom: 12px; text-shadow: none;">Refugio Agrícola en Paine</span>
+                        Cultivar lo humano.
+                    </h1>
+                    <p class="section-text">No somos solo un pedazo de tierra. Somos un ecosistema donde las familias respiran, los colegios aprenden y la tierra nos alimenta.</p>
                 </div>
             </section>
 
@@ -197,8 +213,12 @@
                     <div class="text-content">
                         <span class="tag">La Membresía</span>
                         <h2 class="section-title">Tu refugio de fin de semana, sin el cacho de mantenerlo.</h2>
-                        <p class="section-text">La ciudad agota y mantener una parcela solos es caro y solitario. Por eso abrimos nuestra hectárea para un grupo exclusivo de familias.</p>
-                        <p class="section-text">Nosotros nos encargamos de que la piscina esté limpia, el huerto sembrado y el quincho listo. Tú te encargas de ir a descansar, cosechar y compartir con tu tribu.</p>
+                        <p class="section-text">La ciudad agota y mantener una parcela solo es caro. Por eso abrimos nuestra hectárea para un grupo exclusivo de familias. El trato es simple:</p>
+                        
+                        <ul class="section-text" style="padding-left: 20px; list-style-type: disc;">
+                            <li style="margin-bottom: 8px;"><strong>Nosotros mantenemos:</strong> El huerto sembrado, el pasto corto y la piscina impecable.</li>
+                            <li style="margin-bottom: 8px;"><strong>Tú llegas y descansas:</strong> Usas el quincho, cosechas lo que da la tierra y compartes con tu tribu.</li>
+                        </ul>
                         
                         <div style="margin-top: 32px;">
                             <a href="URL_DE_TU_FORMULARIO" class="btn-primary" target="_blank">Solicitar ser parte</a>
@@ -245,14 +265,14 @@
                         <span class="tag">Producción Local</span>
                         <h2 class="section-title">Lo que nos da la tierra, directo a tu barrio.</h2>
                         <p class="section-text">No somos un supermercado. Respetamos los tiempos de la tierra, por lo que nuestras cosechas son por temporada, limitadas y honestas.</p>
-                        <p class="section-text">Actualmente estamos cosechando <strong>papa astrid y zapallos variedades Guarda de Paine y Pato, semillas antiguas libres de químicos.</strong>. Vendemos directamente a vecinos y pequeñas tiendas de especialidad en el barrio Plaza Las Lilas, y alrededores.</p>
+                        <p class="section-text">Actualmente estamos cosechando <strong>papa astrid y zapallos variedades Guarda de Paine y Pato, semillas antiguas libres de químicos.</strong> Vendemos directamente a vecinos y pequeñas tiendas de especialidad en el barrio Plaza Las Lilas, y alrededores.</p>
                         
                         <div style="margin-top: 32px;">
                             <a href="https://wa.me/56958799778?text=Hola%20Jorge,%20me%20gustaría%20coordinar%20compra%20esta%20semana" class="btn-primary" target="_blank">Coordina aquí por WhatsApp</a>
                         </div>
                     </div>
                     <div class="img-content">
-                        <img src="assets/cosecha.jpg" alt="Papa Astrid, zapallo de guarda de Paine y zapallo pato de esta temporada." class="section-img">
+                        <img src="assets/papas.jpg" alt="Papas y zapallos recién cosechados" class="section-img">
                     </div>
                 </div>
             </section>
@@ -308,6 +328,26 @@
             </div>
         </div>
     </main>
+
+    <footer style="background-color: var(--text-main); color: #FDFCFB; padding: 60px 24px; text-align: center;">
+        <div style="max-width: 600px; margin: 0 auto;">
+            <h3 style="color: #FFFFFF; margin-bottom: 16px;">El Otro Huerto.</h3>
+            <p style="color: #A0A0A0; font-size: 15px; margin-bottom: 32px;">
+                Un proyecto fundado por Jorge Munoz.<br>
+                Ubicados en El Vínculo, Paine. Región Metropolitana.
+            </p>
+            
+            <div style="display: flex; justify-content: center; gap: 24px; margin-bottom: 40px; font-size: 14px;">
+                <a href="https://andeschain.io" target="_blank" style="color: #A0A0A0; text-decoration: underline;">Tecnología AndesChain</a>
+                <a href="https://linkedin.com/in/jorgemunozar" target="_blank" style="color: #A0A0A0; text-decoration: underline;">LinkedIn</a>
+            </div>
+
+            <p style="color: #515154; font-size: 12px;">
+                &copy; 2026 El Otro Huerto. Todos los derechos reservados.<br>
+                Cultivando lo humano desde 2014 (Ex-Quillagua).
+            </p>
+        </div>
+    </footer>
 
     <script>
         if(window.innerWidth >= 768) { document.getElementById('mobile-login-btn').style.display = 'none'; }
