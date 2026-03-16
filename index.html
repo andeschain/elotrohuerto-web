@@ -1,329 +1,333 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-CL">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>El Otro Huerto | Comunidad & Educación</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Newsreader:ital,wght@1,300;1,400&display=swap" rel="stylesheet">
+    
+    <title>El Otro Huerto | Refugio Agrícola-Familiar cerca de Santiago</title>
+    <meta name="description" content="Una alternativa a comprar parcela. Refugio de descanso y comunidad agrícola en Paine, a 40 min de Santiago. Conecta a tus hijos con la tierra, el huerto y la naturaleza.">
+    <meta name="keywords" content="huerto orgánico Santiago, refugio familiar Paine, comunidad agrícola familiar, alternativa parcela de agrado, actividades naturaleza niños Santiago, slow living Chile, agricultura regenerativa familias">
+    <meta name="author" content="Jorge Munoz - El Otro Huerto">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="El Otro Huerto | Cultivar lo humano.">
+    <meta property="og:description" content="Tener un pedazo de campo, sin el cacho de mantenerlo. Un refugio en la naturaleza para familias a 40 min de Santiago.">
+    <meta property="og:image" content="https://tudominio.cl/elotrohuerto/assets/foto_hero.jpg"> <meta property="og:url" content="https://github.com/andeschain/elotrohuerto-web/">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="es_CL">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "El Otro Huerto",
+      "image": "https://tudominio.cl/elotrohuerto/assets/foto_hero.jpg",
+      "description": "Comunidad agrícola y refugio familiar en Paine, enfocado en reconectar a las familias de Santiago con la naturaleza, la producción orgánica y la vida de campo compartida.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Paine",
+        "addressRegion": "Región Metropolitana",
+        "addressCountry": "CL"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "-33.8078", 
+        "longitude": "-70.7442"
+      },
+      "url": "https://tudominio.cl",
+      "founder": {
+        "@type": "Person",
+        "name": "Jorge Munoz"
+      },
+      "slogan": "Cultivar lo humano."
+    }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
     
     <style>
+        /* Variables de Diseño Minimalista Editorial */
         :root {
-            /* Variables de Diseño Premium */
-            --font-serif: 'Newsreader', serif;
-            --font-sans: 'Inter', sans-serif;
-            --text-primary: #ffffff;
-            --text-secondary: rgba(255, 255, 255, 0.6);
-            --accent-border: rgba(255, 255, 255, 0.3);
-            /* Esta es la curva de animación secreta de las apps modernas */
-            --transition-smooth: all 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+            --bg-page: #FDFCFB; 
+            --text-main: #1D1D1F; 
+            --text-muted: #515154; 
+            --accent: #4A5D23; 
+            --border: #E5E5E5;
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background-color: #0a0a0a;
-            font-family: var(--font-sans);
-            color: var(--text-primary);
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
-            -webkit-font-smoothing: antialiased; /* Texto nítido en Mac */
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.65;
+            -webkit-font-smoothing: antialiased;
+            font-size: 18px; 
         }
 
-        /* --- LAYOUT PRINCIPAL --- */
-        .main-container {
-            display: flex;
-            width: 100%;
-            height: 100%;
-            position: relative;
-        }
-
-        /* Paneles Individuales */
-        .split-panel {
-            position: relative;
-            flex: 1; /* 50% cada uno */
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            border-right: 1px solid rgba(255,255,255,0.08);
-            transition: var(--transition-smooth);
-        }
-
-        .split-panel:last-child { border-right: none; }
-
-        /* --- CAPA DE IMAGEN (Background) --- */
-        .bg-layer {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-size: cover;
-            background-position: center;
-            /* Estado inicial: B/N y un poco de zoom */
-            filter: grayscale(100%) brightness(0.7);
-            transform: scale(1.05);
-            transition: var(--transition-smooth);
-            z-index: 1;
-        }
-
-        .panel-left .bg-layer { background-image: url('huerto.jpg'); }
-        .panel-right .bg-layer { background-image: url('educacion.jpg'); }
-
-        /* --- CAPA DE VIDRIO (Glassmorphism Overlay) --- */
-        .glass-overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.2); /* Sombra sutil */
-            backdrop-filter: blur(0px); /* Blur inicial */
-            z-index: 2;
-            transition: var(--transition-smooth);
-        }
-
-        /* --- CONTENIDO CENTRAL --- */
-        .content-wrapper {
-            position: relative;
-            z-index: 10;
-            text-align: center;
-            width: 85%;
-            max-width: 420px;
-            /* Estado inicial: ligeramente más abajo y transparente */
-            transform: translateY(20px);
-            opacity: 0.8;
-            transition: var(--transition-smooth);
-        }
-
-        /* --- TIPOGRAFÍA EDITORIAL --- */
-        .subtitle {
-            font-family: var(--font-sans);
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 4px;
+        h1, h2, h3 {
+            font-family: 'Lora', serif;
             font-weight: 500;
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
+            color: var(--text-main);
+            line-height: 1.3;
+            margin-top: 0;
+        }
+
+        p { margin-bottom: 24px; }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(74, 93, 35, 0.3);
+            transition: border-color 0.2s;
+        }
+
+        a:hover { border-bottom-color: var(--accent); }
+
+        .container {
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 80px 24px;
+        }
+
+        figure {
+            margin: 40px 0;
+            padding: 0;
+        }
+
+        img {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
             display: block;
         }
 
-        .big-title {
-            font-family: var(--font-serif);
-            font-style: italic;
-            font-weight: 300;
-            font-size: 4rem; /* Tamaño gigante tipo Granola */
-            line-height: 1.05;
-            margin-bottom: 3rem;
-            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
-        }
-
-        /* --- INPUT "INVISIBLE" --- */
-        .input-group {
-            position: relative;
-            margin-bottom: 2.5rem;
-            width: 100%;
-        }
-
-        .minimal-input {
-            width: 100%;
-            background: transparent;
-            border: none;
-            /* Solo una línea sutil abajo */
-            border-bottom: 1px solid var(--accent-border);
-            color: var(--text-primary);
-            font-family: var(--font-sans);
-            font-size: 1.1rem;
-            padding: 12px 0;
+        figcaption {
+            font-size: 14px;
+            color: var(--text-muted);
             text-align: center;
-            outline: none;
-            transition: border-color 0.4s ease, transform 0.4s ease;
+            margin-top: 12px;
+            font-style: italic;
         }
 
-        .minimal-input::placeholder {
-            color: var(--text-secondary);
-            font-weight: 300;
-            letter-spacing: 1px;
-            transition: color 0.4s ease;
+        ul {
+            padding-left: 20px;
+            margin-bottom: 32px;
         }
 
-        /* Estado Focus del Input */
-        .minimal-input:focus {
-            border-bottom-color: #ffffff;
-            transform: translateY(-2px);
+        ul li {
+            margin-bottom: 12px;
+            color: var(--text-main);
         }
-        .minimal-input:focus::placeholder { color: transparent; }
 
-        /* --- BOTÓN TIPO "PILL" (Cápsula) --- */
-        .pill-button {
-            background: transparent;
-            color: var(--text-primary);
-            border: 1px solid var(--accent-border);
-            padding: 14px 32px;
-            border-radius: 100px; /* Redondo completo */
-            font-family: var(--font-sans);
-            font-size: 0.9rem;
+        .btn {
+            display: inline-block;
+            background-color: var(--text-main);
+            color: #FFFFFF;
+            padding: 14px 24px;
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
             font-weight: 500;
-            letter-spacing: 1px;
+            font-size: 16px;
+            text-align: center;
+            border: none;
             cursor: pointer;
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .pill-button:hover {
-            background: white;
-            color: black;
-            border-color: white;
-            transform: scale(1.03);
-            box-shadow: 0 10px 20px -10px rgba(255,255,255,0.3);
-        }
-
-        /* Mensaje de error sutil */
-        .error-toast {
-            position: absolute;
-            bottom: -30px;
-            left: 0;
             width: 100%;
-            font-size: 0.8rem;
-            color: #ff9494;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: var(--transition-smooth);
-        }
-        .error-toast.active {
-            opacity: 1;
-            transform: translateY(0);
+            box-sizing: border-box;
+            transition: background-color 0.2s, transform 0.1s;
         }
 
-        /* --- INTERACCIONES (HOVER STATES) --- */
-        /* Al pasar el mouse sobre un panel: */
-        .split-panel:hover .bg-layer {
-            filter: grayscale(0%) brightness(0.9); /* Vuelve el color */
-            transform: scale(1); /* Zoom out suave */
-        }
-        
-        .split-panel:hover .glass-overlay {
-            backdrop-filter: blur(8px); /* Efecto vidrio empañado */
-            background: rgba(0,0,0,0.1);
-        }
-        
-        .split-panel:hover .content-wrapper {
-            opacity: 1;
-            transform: translateY(0); /* Sube a su posición final */
+        .btn:hover {
+            background-color: var(--accent);
+            color: #FFFFFF;
+            border-bottom: none;
         }
 
-        /* El panel NO hovoreado se atenúa un poco */
-        .main-container:hover .split-panel:not(:hover) {
-            opacity: 0.6;
+        .btn:active { transform: scale(0.98); }
+
+        .info-box {
+            background-color: #F4F4F4;
+            padding: 32px;
+            border-radius: 8px;
+            margin: 40px 0;
         }
 
+        .info-box h3 {
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
 
-        /* --- RESPONSIVE MOBILE --- */
-        @media (max-width: 850px) {
-            .main-container { flex-direction: column; }
-            .split-panel { 
-                flex: auto; height: 50%; 
-                border-right: none; 
-                border-bottom: 1px solid rgba(255,255,255,0.08);
-            }
-            .big-title { font-size: 3rem; margin-bottom: 2rem; }
-            .content-wrapper { transform: translateY(0); opacity: 1; }
-            .glass-overlay { backdrop-filter: blur(3px); }
-            /* En mobile quitamos el efecto B/N inicial para que se vea vivo siempre */
-            .bg-layer { filter: grayscale(20%) brightness(0.8); transform: scale(1); }
+        input[type="password"] {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            box-sizing: border-box;
+            margin-bottom: 16px;
+            background-color: #FFFFFF;
+            transition: border-color 0.2s;
+        }
+
+        input[type="password"]:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        #errorMsg {
+            color: #D93025;
+            font-size: 14px;
+            margin-top: 12px;
+            display: none;
+        }
+
+        .fade-in { animation: fadeIn 0.4s ease-in; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hidden { display: none !important; }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background: var(--border);
+            margin: 60px 0;
         }
     </style>
 </head>
 <body>
 
-    <main class="main-container">
-        
-        <section class="split-panel panel-left">
-            <div class="bg-layer"></div>
-            <div class="glass-overlay"></div>
+    <main>
+        <article id="public-view" class="container fade-in">
             
-            <div class="content-wrapper">
-                <span class="subtitle">Membresía 2026</span>
-                <h1 class="big-title">Comunidad<br>& Huerto</h1>
-                
-                <div class="input-group">
-                    <input type="password" id="passHuerto" class="minimal-input" placeholder="Clave de acceso" autocomplete="off">
-                    <div id="errorHuerto" class="error-toast">Clave incorrecta</div>
-                </div>
-                
-                <button class="pill-button" onclick="checkHuerto()">Entrar</button>
-            </div>
-        </section>
+            <header>
+                <h1 style="font-size: 42px; margin-bottom: 24px;">El Otro Huerto.</h1>
+                <h2 style="font-size: 24px; color: var(--text-muted); font-family: 'Inter', sans-serif; font-weight: 400; margin-bottom: 48px;">Tener un pedazo de campo cerca de Santiago, sin el cacho de mantenerlo.</h2>
+            </header>
 
-        <section class="split-panel panel-right">
-            <div class="bg-layer"></div>
-            <div class="glass-overlay"></div>
+            <section>
+                <p>Hola.</p>
+                
+                <p>Nos pasó lo que probablemente te está pasando a ti: la ciudad agota. Queríamos que nuestros hijos crecieran tocando la tierra, que entendieran los ciclos de la naturaleza y tener un refugio donde el fin de semana significara desconexión real para la familia.</p>
+
+                <p>Pero seamos honestos: comprar y mantener una parcela de agrado solos es caro y, muchas veces, un problema. Llegas el viernes a descansar y terminas cortando el pasto, arreglando la bomba de agua o pagándole a un cuidador.</p>
+
+                <p>Por eso armamos <strong>El Otro Huerto</strong>.</p>
+            </section>
+
+            <figure>
+                <img src="elotrohuerto/assets/foto_hero.jpg" alt="Niños jugando en la naturaleza y huerto orgánico cerca de Santiago, comunidad El Otro Huerto">
+                <figcaption>Cultivar lo humano. De eso se trata esto.</figcaption>
+            </figure>
+
+            <section>
+                <h3 style="font-size: 28px; margin-top: 48px;">Cómo funciona esta comunidad agrícola</h3>
+                
+                <p>Es simple. Imagina manejar 40 minutos desde Santiago y llegar a una hectárea de parque consolidado en Paine. Tus hijos corren a cosechar verduras orgánicas mientras tú te sientas a tomar un café bajo los árboles.</p>
+
+                <p>Nosotros nos encargamos de que la piscina esté limpia, el huerto sembrado y el quincho listo. Tú te encargas de ir, ensuciarte las manos si quieres, recolectar y descansar.</p>
+
+                <p>Compartimos el espacio, los costos y la tranquilidad con un grupo pequeño de familias que buscan exactamente lo mismo. Una tribu.</p>
+            </section>
+
+            <section class="info-box">
+                <h3>¿Quieres saber los detalles?</h3>
+                <p style="font-size: 16px; color: var(--text-muted);">Para cuidar la confianza y la privacidad del grupo, la información logística, ubicación exacta y el modelo de suscripción están en una sección privada.</p>
+                <p style="font-size: 16px; color: var(--text-muted);">Si resuenas con esta forma de vivir, pide tu llave de acceso aquí.</p>
+                <a href="URL_DE_TU_FORMULARIO" class="btn" target="_blank" style="margin-top: 8px;">Solicitar llave de acceso</a>
+            </section>
+
+            <hr>
+
+            <section style="max-width: 400px; margin: 0 auto;">
+                <h3 style="font-size: 20px; text-align: center;">¿Ya tienes tu llave?</h3>
+                <p style="font-size: 14px; text-align: center; color: var(--text-muted);">Ingresa la clave que te enviamos para ver los detalles.</p>
+                <input type="password" id="passInput" placeholder="Tu contraseña">
+                <button class="btn" onclick="checkPassword()">Entrar al sitio privado</button>
+                <p id="errorMsg">Clave incorrecta. Revisa si hay un error de tipeo.</p>
+            </section>
+
+        </article>
+
+
+        <article id="private-view" class="container hidden fade-in">
             
-            <div class="content-wrapper">
-                <span class="subtitle">Alianza Escolar</span>
-                <h1 class="big-title">Aula Viva<br>& Pedagogía</h1>
-                
-                <div class="input-group">
-                    <input type="password" id="passEdu" class="minimal-input" placeholder="Clave institucional" autocomplete="off">
-                    <div id="errorEdu" class="error-toast">Clave incorrecta</div>
-                </div>
-                
-                <button class="pill-button" onclick="checkEdu()">Ingresar</button>
-            </div>
-        </section>
+            <header>
+                <h1 style="font-size: 36px; margin-bottom: 16px;">Qué bueno que entraste.</h1>
+                <p style="font-size: 20px; color: var(--text-muted);">Aquí están los números, la logística y cómo funciona esto por dentro. Cero letra chica.</p>
+            </header>
 
+            <hr style="margin: 40px 0;">
+
+            <section>
+                <h3>Dónde estamos y qué hay</h3>
+                <p>El campo está ubicado en El Vínculo, Paine. A unos 40 minutos de Santiago, dependiendo del tráfico. Es una hectárea diseñada como refugio ecológico para compartir.</p>
+
+                <ul>
+                    <li><strong>Parque y Piscina:</strong> Una piscina de 15x5 metros, mantenida impecable todo el año, rodeada de parque con sombra.</li>
+                    <li><strong>Quincho y Fuego:</strong> Un quincho full equipado con cocina, horno de barro, parrilla y refrigeración. Llegas y cocinas.</li>
+                    <li><strong>El Huerto:</strong> Tienes derecho a recolectar y llevarte a casa la fruta y verdura de estación cultivada limpiamente.</li>
+                    <li><strong>Alojamiento:</strong> Tienes la opción de alojar un fin de semana cada tres meses en nuestra sala de yoga acondicionada.</li>
+                </ul>
+            </section>
+
+            <figure>
+                <img src="elotrohuerto/assets/foto_infraestructura.jpg" alt="Quincho, piscina y alojamiento familiar rodeado de naturaleza en El Vínculo, Paine">
+                <figcaption>La infraestructura está lista y mantenida. Tú solo llegas a disfrutar.</figcaption>
+            </figure>
+
+            <section>
+                <h3>El modelo de suscripción</h3>
+                <p>Queremos que este refugio familiar sea sostenible a largo plazo para todos. El modelo se basa en compartir los costos reales de mantención de una parcela de este nivel (jardinero, piscinero, insumos agrícolas, agua y luz).</p>
+
+                <div class="info-box">
+                    <ul style="margin-bottom: 0;">
+                        <li><strong>Suscripción Mensual:</strong> $150.000 por familia. Esto te da acceso ilimitado los fines de semana y festivos.</li>
+                        <li><strong>Cuota de Incorporación:</strong> $0 para las primeras 7 familias fundadoras. Para las siguientes, tiene un valor único de $50.000.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h3>El siguiente paso</h3>
+                <p>No queremos que tomes una decisión por internet. Lo lógico es que vengas un fin de semana, traigas a los niños, se ensucien las manos en la huerta, vean el espacio y nos tomemos un café.</p>
+
+                <a href="https://wa.me/56958799778?text=Hola%20Jorge.%20Estuve%20leyendo%20la%20web%20privada%20y%20me%20gustaría%20ir%20a%20conocer%20El%20Otro%20Huerto" class="btn" target="_blank" style="margin-top: 24px;">Háblame por WhatsApp y agendemos</a>
+            </section>
+
+        </article>
     </main>
 
     <script>
-        // --- CONFIGURACIÓN ---
-        // Reemplaza los links de Notion aquí cuando los tengas
-        const CONFIG = {
-            huerto: { 
-                pass: "familia2026", 
-                url: "https://quillagua.notion.site/Comunidad-El-Otro-Huerto-2f17a196a68580b8a5f3f0f51d5450c6" 
-            },
-            educacion: { 
-                pass: "waldorf2026", 
-                // ¡IMPORTANTE! Pega aquí el link real de tu Notion de Educación
-                url: "#" 
-            }
-        };
+        const SECRET_PW = "cosecha2026"; 
 
-        // --- LÓGICA DE ACCESO ---
-        function showError(elementId) {
-            const err = document.getElementById(elementId);
-            err.classList.add('active');
-            setTimeout(() => err.classList.remove('active'), 2500);
-        }
-
-        function checkHuerto() {
-            const input = document.getElementById('passHuerto');
-            if(input.value === CONFIG.huerto.pass) {
-                // Efecto de salida antes de redirigir
-                document.body.style.opacity = '0';
-                setTimeout(() => window.location.href = CONFIG.huerto.url, 500);
+        function checkPassword() {
+            const input = document.getElementById("passInput").value;
+            const errorMsg = document.getElementById("errorMsg");
+            const publicView = document.getElementById("public-view");
+            const privateView = document.getElementById("private-view");
+            
+            if(input.trim().toLowerCase() === SECRET_PW) {
+                publicView.classList.add("hidden");
+                privateView.classList.remove("hidden");
+                errorMsg.style.display = "none";
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             } else {
-                showError('errorHuerto');
-                input.value = '';
-                input.focus();
+                errorMsg.style.display = "block";
             }
         }
 
-        function checkEdu() {
-            const input = document.getElementById('passEdu');
-            if(input.value === CONFIG.educacion.pass) {
-                 // Efecto de salida antes de redirigir
-                document.body.style.opacity = '0';
-                setTimeout(() => window.location.href = CONFIG.educacion.url, 500);
-            } else {
-                showError('errorEdu');
-                input.value = '';
-                input.focus();
+        document.getElementById("passInput").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                checkPassword();
             }
-        }
-
-        // Permitir tecla Enter
-        document.getElementById("passHuerto").addEventListener("keyup", (e) => {if(e.key==="Enter") checkHuerto()});
-        document.getElementById("passEdu").addEventListener("keyup", (e) => {if(e.key==="Enter") checkEdu()});
+        });
     </script>
 </body>
 </html>
