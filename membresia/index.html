@@ -3,13 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acceso Privado | El Otro Huerto</title>
+    <title>Invitación Privada | El Otro Huerto</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta property="og:title" content="Tu parcela, sin el cacho de mantenerla 🌿">
+    <meta property="og:description" content="Estamos armando un grupo limitado de familias para compartir nuestro refugio en Paine. Ingresa con tu clave de invitación para ver los detalles.">
+    <meta property="og:image" content="https://elotrohuerto.cl/assets/familias.jpg">
+    <meta property="og:url" content="https://elotrohuerto.cl/membresia">
+    <meta property="og:type" content="website">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,500;0,600&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-page: #FDFCFB; 
+            --bg-page: #F4F6F0; /* Un verde súper clarito y orgánico para el fondo */
             --text-main: #1D1D1F; 
             --text-muted: #515154; 
             --accent: #4A5D23; 
@@ -18,44 +24,68 @@
 
         body { 
             font-family: 'Inter', sans-serif; background-color: var(--bg-page); color: var(--text-main); 
-            margin: 0; padding: 0; height: 100vh; display: flex; flex-direction: column; 
+            margin: 0; padding: 24px; min-height: 100vh; display: flex; flex-direction: column; 
             align-items: center; justify-content: center; -webkit-font-smoothing: antialiased;
+            box-sizing: border-box;
         }
 
-        .login-box {
-            background: #fff; padding: 40px; border-radius: 16px; border: 1px solid var(--border);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.05); max-width: 400px; width: 90%; text-align: center;
+        /* Diseño de tarjeta Premium */
+        .login-card {
+            background: #fff; border-radius: 20px; border: 1px solid var(--border);
+            box-shadow: 0 24px 48px rgba(0,0,0,0.08); max-width: 420px; width: 100%; 
+            overflow: hidden; /* Para que la foto respete los bordes curvos */
+            text-align: center;
         }
         
-        /* Asegúrate de que la ruta a tu logo sea correcta. Le agregué ../ suponiendo que está en la carpeta raíz */
-        .login-box img { height: 40px; margin-bottom: 24px; }
+        /* Foto en la parte superior de la tarjeta */
+        .card-image {
+            width: 100%; height: 200px; 
+            /* Cambia 'familias.jpg' por 'jardin.jpg' o 'quincho.jpg' si prefieres */
+            background-image: url('../assets/familias.jpg'); 
+            background-size: cover; background-position: center;
+            border-bottom: 4px solid var(--accent);
+        }
+
+        .card-content { padding: 32px 32px 40px 32px; }
+        
+        .card-content img { height: 32px; margin-bottom: 24px; }
+        
+        h1 { font-family: 'Lora', serif; font-size: 26px; margin-top: 0; margin-bottom: 12px; line-height: 1.2; color: var(--accent); }
+        
+        p.subtitle { font-size: 15px; color: var(--text-muted); margin-bottom: 32px; line-height: 1.5; }
         
         input[type="password"] {
             width: 100%; padding: 16px; font-size: 16px; border: 1px solid var(--border); border-radius: 8px; 
             margin-bottom: 16px; box-sizing: border-box; text-align: center; letter-spacing: 2px;
+            background-color: #FAFAFA;
         }
-        input[type="password"]:focus { outline: none; border-color: var(--accent); }
+        input[type="password"]:focus { outline: none; border-color: var(--accent); background-color: #FFF; }
         
         .btn-primary { 
             display: inline-block; background-color: var(--accent); color: #FFFFFF; padding: 16px 24px; 
             border-radius: 8px; font-weight: 600; text-align: center; border: none; cursor: pointer; 
-            transition: all 0.2s ease; width: 100%; font-size: 16px;
+            transition: all 0.2s ease; width: 100%; font-size: 16px; letter-spacing: 0.5px;
         }
         .btn-primary:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(74,93,35,0.2); }
         
-        #errorMsg { color: #D93025; font-size: 14px; display: none; margin-top: 12px; }
+        #errorMsg { color: #D93025; font-size: 14px; display: none; margin-top: 16px; font-weight: 500; }
     </style>
 </head>
 <body>
 
-    <div class="login-box">
-        <img src="../assets/logo.svg" alt="El Otro Huerto" onerror="this.style.display='none'">
-        <h2 style="font-size: 20px; margin-bottom: 8px; margin-top: 0;">Invitación Privada</h2>
-        <p style="font-size: 15px; color: var(--text-muted); margin-bottom: 24px;">Ingresa la clave de acceso para ver la propuesta de membresía.</p>
+    <div class="login-card">
+        <div class="card-image"></div>
         
-        <input type="password" id="passInput" placeholder="Contraseña">
-        <button class="btn-primary" onclick="checkAccess()" id="loginBtn">Ver Propuesta</button>
-        <p id="errorMsg">Clave incorrecta.</p>
+        <div class="card-content">
+            <img src="../assets/logo.svg" alt="El Otro Huerto" onerror="this.style.display='none'">
+            
+            <h1>Tu parcela, sin el cacho de mantenerla.</h1>
+            <p class="subtitle">Estamos armando un grupo limitado de familias afines. Ingresa la clave de tu invitación para conocer los detalles del piloto.</p>
+            
+            <input type="password" id="passInput" placeholder="Ingresa tu clave">
+            <button class="btn-primary" onclick="checkAccess()" id="loginBtn">Ver Propuesta Privada</button>
+            <p id="errorMsg">Clave incorrecta. Inténtalo de nuevo.</p>
+        </div>
     </div>
 
     <script>
@@ -72,22 +102,21 @@
             
             if(hashString(input) === ACCESS_HASH) {
                 // Efecto visual de que está cargando
-                btn.innerHTML = "Abriendo...";
+                btn.innerHTML = "Abriendo invitación...";
                 btn.style.opacity = "0.7";
                 
                 // REDIRECCIÓN A TU NOTION:
-                // Reemplaza esta URL por el link público largo de tu Notion
                 window.location.href = "https://quillagua.notion.site/Membresia-El-Otro-Huerto-2f17a196a68580b8a5f3f0f51d5450c6?source=copy_link"; 
                 
             } else {
                 const errorMsg = document.getElementById("errorMsg");
                 errorMsg.style.display = "block";
                 
-                const box = document.querySelector(".login-box");
-                box.style.transform = "translateX(-10px)";
-                setTimeout(() => box.style.transform = "translateX(10px)", 100);
-                setTimeout(() => box.style.transform = "translateX(-10px)", 200);
-                setTimeout(() => box.style.transform = "translateX(0)", 300);
+                const card = document.querySelector(".login-card");
+                card.style.transform = "translateX(-10px)";
+                setTimeout(() => card.style.transform = "translateX(10px)", 100);
+                setTimeout(() => card.style.transform = "translateX(-10px)", 200);
+                setTimeout(() => card.style.transform = "translateX(0)", 300);
             }
         }
 
