@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>El Otro Huerto | Cultivar lo humano</title>
-    <meta name="description" content="Refugio agrícola en Paine. Tu propia parcela cerca de Santiago, sin e̶l̶ ̶c̶a̶c̶h̶o̶ ̶d̶e̶ mantenerla.">
+    <meta name="description" content="Refugio agrícola en Paine. Tu propio campo cerca de Santiago, sin el cacho de mantenerlo.">
     <meta name="author" content="Jorge Munoz - El Otro Huerto">
     
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
     <link rel="alternate icon" href="assets/favicon.png">
 
     <meta property="og:title" content="El Otro Huerto | Cultivar lo humano">
-    <meta property="og:description" content="Tu parcela cerca de Santiago, sin e̶l̶ ̶c̶a̶c̶h̶o̶ ̶d̶e̶ mantenerla.">
+    <meta property="og:description" content="Tener un campo cerca de Santiago, sin e̶l̶ ̶c̶a̶c̶h̶o̶ ̶d̶e̶ mantenerlo.">
     <meta property="og:image" content="https://elotrohuerto.cl/assets/familias.jpg">
     <meta property="og:url" content="https://elotrohuerto.cl/">
     <meta property="og:type" content="website">
@@ -85,20 +85,6 @@
         }
         .section-img:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.1); }
 
-        /* NUEVO: Collages Asimétricos Mejorados */
-        .collage-wrapper { 
-            position: relative; margin-bottom: 12%; margin-right: 5%; margin-top: 5%;
-        }
-        .collage-main { 
-            width: 100%; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; z-index: 1; display: block; 
-        }
-        .collage-sub { 
-            position: absolute; bottom: -12%; right: -8%; width: 55%; border-radius: 8px; 
-            border: 8px solid var(--bg-page); box-shadow: 0 15px 40px rgba(0,0,0,0.15); z-index: 2; transition: transform 0.4s ease; 
-        }
-        .alt-bg .collage-sub { border-color: var(--bg-alt); }
-        .collage-wrapper:hover .collage-sub { transform: scale(1.05) translateY(-5px); }
-
         .tag { font-family: 'Inter', sans-serif; text-transform: uppercase; font-size: 12px; font-weight: 600; color: var(--accent); letter-spacing: 1px; margin-bottom: 12px; display: block; }
         .section-title { font-size: 36px; margin-bottom: 20px; }
         .section-text { font-size: 18px; color: var(--text-muted); margin-bottom: 24px; }
@@ -134,7 +120,6 @@
         @media(max-width: 767px) {
              .hero-content h1 { font-size: 42px; }
              .hero-content p { font-size: 18px; }
-             .collage-wrapper { margin-bottom: 15%; margin-right: 8%; }
         }
     </style>
 </head>
@@ -196,9 +181,9 @@
                     </div>
                     
                     <div class="img-content">
-                        <div class="collage-wrapper">
-                            <img src="assets/familias.jpg" alt="Familias compartiendo en El Otro Huerto" class="collage-main section-img" style="margin-bottom: 0;">
-                            <img src="assets/quincho.jpg" alt="Instalaciones del Quincho" class="collage-sub" onerror="this.style.display='none'">
+                        <div style="display: flex; flex-direction: column; gap: 16px;">
+                            <img src="assets/familias.jpg" alt="Familias compartiendo en El Otro Huerto" class="section-img" style="margin-bottom: 0; height: 350px;">
+                            <img src="assets/quincho.jpg" alt="Instalaciones del Quincho" class="section-img" style="margin-bottom: 0; height: 250px;" onerror="this.style.display='none'">
                         </div>
                     </div>
                 </div>
@@ -207,9 +192,9 @@
             <section id="aula" class="img-left">
                 <div class="container grid-2">
                     <div class="img-content">
-                        <div class="collage-wrapper">
-                            <img src="assets/colegio_escucha.jpg" alt="Niños escuchando indicaciones del huerto" class="collage-main section-img" style="margin-bottom: 0;">
-                            <img src="assets/colegio_papas.jpg" alt="Trabajo con las manos" class="collage-sub" onerror="this.style.display='none'">
+                        <div style="display: flex; flex-direction: column; gap: 16px;">
+                            <img src="assets/colegio_escucha.jpg" alt="Niños escuchando indicaciones del huerto" class="section-img" style="margin-bottom: 0; height: 350px;">
+                            <img src="assets/colegio_papas.jpg" alt="Trabajo con las manos" class="section-img" style="margin-bottom: 0; height: 250px;" onerror="this.style.display='none'">
                         </div>
                     </div>
                     <div class="text-content">
@@ -254,9 +239,9 @@
             <section id="historia" class="img-left">
                 <div class="container grid-2">
                     <div class="img-content">
-                        <div class="collage-wrapper">
-                            <img src="assets/historia.jpg" alt="Historia de Jorge en el huerto" class="collage-main section-img" style="margin-bottom: 0;">
-                            <img src="assets/historia_2.jpg" alt="Inicios del proyecto" class="collage-sub" onerror="this.style.display='none'">
+                        <div style="display: flex; flex-direction: column; gap: 16px;">
+                            <img src="assets/historia.jpg" alt="Historia de Jorge en el huerto" class="section-img" style="margin-bottom: 0; height: 350px;">
+                            <img src="assets/historia_2.jpg" alt="Inicios del proyecto" class="section-img" style="margin-bottom: 0; height: 250px;" onerror="this.style.display='none'">
                         </div>
                     </div>
                     <div class="text-content">
