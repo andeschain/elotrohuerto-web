@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    
     <title>El Otro Huerto | Cultivar lo humano</title>
     <meta name="description" content="Refugio agrícola en Paine. Tu propia parcela cerca de Santiago, sin e̶l̶ ̶c̶a̶c̶h̶o̶ ̶d̶e̶ mantenerla.">
     <meta name="author" content="Jorge Munoz - El Otro Huerto">
@@ -85,10 +85,17 @@
         }
         .section-img:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.1); }
 
-        /* Nuevo: Clases para collages asimétricos */
-        .collage-wrapper { position: relative; padding-bottom: 15%; padding-right: 15%; }
-        .collage-main { width: 100%; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; z-index: 1; }
-        .collage-sub { position: absolute; bottom: 0; right: 0; width: 50%; border-radius: 8px; border: 6px solid var(--bg-page); box-shadow: 0 15px 40px rgba(0,0,0,0.15); z-index: 2; transition: transform 0.4s ease; }
+        /* NUEVO: Collages Asimétricos Mejorados */
+        .collage-wrapper { 
+            position: relative; margin-bottom: 12%; margin-right: 5%; margin-top: 5%;
+        }
+        .collage-main { 
+            width: 100%; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; z-index: 1; display: block; 
+        }
+        .collage-sub { 
+            position: absolute; bottom: -12%; right: -8%; width: 55%; border-radius: 8px; 
+            border: 8px solid var(--bg-page); box-shadow: 0 15px 40px rgba(0,0,0,0.15); z-index: 2; transition: transform 0.4s ease; 
+        }
         .alt-bg .collage-sub { border-color: var(--bg-alt); }
         .collage-wrapper:hover .collage-sub { transform: scale(1.05) translateY(-5px); }
 
@@ -127,7 +134,7 @@
         @media(max-width: 767px) {
              .hero-content h1 { font-size: 42px; }
              .hero-content p { font-size: 18px; }
-             .collage-wrapper { padding-bottom: 20%; padding-right: 10%; }
+             .collage-wrapper { margin-bottom: 15%; margin-right: 8%; }
         }
     </style>
 </head>
@@ -170,7 +177,7 @@
                         <p class="section-text">La ciudad agota y mantener una parcela requiere tiempo, energía, y no poca plata. Por eso decidimos abrir nuestra parcela a un número limitado de familias afines. El trato es simple:</p>
                         
                         <ul class="section-text" style="padding-left: 20px; list-style-type: disc;">
-                            <li style="margin-bottom: 8px;"><strong>Nosotros mantenemos:</strong> El huerto, podamos los frutales, cortamos el pasto, mantenemos la cocina,  el quincho y la piscina impecables.</li>
+                            <li style="margin-bottom: 8px;"><strong>Nosotros mantenemos:</strong> El huerto, podamos los frutales, cortamos el pasto, mantenemos la cocina, el quincho y la piscina impecables.</li>
                             <li style="margin-bottom: 8px;"><strong>Tú llegas y descansas:</strong> Usas toda la infraestructura, cosechas lo que da la tierra, y compartes.</li>
                         </ul>
                         
@@ -208,7 +215,7 @@
                     <div class="text-content">
                         <span class="tag">Colegios & Educación</span>
                         <h2 class="section-title">La sala de clases con el techo más alto del mundo.</h2>
-                        <p class="section-text">Hay cosas que no se aprenden mirando una pizarra. Por eso abrimos El Otro Huerto a proyectos educativos y colegios que comprenden y respetan los ritmos naturales.</p>
+                        <p class="section-text">El Otro Huerto está a disposición de proyectos educativos que comprenden que hay cosas que no se aprenden en una pizarra, y que los ritmos naturales son importantes.</p>
                         <ul class="section-text" style="padding-left: 20px;">
                             <li style="margin-bottom: 12px;"><strong>El Ciclo del Trigo (Waldorf):</strong> Desde arar la tierra y sembrar, hasta cosechar y hacer el pan en tu colegio o en nuestro horno de barro.</li>
                             <li><strong>Convivencia Escolar:</strong> Jornadas diseñadas para sanar dinámicas de grupo y cultivar la empatía ensuciándose las manos.</li>
@@ -235,19 +242,10 @@
                     </div>
                     
                     <div class="img-content">
-                        <div class="gallery-grid" style="margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-                            <div style="grid-column: span 2; position: relative;">
-                                <img src="assets/papa_astrid.jpg" alt="Papa Astrid" class="section-img gallery-item large" style="margin-bottom: 0; height: 300px;">
-                                <span style="position: absolute; bottom: 16px; left: 16px; background: rgba(253, 252, 251, 0.95); padding: 6px 14px; border-radius: 4px; font-size: 13px; font-weight: 600; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">🥔 Papa Astrid</span>
-                            </div>
-                            <div style="position: relative;">
-                                <img src="assets/zapallo_guarda.jpg" alt="Zapallo Guarda" class="section-img gallery-item" style="margin-bottom: 0; height: 220px;">
-                                <span style="position: absolute; bottom: 16px; left: 16px; background: rgba(253, 252, 251, 0.95); padding: 6px 14px; border-radius: 4px; font-size: 13px; font-weight: 600; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">🎃 Guarda de Paine</span>
-                            </div>
-                            <div style="position: relative;">
-                                <img src="assets/zapallo_tromboncino.jpg" alt="Zapallo Tromboncino" class="section-img gallery-item" style="margin-bottom: 0; height: 220px;">
-                                <span style="position: absolute; bottom: 16px; left: 16px; background: rgba(253, 252, 251, 0.95); padding: 6px 14px; border-radius: 4px; font-size: 13px; font-weight: 600; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">🌿 Tromboncino</span>
-                            </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                            <img src="assets/papa_astrid.jpg" alt="Papa Astrid" class="section-img" style="grid-column: span 2; height: 300px; margin-bottom: 0;">
+                            <img src="assets/zapallo_guarda.jpg" alt="Zapallo Guarda" class="section-img" style="height: 220px; margin-bottom: 0;">
+                            <img src="assets/zapallo_tromboncino.jpg" alt="Zapallo Tromboncino" class="section-img" style="height: 220px; margin-bottom: 0;">
                         </div>
                     </div>
                 </div>
