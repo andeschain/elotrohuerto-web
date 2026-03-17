@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>El Otro Huerto | Cultivar lo humano</title>
-    <meta name="description" content="Refugio agrícola en Paine. Tu propio pedazo de campo cerca de Santiago, sin el cacho de mantenerlo.">
+    <meta name="description" content="Refugio agrícola en Paine. Tu propia parcela cerca de Santiago, sin e̶l̶ ̶c̶a̶c̶h̶o̶ ̶d̶e̶ mantenerla.">
     <meta name="author" content="Jorge Munoz - El Otro Huerto">
     
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
     <link rel="alternate icon" href="assets/favicon.png">
 
     <meta property="og:title" content="El Otro Huerto | Cultivar lo humano">
-    <meta property="og:description" content="Tener un pedazo de campo cerca de Santiago, sin el cacho de mantenerlo.">
+    <meta property="og:description" content="Tu parcela cerca de Santiago, sin e̶l̶ ̶c̶a̶c̶h̶o̶ ̶d̶e̶ mantenerla.">
     <meta property="og:image" content="https://elotrohuerto.cl/assets/familias.jpg">
     <meta property="og:url" content="https://elotrohuerto.cl/">
     <meta property="og:type" content="website">
@@ -85,6 +85,20 @@
         }
         .section-img:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.1); }
 
+        /* NUEVO: Collages Asimétricos Mejorados */
+        .collage-wrapper { 
+            position: relative; margin-bottom: 12%; margin-right: 5%; margin-top: 5%;
+        }
+        .collage-main { 
+            width: 100%; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; z-index: 1; display: block; 
+        }
+        .collage-sub { 
+            position: absolute; bottom: -12%; right: -8%; width: 55%; border-radius: 8px; 
+            border: 8px solid var(--bg-page); box-shadow: 0 15px 40px rgba(0,0,0,0.15); z-index: 2; transition: transform 0.4s ease; 
+        }
+        .alt-bg .collage-sub { border-color: var(--bg-alt); }
+        .collage-wrapper:hover .collage-sub { transform: scale(1.05) translateY(-5px); }
+
         .tag { font-family: 'Inter', sans-serif; text-transform: uppercase; font-size: 12px; font-weight: 600; color: var(--accent); letter-spacing: 1px; margin-bottom: 12px; display: block; }
         .section-title { font-size: 36px; margin-bottom: 20px; }
         .section-text { font-size: 18px; color: var(--text-muted); margin-bottom: 24px; }
@@ -120,6 +134,7 @@
         @media(max-width: 767px) {
              .hero-content h1 { font-size: 42px; }
              .hero-content p { font-size: 18px; }
+             .collage-wrapper { margin-bottom: 15%; margin-right: 8%; }
         }
     </style>
 </head>
@@ -131,10 +146,10 @@
             El Otro Huerto.
         </div>
         <nav class="desktop-menu">
-            <a href="#familias" class="nav-link">Familias</a>
-            <a href="#aula" class="nav-link">Aula Abierta</a>
-            <a href="#cosecha" class="nav-link">Cosecha</a>
-            <a href="#historia" class="nav-link">Historia</a>
+            <a href="#familias" class="nav-link">Membresia Familias</a>
+            <a href="#aula" class="nav-link">Aula Abierta Colegios</a>
+            <a href="#cosecha" class="nav-link">Cosecha Plaza Las Lilas</a>
+            <a href="#historia" class="nav-link">Nuestra Historia</a>
             <button class="nav-login-btn" onclick="document.getElementById('familias').scrollIntoView({behavior: 'smooth'})">Ingreso Privado</button>
         </nav>
         <button class="nav-login-btn" style="display: block;" onclick="document.getElementById('familias').scrollIntoView({behavior: 'smooth'})" id="mobile-login-btn">Menú</button>
@@ -150,7 +165,7 @@
                         <span style="display: block; font-size: 18px; font-family: 'Inter', sans-serif; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: #EAEAEA; margin-bottom: 12px; text-shadow: none;">Refugio Agrícola en Paine</span>
                         Cultivar lo humano.
                     </h1>
-                    <p class="section-text">No somos solo un pedazo de tierra. Somos un ecosistema donde las familias respiran, los colegios aprenden y la tierra nos alimenta.</p>
+                    <p class="section-text">Somos un ecosistema donde las familias respiran, los colegios aprenden y la tierra nos alimenta.</p>
                 </div>
             </section>
 
@@ -159,11 +174,11 @@
                     <div class="text-content">
                         <span class="tag">Membresía para Familias</span>
                         <h2 class="section-title">Tu refugio de fin de semana, sin <span style="text-decoration: line-through; text-decoration-color: var(--text-muted); text-decoration-thickness: 2px; opacity: 0.8;">el cacho de</span> mantenerlo.</h2>
-                        <p class="section-text">La ciudad agota y mantener una parcela solos requiere tiempo, energía y es caro. Por eso abrimos El Otro Huerto para un grupo limitado de familias. El trato es simple:</p>
+                        <p class="section-text">La ciudad agota y mantener una parcela requiere tiempo, energía, y no poca plata. Por eso decidimos abrir nuestra parcela a un número limitado de familias afines. El trato es simple:</p>
                         
                         <ul class="section-text" style="padding-left: 20px; list-style-type: disc;">
-                            <li style="margin-bottom: 8px;"><strong>Nosotros mantenemos:</strong> El huerto de frutales, cortamnos el pasto, mantenemos el quincho y la piscina impecables.</li>
-                            <li style="margin-bottom: 8px;"><strong>Tú llegas y descansas:</strong> Usas toda la infraestructura, cosechas lo que da la tierra y compartes con la tribu.</li>
+                            <li style="margin-bottom: 8px;"><strong>Nosotros mantenemos:</strong> El huerto, podamos los frutales, cortamos el pasto, mantenemos la cocina, el quincho y la piscina impecables.</li>
+                            <li style="margin-bottom: 8px;"><strong>Tú llegas y descansas:</strong> Usas toda la infraestructura, cosechas lo que da la tierra, y compartes.</li>
                         </ul>
                         
                         <div style="margin-top: 32px;">
@@ -171,16 +186,20 @@
                         </div>
 
                         <div class="login-box">
-                            <h3 style="font-size: 16px; margin-bottom: 8px;">¿Ya eres familia de la comunidad?</h3>
+                            <h3 style="font-size: 16px; margin-bottom: 8px;">¿Ya cuentas con membresía?</h3>
                             <div style="display: flex; gap: 8px;">
-                                <input type="password" id="passInput" placeholder="Tu contraseña">
+                                <input type="password" id="passInput" placeholder="Tu clave">
                                 <button class="btn-primary" style="padding: 12px 20px; white-space: nowrap;" onclick="checkPassword()">Entrar</button>
                             </div>
-                            <p id="errorMsg">Clave incorrecta.</p>
+                            <p id="errorMsg">Clave incorrecta. Vuelve a intentarlo</p>
                         </div>
                     </div>
+                    
                     <div class="img-content">
-                        <img src="assets/familias.jpg" alt="Familias compartiendo en El Otro Huerto" class="section-img">
+                        <div class="collage-wrapper">
+                            <img src="assets/familias.jpg" alt="Familias compartiendo en El Otro Huerto" class="collage-main section-img" style="margin-bottom: 0;">
+                            <img src="assets/quincho.jpg" alt="Instalaciones del Quincho" class="collage-sub" onerror="this.style.display='none'">
+                        </div>
                     </div>
                 </div>
             </section>
@@ -188,7 +207,10 @@
             <section id="aula" class="img-left">
                 <div class="container grid-2">
                     <div class="img-content">
-                        <img src="assets/colegio_escucha.jpg" alt="Niños escuchando indicaciones del huerto" class="section-img">
+                        <div class="collage-wrapper">
+                            <img src="assets/colegio_escucha.jpg" alt="Niños escuchando indicaciones del huerto" class="collage-main section-img" style="margin-bottom: 0;">
+                            <img src="assets/colegio_papas.jpg" alt="Trabajo con las manos" class="collage-sub" onerror="this.style.display='none'">
+                        </div>
                     </div>
                     <div class="text-content">
                         <span class="tag">Colegios & Educación</span>
@@ -209,7 +231,7 @@
                 <div class="container grid-2">
                     <div class="text-content">
                         <span class="tag">Producción Local</span>
-                        <h2 class="section-title">Lo que nos da la tierra, directo a la Plaza Las Lilas y alrededores.</h2>
+                        <h2 class="section-title">Lo que nos da la tierra, directo a la Plaza Las Lilas.</h2>
                         <p class="section-text">No somos un supermercado. Respetamos los tiempos de la tierra, por lo que nuestras cosechas son por temporada, limitadas, agroecológicas y honestas.</p>
                         <p class="section-text">Actualmente estamos cosechando <strong>papa Astrid y zapallos Guarda de Paine y Tromboncinos</strong>, de semillas antiguas y libres de químicos. Los almácigos son producidos con dedicación por Luis Miranda, aquí en Paine.</p>
                         <p class="section-text">Vendemos directo a vecinos y tienditas de especialidad en Providencia (Barrio Las Lilas), sin intermediarios.</p>
@@ -220,29 +242,10 @@
                     </div>
                     
                     <div class="img-content">
-                        <div class="gallery-grid" style="margin: 0;">
-                            
-                            <div style="grid-column: span 2; position: relative;">
-                                <img src="assets/papa_astrid.jpg" alt="Papa Astrid recién cosechada" class="section-img gallery-item large" style="margin-bottom: 0; height: 300px;">
-                                <span style="position: absolute; bottom: 16px; left: 16px; background: rgba(253, 252, 251, 0.95); padding: 6px 14px; border-radius: 4px; font-size: 13px; font-family: 'Inter', sans-serif; font-weight: 600; color: var(--text-main); box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-                                    🥔 Papa Astrid
-                                </span>
-                            </div>
-                            
-                            <div style="position: relative;">
-                                <img src="assets/zapallo_guarda.jpg" alt="Zapallo Guarda de Paine" class="section-img gallery-item" style="margin-bottom: 0; height: 220px;">
-                                <span style="position: absolute; bottom: 16px; left: 16px; background: rgba(253, 252, 251, 0.95); padding: 6px 14px; border-radius: 4px; font-size: 13px; font-family: 'Inter', sans-serif; font-weight: 600; color: var(--text-main); box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-                                    🎃 Guarda de Paine
-                                </span>
-                            </div>
-
-                            <div style="position: relative;">
-                                <img src="assets/zapallo_tromboncino.jpg" alt="Zapallo Tromboncino" class="section-img gallery-item" style="margin-bottom: 0; height: 220px;">
-                                <span style="position: absolute; bottom: 16px; left: 16px; background: rgba(253, 252, 251, 0.95); padding: 6px 14px; border-radius: 4px; font-size: 13px; font-family: 'Inter', sans-serif; font-weight: 600; color: var(--text-main); box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-                                    🌿 Tromboncino
-                                </span>
-                            </div>
-                            
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                            <img src="assets/papa_astrid.jpg" alt="Papa Astrid" class="section-img" style="grid-column: span 2; height: 300px; margin-bottom: 0;">
+                            <img src="assets/zapallo_guarda.jpg" alt="Zapallo Guarda" class="section-img" style="height: 220px; margin-bottom: 0;">
+                            <img src="assets/zapallo_tromboncino.jpg" alt="Zapallo Tromboncino" class="section-img" style="height: 220px; margin-bottom: 0;">
                         </div>
                     </div>
                 </div>
@@ -251,14 +254,17 @@
             <section id="historia" class="img-left">
                 <div class="container grid-2">
                     <div class="img-content">
-                        <img src="assets/historia.jpg" alt="Historia de Jorge en el huerto" class="section-img">
+                        <div class="collage-wrapper">
+                            <img src="assets/historia.jpg" alt="Historia de Jorge en el huerto" class="collage-main section-img" style="margin-bottom: 0;">
+                            <img src="assets/historia_2.jpg" alt="Inicios del proyecto" class="collage-sub" onerror="this.style.display='none'">
+                        </div>
                     </div>
                     <div class="text-content">
                         <span class="tag">Nuestra Historia</span>
                         <h2 class="section-title">De la tecnología a la tierra.</h2>
-                        <p class="section-text">Soy Jorge. Trabajé desde los 22 hasta los 30 años en el mundo corporativo (IBM y Oracle). Siempre supe que me tomaría un año para viajar, pero jamás para emprender.</p>
-                        <p class="section-text">El 2013 dejé ese mundo, armé la mochila y, tras varios viajes, me fui a vivir a una parcela en El Vínculo, Paine. Ahí nació Quillagua. Durante 11 años construí un puente entre pequeños productores y emprendedores locales con corporaciones como Synopsys, Mercado Libre y Nestlé, llevando el campo (fruta y snacks saludables) a las personas en sus lugares de trabajo. Fue ahí donde aprendí de las personas, el campo y las comunidades, comprendiendo el valor de la historia detrás de los alimentos que consumimos.</p>
-                        <p class="section-text">Hace poco volvimos a la ciudad como familia, impulsados por la búsqueda de la educación Waldorf para nuestros hijos. Al llegar, descubrimos que esa necesidad vital de ensuciarse las manos, ver crecer una semilla y bajar los ritmos no era solo nuestra; es una urgencia de muchas familias de Santiago. Así nace El Otro Huerto.</p>
+                        <p class="section-text">Soy Jorge. Trabajé desde los 22 hasta los 30 años en el mundo corporativo (IBM y Oracle). Siempre supe que me tomaría un año para viajar, pero jamás pensé que sería para emprender.</p>
+                        <p class="section-text">El 2013 dejé ese mundo, armé la mochila y, tras varios viajes, me fui a vivir a una parcela en El Vínculo, Paine. Ahí nació Quillagua. Durante 11 años construí un puente entre pequeños productores locales y corporaciones (como Synopsys, Mercado Libre y Nestlé), llevando el campo a las personas en sus lugares de trabajo. Fue ahí donde aprendí de las personas, del campo y comprendí el valor de la historia detrás de los alimentos que consumimos.</p>
+                        <p class="section-text">Hace poco volvimos a la ciudad como familia, buscando la educación Waldorf para nuestros hijos. Al llegar, descubrimos que esa necesidad vital de ensuciarse las manos, ver crecer una semilla y bajar los ritmos no era solo nuestra; es una urgencia compartida en Santiago. Así nace El Otro Huerto.</p>
                     </div>
                 </div>
             </section>
