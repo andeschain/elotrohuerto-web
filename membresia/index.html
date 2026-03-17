@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invitación Privada | El Otro Huerto</title>
     
-    <meta property="og:title" content="Tu parcela, sin el cacho de mantenerla 🌿">
+    <meta property="og:title" content="Tu refugio de fin de semana, sin ~el cacho de~ mantenerlo 🌿">
     <meta property="og:description" content="Estamos armando un grupo limitado de familias para compartir nuestro refugio en Paine. Ingresa con tu clave de invitación para ver los detalles.">
     <meta property="og:image" content="https://elotrohuerto.cl/assets/familias.jpg">
     <meta property="og:url" content="https://elotrohuerto.cl/membresia">
@@ -15,7 +15,7 @@
     
     <style>
         :root {
-            --bg-page: #F4F6F0; /* Un verde súper clarito y orgánico para el fondo */
+            --bg-page: #F4F6F0; 
             --text-main: #1D1D1F; 
             --text-muted: #515154; 
             --accent: #4A5D23; 
@@ -33,14 +33,13 @@
         .login-card {
             background: #fff; border-radius: 20px; border: 1px solid var(--border);
             box-shadow: 0 24px 48px rgba(0,0,0,0.08); max-width: 420px; width: 100%; 
-            overflow: hidden; /* Para que la foto respete los bordes curvos */
+            overflow: hidden; 
             text-align: center;
         }
         
         /* Foto en la parte superior de la tarjeta */
         .card-image {
             width: 100%; height: 200px; 
-            /* Cambia 'familias.jpg' por 'jardin.jpg' o 'quincho.jpg' si prefieres */
             background-image: url('../assets/familias.jpg'); 
             background-size: cover; background-position: center;
             border-bottom: 4px solid var(--accent);
@@ -50,7 +49,15 @@
         
         .card-content img { height: 32px; margin-bottom: 24px; }
         
-        h1 { font-family: 'Lora', serif; font-size: 26px; margin-top: 0; margin-bottom: 12px; line-height: 1.2; color: var(--accent); }
+        /* Ajuste exacto para coincidir con la imagen enviada */
+        h1 { 
+            font-family: 'Lora', serif; 
+            font-size: 26px; 
+            margin-top: 0; 
+            margin-bottom: 12px; 
+            line-height: 1.25; 
+            color: var(--text-main); 
+        }
         
         p.subtitle { font-size: 15px; color: var(--text-muted); margin-bottom: 32px; line-height: 1.5; }
         
@@ -79,7 +86,7 @@
         <div class="card-content">
             <img src="../assets/logo.svg" alt="El Otro Huerto" onerror="this.style.display='none'">
             
-            <h1>Tu parcela, sin el cacho de mantenerla.</h1>
+            <h1>Tu refugio de fin de semana, sin <span style="text-decoration: line-through; color: var(--text-muted); text-decoration-thickness: 2px; opacity: 0.8;">el cacho de</span> mantenerlo.</h1>
             <p class="subtitle">Estamos armando un grupo limitado de familias afines. Ingresa la clave de tu invitación para conocer los detalles del piloto.</p>
             
             <input type="password" id="passInput" placeholder="Ingresa tu clave">
@@ -101,7 +108,6 @@
             const btn = document.getElementById("loginBtn");
             
             if(hashString(input) === ACCESS_HASH) {
-                // Efecto visual de que está cargando
                 btn.innerHTML = "Abriendo invitación...";
                 btn.style.opacity = "0.7";
                 
