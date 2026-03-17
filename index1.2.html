@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>El Otro Huerto | Cultivar lo humano</title>
-    <meta name="description" content="Refugio agrícola en Paine. Tu propio campo cerca de Santiago, sin el cacho de mantenerlo.">
+    <meta name="description" content="Refugio agrícola en Paine. Tu propia parcela cerca de Santiago, sin el cacho de mantenerla.">
     <meta name="author" content="Jorge Munoz - El Otro Huerto">
     
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
     <link rel="alternate icon" href="assets/favicon.png">
 
     <meta property="og:title" content="El Otro Huerto | Cultivar lo humano">
-    <meta property="og:description" content="Tener un campo cerca de Santiago, sin e̶l̶ ̶c̶a̶c̶h̶o̶ ̶d̶e̶ mantenerlo.">
+    <meta property="og:description" content="Tu parcela cerca de Santiago, sin e̶l̶ ̶c̶a̶c̶h̶o̶ ̶d̶e̶ mantenerla.">
     <meta property="og:image" content="https://elotrohuerto.cl/assets/familias.jpg">
     <meta property="og:url" content="https://elotrohuerto.cl/">
     <meta property="og:type" content="website">
@@ -58,23 +58,23 @@
         }
         .nav-login-btn:hover { border-color: var(--text-main); background: var(--text-main); color: #fff; }
 
-        /* Hero Fotográfico */
+        /* Hero Fotográfico - Diseño limpio */
         .hero-section {
             position: relative; background-image: url('assets/jardin.jpg'); background-size: cover;
-            background-position: center bottom; background-repeat: no-repeat; min-height: 70vh; 
+            background-position: center bottom; background-repeat: no-repeat; min-height: 65vh; 
             padding: 80px 24px; display: flex; align-items: center; justify-content: center; color: #FFFFFF;
         }
         .hero-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.05) 100%); z-index: 1;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0) 100%); z-index: 1;
         }
         .hero-content { position: relative; z-index: 2; text-align: center; max-width: 800px; transform: translateY(-5%); }
-        .hero-content h1 { color: #FFFFFF; font-size: 56px; margin-bottom: 24px; line-height: 1.1; text-shadow: 0 2px 10px rgba(0,0,0,0.7), 0 0 40px rgba(0,0,0,0.5); }
-        .hero-content p { color: #FDFCFB; font-size: 22px; text-shadow: 0 2px 8px rgba(0,0,0,0.8); font-weight: 500; }
+        .hero-content h1 { color: #FFFFFF; font-size: 56px; margin-bottom: 24px; line-height: 1.1; text-shadow: 0 4px 15px rgba(0,0,0,0.6); }
+        .hero-content p { color: #FDFCFB; font-size: 22px; text-shadow: 0 2px 10px rgba(0,0,0,0.7); font-weight: 500; }
 
-        /* NUEVO: Fintual Switcher (Segmentador) */
+        /* FINTUAL SWITCHER (Selector de Personas/Sociedades) */
         .switcher-wrapper {
-            display: flex; justify-content: center; margin-top: -30px; position: relative; z-index: 10; padding: 0 24px;
+            display: flex; justify-content: center; margin-top: -25px; position: relative; z-index: 10; padding: 0 24px; margin-bottom: 40px;
         }
         .switcher-container {
             background-color: #FFFFFF; padding: 6px; border-radius: 40px; display: inline-flex;
@@ -103,51 +103,56 @@
         .container { max-width: 1080px; margin: 0 auto; }
         .grid-2 { display: grid; grid-template-columns: 1fr; gap: 40px; align-items: center; }
 
-        /* NUEVO: Fintual Cards (Tarjetas Bento) */
+        /* BENTO CARDS (Estilo Fintual - Tipos de Inversión) */
         .bento-grid {
-            display: grid; grid-template-columns: 1fr; gap: 24px; margin-top: 32px;
+            display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 24px;
         }
         .bento-card {
-            background: #FFFFFF; border: 1px solid var(--border); border-radius: 16px;
-            padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: #FFFFFF; border: 1px solid var(--border); border-radius: 12px;
+            padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
         }
         .bento-card:hover {
             transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.08); border-color: var(--accent);
         }
-        .bento-icon { font-size: 32px; margin-bottom: 16px; display: block; }
-        .bento-title { font-size: 20px; font-family: 'Inter', sans-serif; font-weight: 600; margin-bottom: 8px; }
-        .bento-text { font-size: 15px; color: var(--text-muted); margin: 0; }
+        .bento-title { font-size: 18px; font-family: 'Inter', sans-serif; font-weight: 600; margin-bottom: 8px; color: var(--text-main); }
+        .bento-text { font-size: 15px; color: var(--text-muted); margin: 0; line-height: 1.5; }
 
-        /* Imagenes y Microinteracciones */
+        /* IMÁGENES Y COLLAGES (Mejorado para limpieza visual) */
         .section-img { 
-            width: 100%; height: auto; border-radius: 12px; object-fit: cover; aspect-ratio: 4/3; 
+            width: 100%; height: auto; border-radius: 12px; object-fit: cover; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: transform 0.4s ease, box-shadow 0.4s ease; 
         }
         .section-img:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.1); }
 
-        .collage-wrapper { position: relative; margin-bottom: 12%; margin-right: 5%; margin-top: 5%; }
-        .collage-main { width: 100%; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; z-index: 1; display: block; }
-        .collage-sub { 
-            position: absolute; bottom: -12%; right: -8%; width: 55%; border-radius: 12px; 
-            border: 8px solid var(--bg-page); box-shadow: 0 15px 40px rgba(0,0,0,0.15); z-index: 2; transition: transform 0.4s ease; 
+        /* Collage Fijo y Controlado */
+        .collage-wrapper { 
+            position: relative; display: flex; align-items: flex-end; justify-content: flex-end;
+            padding-bottom: 40px; padding-right: 40px; /* Espacio para que la sub-imagen no se corte */
         }
-        .alt-bg .collage-sub { border-color: var(--bg-alt); }
-        .collage-wrapper:hover .collage-sub { transform: scale(1.05) translateY(-5px); }
+        .collage-main { 
+            width: 90%; aspect-ratio: 4/3; z-index: 1; margin: 0 auto 0 0; display: block;
+        }
+        .collage-sub { 
+            position: absolute; bottom: 0; right: 0; width: 50%; aspect-ratio: 1/1; 
+            border: 8px solid var(--bg-page); border-radius: 16px; z-index: 2; 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15); background-color: var(--bg-page);
+        }
+        .alt-bg .collage-sub { border-color: var(--bg-alt); background-color: var(--bg-alt); }
 
         .tag { font-family: 'Inter', sans-serif; text-transform: uppercase; font-size: 12px; font-weight: 600; color: var(--accent); letter-spacing: 1px; margin-bottom: 12px; display: block; }
-        .section-title { font-size: 36px; margin-bottom: 20px; }
+        .section-title { font-size: 36px; margin-bottom: 20px; line-height: 1.2; }
         .section-text { font-size: 18px; color: var(--text-muted); margin-bottom: 24px; }
 
         .btn-primary { 
             display: inline-block; background-color: var(--accent); color: #FFFFFF; padding: 14px 24px; 
             border-radius: 6px; font-weight: 500; text-align: center; border: none; cursor: pointer; 
-            transition: transform 0.2s ease, background-color 0.2s ease; 
+            transition: transform 0.2s ease, background-color 0.2s ease; width: fit-content;
         }
         .btn-primary:hover { opacity: 0.9; color: #fff;}
         .btn-primary:active { transform: scale(0.98); }
 
-        .login-box { background: #fff; padding: 24px; border-radius: 12px; border: 1px solid var(--border); margin-top: 24px; }
+        .login-box { background: #fff; padding: 24px; border-radius: 12px; border: 1px solid var(--border); margin-top: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
         input[type="password"] { width: 100%; padding: 12px 16px; font-size: 16px; border: 1px solid var(--border); border-radius: 6px; margin-bottom: 12px; box-sizing: border-box; }
         
         #errorMsg { color: #D93025; font-size: 14px; display: none; margin-top: 8px;}
@@ -163,13 +168,14 @@
             .img-right .img-content { order: 2; }
             .img-left .text-content { order: 2; }
             .img-left .img-content { order: 1; }
-            .section-title { font-size: 44px; }
+            .section-title { font-size: 40px; }
             .bento-grid { grid-template-columns: 1fr 1fr; }
         }
         @media(max-width: 767px) {
-             .hero-content h1 { font-size: 42px; }
+             .hero-content h1 { font-size: 40px; }
              .hero-content p { font-size: 18px; }
-             .collage-wrapper { margin-bottom: 15%; margin-right: 8%; }
+             .collage-main { width: 100%; }
+             .collage-sub { width: 60%; }
         }
     </style>
 </head>
@@ -181,13 +187,13 @@
             El Otro Huerto.
         </div>
         <nav class="desktop-menu">
-            <span class="nav-link" onclick="switchTab('tab-familias')">Familias</span>
-            <span class="nav-link" onclick="switchTab('tab-colegios')">Colegios</span>
-            <span class="nav-link" onclick="switchTab('tab-produccion')">Producción</span>
-            <a href="#historia" class="nav-link">Historia</a>
+            <span class="nav-link" onclick="switchTab('tab-familias')">Membresía Familias</span>
+            <span class="nav-link" onclick="switchTab('tab-colegios')">Aula Abierta</span>
+            <span class="nav-link" onclick="switchTab('tab-produccion')">Nuestra Cosecha</span>
+            <a href="#historia" class="nav-link">Nuestra Historia</a>
             <button class="nav-login-btn" onclick="document.getElementById('login-box').scrollIntoView({behavior: 'smooth'})">Ingreso Privado</button>
         </nav>
-        <button class="nav-login-btn" style="display: block;" onclick="document.getElementById('login-box').scrollIntoView({behavior: 'smooth'})" id="mobile-login-btn">Ingresar</button>
+        <button class="nav-login-btn" style="display: block;" onclick="document.getElementById('login-box').scrollIntoView({behavior: 'smooth'})" id="mobile-login-btn">Menú</button>
     </header>
 
     <main>
@@ -197,7 +203,7 @@
                 <div class="hero-overlay"></div>
                 <div class="container hero-content">
                     <h1>
-                        <span style="display: block; font-size: 18px; font-family: 'Inter', sans-serif; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: #EAEAEA; margin-bottom: 12px; text-shadow: none;">Refugio Agrícola en Paine</span>
+                        <span style="display: block; font-size: 16px; font-family: 'Inter', sans-serif; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #EAEAEA; margin-bottom: 12px; text-shadow: none;">Refugio Agrícola en Paine</span>
                         Cultivar lo humano.
                     </h1>
                     <p class="section-text">Somos un ecosistema donde las familias respiran, los colegios aprenden y la tierra nos alimenta.</p>
@@ -208,7 +214,7 @@
                 <div class="switcher-container">
                     <button class="switch-btn active" id="btn-familias" onclick="switchTab('tab-familias')">Para Familias</button>
                     <button class="switch-btn" id="btn-colegios" onclick="switchTab('tab-colegios')">Para Colegios</button>
-                    <button class="switch-btn" id="btn-produccion" onclick="switchTab('tab-produccion')">Nuestra Cosecha</button>
+                    <button class="switch-btn" id="btn-produccion" onclick="switchTab('tab-produccion')">Producción Local</button>
                 </div>
             </div>
 
@@ -216,22 +222,24 @@
                 <section class="alt-bg img-right">
                     <div class="container grid-2">
                         <div class="text-content">
-                            <span class="tag">Membresía Privada</span>
+                            <span class="tag">Membresía para Familias</span>
                             <h2 class="section-title">Tu refugio de fin de semana, sin <span style="text-decoration: line-through; text-decoration-color: var(--text-muted); text-decoration-thickness: 2px; opacity: 0.8;">el cacho de</span> mantenerlo.</h2>
                             <p class="section-text">La ciudad agota y mantener una parcela requiere tiempo, energía, y no poca plata. Por eso decidimos abrir nuestra parcela a un número limitado de familias afines. El trato es simple:</p>
                             
-                            <div class="bento-grid" style="grid-template-columns: 1fr; gap: 16px; margin-top: 24px; margin-bottom: 32px;">
-                                <div class="bento-card" style="padding: 24px;">
-                                    <h3 class="bento-title" style="font-size: 18px;">Nosotros mantenemos 🚜</h3>
+                            <div class="bento-grid">
+                                <div class="bento-card">
+                                    <h3 class="bento-title">Nosotros mantenemos</h3>
                                     <p class="bento-text">Cuidamos el huerto, podamos los frutales, cortamos el pasto, mantenemos la cocina, el quincho y la piscina impecables.</p>
                                 </div>
-                                <div class="bento-card" style="padding: 24px;">
-                                    <h3 class="bento-title" style="font-size: 18px;">Tú llegas y descansas 🧘🏽‍♀️</h3>
-                                    <p class="bento-text">Usas toda la infraestructura, cosechas lo que da la tierra de forma libre, y compartes con tu tribu.</p>
+                                <div class="bento-card">
+                                    <h3 class="bento-title">Tú llegas y descansas</h3>
+                                    <p class="bento-text">Usas toda la infraestructura, cosechas lo que da la tierra libremente, y compartes tu tiempo con la tribu.</p>
                                 </div>
                             </div>
                             
-                            <a href="URL_DE_TU_FORMULARIO" class="btn-primary" target="_blank">Quiero postular a la membresía</a>
+                            <div style="margin-top: 32px;">
+                                <a href="URL_DE_TU_FORMULARIO" class="btn-primary" target="_blank">Quiero postular a la membresía</a>
+                            </div>
 
                             <div class="login-box" id="login-box">
                                 <h3 style="font-size: 16px; margin-bottom: 8px;">¿Ya cuentas con membresía?</h3>
@@ -245,8 +253,8 @@
                         
                         <div class="img-content">
                             <div class="collage-wrapper">
-                                <img src="assets/familias.jpg" alt="Familias compartiendo en El Otro Huerto" class="collage-main section-img" style="margin-bottom: 0;">
-                                <img src="assets/quincho.jpg" alt="Instalaciones del Quincho" class="collage-sub" onerror="this.style.display='none'">
+                                <img src="assets/familias.jpg" alt="Familias compartiendo en El Otro Huerto" class="collage-main section-img">
+                                <img src="assets/quincho.jpg" alt="Instalaciones del Quincho" class="collage-sub section-img" onerror="this.style.display='none'">
                             </div>
                         </div>
                     </div>
@@ -254,29 +262,27 @@
             </div>
 
             <div id="tab-colegios" class="tab-content">
-                <section class="alt-bg img-left">
+                <section class="img-left">
                     <div class="container grid-2">
                         <div class="img-content">
                             <div class="collage-wrapper">
-                                <img src="assets/colegio_escucha.jpg" alt="Niños escuchando indicaciones del huerto" class="collage-main section-img" style="margin-bottom: 0;">
-                                <img src="assets/colegio_papas.jpg" alt="Trabajo con las manos" class="collage-sub" onerror="this.style.display='none'">
+                                <img src="assets/colegio_escucha.jpg" alt="Niños escuchando indicaciones del huerto" class="collage-main section-img">
+                                <img src="assets/colegio_papas.jpg" alt="Trabajo con las manos" class="collage-sub section-img" onerror="this.style.display='none'">
                             </div>
                         </div>
                         <div class="text-content">
-                            <span class="tag">Aula Abierta</span>
+                            <span class="tag">Aula Abierta Colegios</span>
                             <h2 class="section-title">La sala de clases con el techo más alto del mundo.</h2>
-                            <p class="section-text">Hay cosas que no se aprenden mirando una pizarra. Por eso abrimos El Otro Huerto a proyectos educativos que respetan los ritmos naturales.</p>
+                            <p class="section-text">El Otro Huerto está a disposición de proyectos educativos que comprenden que hay cosas que no se aprenden en una pizarra, y que los ritmos naturales son importantes.</p>
                             
                             <div class="bento-grid">
                                 <div class="bento-card">
-                                    <span class="bento-icon">🌾</span>
                                     <h3 class="bento-title">El Ciclo del Trigo</h3>
                                     <p class="bento-text">Especial para 3ros básicos Waldorf. Desde arar la tierra y sembrar, hasta cosechar y hacer el pan en nuestro horno de barro.</p>
                                 </div>
                                 <div class="bento-card">
-                                    <span class="bento-icon">🤝</span>
                                     <h3 class="bento-title">Convivencia Escolar</h3>
-                                    <p class="bento-text">Jornadas al aire libre diseñadas para sanar dinámicas de grupo y cultivar la empatía ensuciándose las manos juntos.</p>
+                                    <p class="bento-text">Jornadas al aire libre diseñadas para sanar dinámicas de grupo y cultivar la empatía ensuciándose las manos.</p>
                                 </div>
                             </div>
 
@@ -295,20 +301,20 @@
                             <span class="tag">Producción Local</span>
                             <h2 class="section-title">Lo que nos da la tierra, directo a la Plaza Las Lilas.</h2>
                             <p class="section-text">No somos un supermercado. Respetamos los tiempos de la tierra. Nuestras cosechas son por temporada, limitadas, agroecológicas y honestas.</p>
-                            <p class="section-text">Vendemos directo a vecinos y tienditas de especialidad en Providencia, sin intermediarios. Los almácigos son producidos con dedicación por Luis Miranda, aquí en Paine.</p>
+                            <p class="section-text">Vendemos directo a vecinos y tienditas de especialidad en Providencia (Barrio Las Lilas), sin intermediarios. Los almácigos son producidos con dedicación por Luis Miranda, aquí en Paine.</p>
                             
                             <div class="bento-grid" style="margin-bottom: 32px;">
-                                <div class="bento-card" style="padding: 20px;">
-                                    <h3 class="bento-title" style="font-size: 16px;">🥔 Papa Astrid</h3>
+                                <div class="bento-card" style="padding: 16px 20px;">
+                                    <h3 class="bento-title" style="font-size: 16px; margin-bottom: 4px;">Papa Astrid</h3>
                                     <p class="bento-text" style="font-size: 14px;">Semilla antigua, libre de químicos.</p>
                                 </div>
-                                <div class="bento-card" style="padding: 20px;">
-                                    <h3 class="bento-title" style="font-size: 16px;">🎃 Guarda de Paine</h3>
+                                <div class="bento-card" style="padding: 16px 20px;">
+                                    <h3 class="bento-title" style="font-size: 16px; margin-bottom: 4px;">Guarda de Paine</h3>
                                     <p class="bento-text" style="font-size: 14px;">Zapallo tradicional de la zona.</p>
                                 </div>
-                                <div class="bento-card" style="padding: 20px; grid-column: span 2;">
-                                    <h3 class="bento-title" style="font-size: 16px;">🌿 Zapallo Tromboncino</h3>
-                                    <p class="bento-text" style="font-size: 14px;">Variedad italiana, textura firme y sabor suave.</p>
+                                <div class="bento-card" style="padding: 16px 20px; grid-column: span 2;">
+                                    <h3 class="bento-title" style="font-size: 16px; margin-bottom: 4px;">Zapallo Tromboncino</h3>
+                                    <p class="bento-text" style="font-size: 14px;">Variedad italiana de textura firme.</p>
                                 </div>
                             </div>
                             
@@ -317,29 +323,29 @@
                         
                         <div class="img-content">
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-                                <img src="assets/papa_astrid.jpg" alt="Papa Astrid" class="section-img" style="grid-column: span 2; height: 300px; margin-bottom: 0;">
-                                <img src="assets/zapallo_guarda.jpg" alt="Zapallo Guarda" class="section-img" style="height: 220px; margin-bottom: 0;">
-                                <img src="assets/zapallo_tromboncino.jpg" alt="Zapallo Tromboncino" class="section-img" style="height: 220px; margin-bottom: 0;">
+                                <img src="assets/papa_astrid.jpg" alt="Papa Astrid" class="section-img" style="grid-column: span 2; height: 300px;">
+                                <img src="assets/zapallo_guarda.jpg" alt="Zapallo Guarda" class="section-img" style="height: 200px;">
+                                <img src="assets/zapallo_tromboncino.jpg" alt="Zapallo Tromboncino" class="section-img" style="height: 200px;">
                             </div>
                         </div>
                     </div>
                 </section>
             </div>
 
-            <section id="historia" class="img-left" style="background-color: var(--bg-page);">
+            <section id="historia" class="img-left" style="background-color: var(--bg-page); border-top: 1px solid var(--border);">
                 <div class="container grid-2">
                     <div class="img-content">
                         <div class="collage-wrapper">
-                            <img src="assets/historia.jpg" alt="Historia de Jorge en el huerto" class="collage-main section-img" style="margin-bottom: 0;">
-                            <img src="assets/historia_2.jpg" alt="Inicios del proyecto" class="collage-sub" style="border-color: var(--bg-page);" onerror="this.style.display='none'">
+                            <img src="assets/historia.jpg" alt="Historia de Jorge en el huerto" class="collage-main section-img">
+                            <img src="assets/historia_2.jpg" alt="Inicios del proyecto" class="collage-sub section-img" style="border-color: var(--bg-page);" onerror="this.style.display='none'">
                         </div>
                     </div>
                     <div class="text-content">
                         <span class="tag">Nuestra Historia</span>
                         <h2 class="section-title">De la tecnología a la tierra.</h2>
                         <p class="section-text">Soy Jorge. Trabajé desde los 22 hasta los 30 años en el mundo corporativo (IBM y Oracle). Siempre supe que me tomaría un año para viajar, pero jamás pensé que sería para emprender.</p>
-                        <p class="section-text">El 2013 dejé ese mundo, armé la mochila y me fui a vivir a una parcela en El Vínculo, Paine. Ahí nació Quillagua. Durante 11 años construí un puente entre pequeños productores locales y corporaciones (como Synopsys, Mercado Libre y Nestlé). Fue ahí donde aprendí del campo y comprendí el valor de la historia detrás de los alimentos.</p>
-                        <p class="section-text">Hace poco volvimos a la ciudad buscando educación Waldorf para nuestros hijos. Al llegar, descubrimos que esa necesidad vital de ensuciarse las manos, ver crecer una semilla y bajar los ritmos no era solo nuestra; es una urgencia compartida en Santiago. Así nace El Otro Huerto.</p>
+                        <p class="section-text">El 2013 dejé ese mundo, armé la mochila y, tras varios viajes, me fui a vivir a una parcela en El Vínculo, Paine. Ahí nació Quillagua. Durante 11 años construí un puente entre pequeños productores locales y corporaciones (como Synopsys, Mercado Libre y Nestlé), llevando el campo a las personas en sus lugares de trabajo. Fue ahí donde aprendí de las personas, del campo y comprendí el valor de la historia detrás de los alimentos que consumimos.</p>
+                        <p class="section-text">Hace poco volvimos a la ciudad como familia, buscando la educación Waldorf para nuestros hijos. Al llegar, descubrimos que esa necesidad vital de ensuciarse las manos, ver crecer una semilla y bajar los ritmos no era solo nuestra; es una urgencia compartida en Santiago. Así nace El Otro Huerto.</p>
                     </div>
                 </div>
             </section>
@@ -348,45 +354,45 @@
 
         <div id="private-view" class="container hidden fade-in" style="padding-top: 60px; padding-bottom: 100px;">
              <div style="max-width: 800px; margin: 0 auto;">
-                <button onclick="logout()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:14px; margin-bottom:20px; text-decoration:underline;">← Volver al sitio público</button>
+                <button onclick="logout()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:14px; margin-bottom:20px; text-decoration:underline; font-family: 'Inter', sans-serif;">← Volver al sitio público</button>
                 
                 <span class="tag">Dashboard Familias</span>
                 <h1 style="font-size: 42px; margin-bottom: 16px;">Qué bueno verte por aquí.</h1>
                 <p style="font-size: 20px; color: var(--text-muted);">Bienvenido al espacio exclusivo para la tribu. Aquí está la logística y cómo funciona esto por dentro.</p>
                 
-                <hr style="margin: 40px 0;">
+                <hr style="margin: 40px 0; border: none; border-top: 1px solid var(--border);">
                 
                 <div class="bento-grid">
                     <div class="bento-card">
-                        <h3 class="bento-title">Parque y Piscina 🏊🏼‍♂️</h3>
-                        <p class="bento-text">Piscina de 15x5 mts, uso libre durante el día.</p>
+                        <h3 class="bento-title">Parque y Piscina</h3>
+                        <p class="bento-text">Piscina de 15x5 mts, con uso libre durante el día para la familia.</p>
                     </div>
                     <div class="bento-card">
-                        <h3 class="bento-title">Quincho y Fuego 🔥</h3>
-                        <p class="bento-text">Quincho full equipado con parrilla y horno de barro.</p>
+                        <h3 class="bento-title">Quincho y Fuego</h3>
+                        <p class="bento-text">Quincho full equipado con parrilla y un gran horno de barro.</p>
                     </div>
                 </div>
                 
                 <figure style="margin: 40px 0;">
-                    <img src="assets/quincho.jpg" alt="Quincho en El Vínculo" style="width:100%; border-radius:12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+                    <img src="assets/quincho.jpg" alt="Quincho en El Vínculo" style="width:100%; border-radius:12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); object-fit: cover;">
                 </figure>
                 
-                <h3>Modelo de suscripción</h3>
+                <h3 style="font-size: 24px; margin-bottom: 16px;">Modelo de suscripción</h3>
                 <div style="background: #F4F4F4; padding: 24px; border-radius: 12px; margin-bottom: 40px;">
-                    <ul style="margin-bottom: 0;">
-                        <li><strong>Fee Mensual:</strong> $150.000 por familia (acceso ilimitado fines de semana).</li>
-                        <li><strong>Incorporación:</strong> $0 para las primeras 7 familias. $50.000 para las siguientes.</li>
+                    <ul style="margin-bottom: 0; padding-left: 20px; color: var(--text-muted); font-size: 16px;">
+                        <li style="margin-bottom: 8px;"><strong style="color: var(--text-main);">Fee Mensual:</strong> $150.000 por familia (acceso ilimitado los fines de semana).</li>
+                        <li><strong style="color: var(--text-main);">Incorporación:</strong> $0 para las primeras 7 familias. $50.000 para las siguientes.</li>
                     </ul>
                 </div>
                 
-                <a href="https://wa.me/56958799778?text=Hola%20Jorge.%20Quiero%20avisar%20que%20iremos%20al%20huerto%20este%20fin%20de%20semana" class="btn-primary" target="_blank">Avisar que vamos</a>
+                <a href="https://wa.me/56958799778?text=Hola%20Jorge.%20Quiero%20avisar%20que%20iremos%20al%20huerto%20este%20fin%20de%20semana" class="btn-primary" target="_blank">Avisar que vamos (WhatsApp)</a>
             </div>
         </div>
     </main>
 
-    <footer style="background-color: var(--text-main); color: #FDFCFB; padding: 60px 24px; text-align: center;">
+    <footer style="background-color: var(--text-main); color: #FDFCFB; padding: 60px 24px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1);">
         <div style="max-width: 600px; margin: 0 auto;">
-            <h3 style="color: #FFFFFF; margin-bottom: 16px;">El Otro Huerto.</h3>
+            <h3 style="color: #FFFFFF; margin-bottom: 16px; font-size: 24px;">El Otro Huerto.</h3>
             <p style="color: #A0A0A0; font-size: 15px; margin-bottom: 32px;">
                 Un proyecto fundado por Jorge Munoz.<br>
                 Ubicados en El Vínculo, Paine. Región Metropolitana.
@@ -410,11 +416,9 @@
 
         // LÓGICA DEL SWITCHER FINTUAL
         function switchTab(tabId) {
-            // Quitar clase active de todos los botones y contenidos
             document.querySelectorAll('.switch-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
             
-            // Activar el seleccionado
             document.getElementById(tabId).classList.add('active');
             const targetBtnId = 'btn-' + tabId.split('-')[1];
             document.getElementById(targetBtnId).classList.add('active');
@@ -434,7 +438,6 @@
                 document.getElementById("private-view").classList.remove("hidden");
                 document.getElementById("errorMsg").style.display = "none";
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-                // Limpiar el input para seguridad
                 document.getElementById("passInput").value = "";
             } else {
                 document.getElementById("errorMsg").style.display = "block";
