@@ -3,456 +3,324 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Otro Huerto</title>
+    <meta name="description" content="Tu propio campo cerca de Santiago, sin el cacho de mantenerlo.">
     
-    <title>El Otro Huerto | Cultivar lo humano</title>
-    <meta name="description" content="Refugio agrícola en Paine. Tu propia parcela cerca de Santiago, sin el cacho de mantenerla.">
-    <meta name="author" content="Jorge Munoz - El Otro Huerto">
-    
-    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-    <link rel="alternate icon" href="assets/favicon.png">
-
-    <meta property="og:title" content="El Otro Huerto | Cultivar lo humano">
-    <meta property="og:description" content="Tu parcela cerca de Santiago, sin e̶l̶ ̶c̶a̶c̶h̶o̶ ̶d̶e̶ mantenerla.">
+    <meta property="og:title" content="El Otro Huerto">
+    <meta property="og:description" content="Tener un campo cerca de Santiago, sin e̶l̶ ̶c̶a̶c̶h̶o̶ ̶d̶e̶ mantenerlo.">
     <meta property="og:image" content="https://elotrohuerto.cl/assets/familias.jpg">
     <meta property="og:url" content="https://elotrohuerto.cl/">
-    <meta property="og:type" content="website">
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* Variables y diseño base */
+        /* ==========================================================================
+           VARIABLES & RESET (Estilo Fintual Puro)
+           ========================================================================== */
         :root {
-            --bg-page: #FDFCFB; 
-            --bg-alt: #F4F6F0; 
-            --text-main: #1D1D1F; 
-            --text-muted: #515154; 
-            --accent: #4A5D23; 
-            --border: #EAEAEA;
-            --nav-bg: rgba(253, 252, 251, 0.95);
+            --bg-main: #FFFFFF;     /* Fondo blanco inmaculado */
+            --bg-soft: #F9FAFB;     /* Gris súper suave para separar secciones */
+            --text-dark: #111827;   /* Casi negro, para títulos */
+            --text-body: #4B5563;   /* Gris medio para lectura */
+            --accent: #2563EB;      /* Azul "tech" (Cambia a tu verde: #4A5D23 si lo prefieres) */
+            --accent-hover: #1D4ED8;
+            --border: #E5E7EB;
+            --radius-md: 12px;
+            --radius-lg: 24px;
         }
 
-        body { 
-            font-family: 'Inter', sans-serif; background-color: var(--bg-page); color: var(--text-main); 
-            margin: 0; padding: 0; line-height: 1.6; scroll-behavior: smooth; -webkit-font-smoothing: antialiased;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-main); color: var(--text-body); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+        h1, h2, h3 { color: var(--text-dark); font-weight: 700; letter-spacing: -0.02em; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
 
-        h1, h2, h3 { font-family: 'Lora', serif; color: var(--text-main); margin-top: 0; line-height: 1.25; }
-        a { color: var(--text-main); text-decoration: none; transition: color 0.2s; }
-        a:hover { color: var(--accent); }
-
-        /* Navegación */
-        header.main-nav {
-            position: sticky; top: 0; background: var(--nav-bg); backdrop-filter: blur(8px);
-            border-bottom: 1px solid var(--border); z-index: 100; padding: 16px 24px;
+        /* ==========================================================================
+           NAVEGACIÓN
+           ========================================================================== */
+        nav {
             display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 40px; border-bottom: 1px solid var(--border);
+            position: sticky; top: 0; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); z-index: 100;
         }
+        .logo { font-size: 20px; font-weight: 700; color: var(--text-dark); display: flex; align-items: center; gap: 8px;}
+        .logo img { height: 24px; }
+        .nav-links { display: flex; gap: 32px; font-weight: 500; font-size: 15px; }
+        .nav-links a:hover { color: var(--text-dark); }
+        .btn-login { 
+            border: 1px solid var(--border); padding: 8px 16px; border-radius: 8px; font-weight: 500; transition: all 0.2s; cursor: pointer; background: transparent;
+        }
+        .btn-login:hover { border-color: var(--text-dark); color: var(--text-dark); }
 
-        .logo-container { display: flex; align-items: center; gap: 12px; font-family: 'Lora', serif; font-weight: 600; font-size: 20px; }
-        .logo-container img { height: 28px; width: auto; }
-        .desktop-menu { display: none; align-items: center; gap: 24px; }
-        .nav-link { font-size: 15px; font-weight: 500; color: var(--text-muted); cursor: pointer; }
-        .nav-link:hover { color: var(--text-main); }
-        .nav-login-btn { 
-            font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; padding: 8px 16px; 
-            border: 1px solid var(--border); border-radius: 20px; background: transparent; cursor: pointer; transition: all 0.2s; 
-        }
-        .nav-login-btn:hover { border-color: var(--text-main); background: var(--text-main); color: #fff; }
+        /* ==========================================================================
+           LAYOUT GENERAL
+           ========================================================================== */
+        .container { max-width: 1200px; margin: 0 auto; padding: 80px 24px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
 
-        /* Hero Fotográfico - Diseño limpio */
-        .hero-section {
-            position: relative; background-image: url('assets/jardin.jpg'); background-size: cover;
-            background-position: center bottom; background-repeat: no-repeat; min-height: 65vh; 
-            padding: 80px 24px; display: flex; align-items: center; justify-content: center; color: #FFFFFF;
+        /* Botón Principal (Primary Action) */
+        .btn-primary {
+            display: inline-flex; align-items: center; justify-content: center;
+            background-color: var(--text-dark); color: white; padding: 14px 28px;
+            border-radius: 8px; font-weight: 500; font-size: 16px; border: none; cursor: pointer;
+            transition: transform 0.1s ease, background-color 0.2s;
         }
-        .hero-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0) 100%); z-index: 1;
-        }
-        .hero-content { position: relative; z-index: 2; text-align: center; max-width: 800px; transform: translateY(-5%); }
-        .hero-content h1 { color: #FFFFFF; font-size: 56px; margin-bottom: 24px; line-height: 1.1; text-shadow: 0 4px 15px rgba(0,0,0,0.6); }
-        .hero-content p { color: #FDFCFB; font-size: 22px; text-shadow: 0 2px 10px rgba(0,0,0,0.7); font-weight: 500; }
-
-        /* FINTUAL SWITCHER (Selector de Personas/Sociedades) */
-        .switcher-wrapper {
-            display: flex; justify-content: center; margin-top: -25px; position: relative; z-index: 10; padding: 0 24px; margin-bottom: 40px;
-        }
-        .switcher-container {
-            background-color: #FFFFFF; padding: 6px; border-radius: 40px; display: inline-flex;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 1px solid var(--border);
-            overflow-x: auto; white-space: nowrap; max-width: 100%;
-            -ms-overflow-style: none; scrollbar-width: none;
-        }
-        .switcher-container::-webkit-scrollbar { display: none; }
-        
-        .switch-btn {
-            background: transparent; border: none; padding: 12px 24px; border-radius: 30px;
-            font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 500; color: var(--text-muted);
-            cursor: pointer; transition: all 0.3s ease;
-        }
-        .switch-btn.active {
-            background-color: var(--text-main); color: #FFFFFF; box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-        }
-
-        /* Control de Tabs */
-        .tab-content { display: none; opacity: 0; transition: opacity 0.4s ease; }
-        .tab-content.active { display: block; opacity: 1; animation: fadeIn 0.4s ease-in; }
-
-        /* Secciones & Layout */
-        section { padding: 80px 24px; }
-        section.alt-bg { background-color: var(--bg-alt); }
-        .container { max-width: 1080px; margin: 0 auto; }
-        .grid-2 { display: grid; grid-template-columns: 1fr; gap: 40px; align-items: center; }
-
-        /* BENTO CARDS (Estilo Fintual - Tipos de Inversión) */
-        .bento-grid {
-            display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 24px;
-        }
-        .bento-card {
-            background: #FFFFFF; border: 1px solid var(--border); border-radius: 12px;
-            padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-        }
-        .bento-card:hover {
-            transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.08); border-color: var(--accent);
-        }
-        .bento-title { font-size: 18px; font-family: 'Inter', sans-serif; font-weight: 600; margin-bottom: 8px; color: var(--text-main); }
-        .bento-text { font-size: 15px; color: var(--text-muted); margin: 0; line-height: 1.5; }
-
-        /* IMÁGENES Y COLLAGES (Mejorado para limpieza visual) */
-        .section-img { 
-            width: 100%; height: auto; border-radius: 12px; object-fit: cover; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: transform 0.4s ease, box-shadow 0.4s ease; 
-        }
-        .section-img:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.1); }
-
-        /* Collage Fijo y Controlado */
-        .collage-wrapper { 
-            position: relative; display: flex; align-items: flex-end; justify-content: flex-end;
-            padding-bottom: 40px; padding-right: 40px; /* Espacio para que la sub-imagen no se corte */
-        }
-        .collage-main { 
-            width: 90%; aspect-ratio: 4/3; z-index: 1; margin: 0 auto 0 0; display: block;
-        }
-        .collage-sub { 
-            position: absolute; bottom: 0; right: 0; width: 50%; aspect-ratio: 1/1; 
-            border: 8px solid var(--bg-page); border-radius: 16px; z-index: 2; 
-            box-shadow: 0 15px 40px rgba(0,0,0,0.15); background-color: var(--bg-page);
-        }
-        .alt-bg .collage-sub { border-color: var(--bg-alt); background-color: var(--bg-alt); }
-
-        .tag { font-family: 'Inter', sans-serif; text-transform: uppercase; font-size: 12px; font-weight: 600; color: var(--accent); letter-spacing: 1px; margin-bottom: 12px; display: block; }
-        .section-title { font-size: 36px; margin-bottom: 20px; line-height: 1.2; }
-        .section-text { font-size: 18px; color: var(--text-muted); margin-bottom: 24px; }
-
-        .btn-primary { 
-            display: inline-block; background-color: var(--accent); color: #FFFFFF; padding: 14px 24px; 
-            border-radius: 6px; font-weight: 500; text-align: center; border: none; cursor: pointer; 
-            transition: transform 0.2s ease, background-color 0.2s ease; width: fit-content;
-        }
-        .btn-primary:hover { opacity: 0.9; color: #fff;}
+        .btn-primary:hover { background-color: #000; }
         .btn-primary:active { transform: scale(0.98); }
 
-        .login-box { background: #fff; padding: 24px; border-radius: 12px; border: 1px solid var(--border); margin-top: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
-        input[type="password"] { width: 100%; padding: 12px 16px; font-size: 16px; border: 1px solid var(--border); border-radius: 6px; margin-bottom: 12px; box-sizing: border-box; }
-        
-        #errorMsg { color: #D93025; font-size: 14px; display: none; margin-top: 8px;}
-        .hidden { display: none !important; }
+        /* ==========================================================================
+           SEGMENTADOR (FAMILIAS vs COLEGIOS) - Estilo Tabs de Fintual
+           ========================================================================== */
+        .segment-nav {
+            display: flex; justify-content: center; border-bottom: 1px solid var(--border);
+            margin-bottom: 40px;
+        }
+        .segment-btn {
+            background: transparent; border: none; font-size: 16px; font-weight: 600;
+            color: var(--text-body); padding: 16px 32px; cursor: pointer; position: relative;
+            transition: color 0.2s;
+        }
+        .segment-btn.active { color: var(--text-dark); }
+        .segment-btn.active::after {
+            content: ''; position: absolute; bottom: -1px; left: 0; width: 100%;
+            height: 2px; background-color: var(--text-dark);
+        }
+        .view-content { display: none; animation: fadeIn 0.4s ease; }
+        .view-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Media Queries Desktop */
-        @media(min-width: 768px) {
-            .desktop-menu { display: flex; }
-            section { padding: 100px 24px; }
-            .grid-2 { grid-template-columns: 1fr 1fr; gap: 80px; }
-            .img-right .text-content { order: 1; }
-            .img-right .img-content { order: 2; }
-            .img-left .text-content { order: 2; }
-            .img-left .img-content { order: 1; }
-            .section-title { font-size: 40px; }
-            .bento-grid { grid-template-columns: 1fr 1fr; }
+        /* ==========================================================================
+           HERO SECTION (Limpio, sin foto de fondo)
+           ========================================================================== */
+        .hero-title { font-size: 64px; line-height: 1.1; margin-bottom: 24px; }
+        .hero-subtitle { font-size: 20px; color: var(--text-body); margin-bottom: 40px; max-width: 500px; }
+        .hero-img { 
+            width: 100%; height: 500px; object-fit: cover; border-radius: var(--radius-lg); 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
         }
-        @media(max-width: 767px) {
-             .hero-content h1 { font-size: 40px; }
-             .hero-content p { font-size: 18px; }
-             .collage-main { width: 100%; }
-             .collage-sub { width: 60%; }
+
+        /* ==========================================================================
+           COMPONENTE INTERACTIVO ("Tipos de Inversión" Fintual)
+           ========================================================================== */
+        .feature-interactive {
+            background-color: var(--bg-soft); border-radius: var(--radius-lg); padding: 64px; margin-top: 80px;
+        }
+        .feature-interactive-title { font-size: 32px; margin-bottom: 40px; text-align: center; }
+        
+        .interactive-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; }
+        
+        .interactive-list { display: flex; flex-direction: column; gap: 16px; }
+        
+        /* Los items de la lista que hacen cambiar la foto */
+        .interactive-item {
+            padding: 24px; border-radius: var(--radius-md); border: 2px solid transparent;
+            cursor: pointer; transition: all 0.2s ease;
+        }
+        .interactive-item h4 { font-size: 20px; margin-bottom: 8px; color: var(--text-body); }
+        .interactive-item p { font-size: 15px; margin: 0; display: none; } /* Párrafo oculto por defecto */
+        
+        /* Estado Activo del Item */
+        .interactive-item.active {
+            border-color: var(--text-dark); background: white; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .interactive-item.active h4 { color: var(--text-dark); }
+        .interactive-item.active p { display: block; color: var(--text-body); }
+
+        /* Contenedor de la foto que cambia */
+        .interactive-image-container { position: relative; height: 100%; min-height: 400px;}
+        .interactive-image {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;
+            border-radius: var(--radius-md); opacity: 0; transition: opacity 0.4s ease;
+        }
+        .interactive-image.active { opacity: 1; z-index: 2; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+
+        /* ==========================================================================
+           FOOTER BÁSICO
+           ========================================================================== */
+        footer { border-top: 1px solid var(--border); padding: 40px 24px; text-align: center; font-size: 14px; margin-top: 80px;}
+
+        /* Responsive Básico */
+        @media(max-width: 768px) {
+            nav { padding: 16px 20px; }
+            .nav-links { display: none; }
+            .grid-2, .interactive-grid { grid-template-columns: 1fr; gap: 40px; }
+            .hero-title { font-size: 40px; }
+            .hero-img { height: 300px; }
+            .feature-interactive { padding: 32px 24px; }
+            .interactive-image-container { min-height: 250px; }
         }
     </style>
 </head>
 <body>
 
-    <header class="main-nav">
-        <div class="logo-container">
-            <img src="assets/logo.svg" alt="Icono" onerror="this.style.display='none'">
-            El Otro Huerto.
+    <nav>
+        <div class="logo">
+            <img src="assets/logo.svg" alt="" onerror="this.style.display='none'">
+            El Otro Huerto
         </div>
-        <nav class="desktop-menu">
-            <span class="nav-link" onclick="switchTab('tab-familias')">Membresía Familias</span>
-            <span class="nav-link" onclick="switchTab('tab-colegios')">Aula Abierta</span>
-            <span class="nav-link" onclick="switchTab('tab-produccion')">Nuestra Cosecha</span>
-            <a href="#historia" class="nav-link">Nuestra Historia</a>
-            <button class="nav-login-btn" onclick="document.getElementById('login-box').scrollIntoView({behavior: 'smooth'})">Ingreso Privado</button>
-        </nav>
-        <button class="nav-login-btn" style="display: block;" onclick="document.getElementById('login-box').scrollIntoView({behavior: 'smooth'})" id="mobile-login-btn">Menú</button>
-    </header>
+        <div class="nav-links">
+            <a href="#historia">Nuestra Historia</a>
+            <a href="#cosecha">Cosecha Local</a>
+        </div>
+        <button class="btn-login" onclick="alert('Aquí abrimos tu portal privado')">Ingresar</button>
+    </nav>
+
+    <div class="segment-nav">
+        <button class="segment-btn active" onclick="switchView('familias')" id="btn-familias">Para Familias</button>
+        <button class="segment-btn" onclick="switchView('colegios')" id="btn-colegios">Para Colegios</button>
+    </div>
 
     <main>
-        <div id="public-view">
+        
+        <div id="view-familias" class="view-content active">
             
-            <section class="hero-section">
-                <div class="hero-overlay"></div>
-                <div class="container hero-content">
-                    <h1>
-                        <span style="display: block; font-size: 16px; font-family: 'Inter', sans-serif; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #EAEAEA; margin-bottom: 12px; text-shadow: none;">Refugio Agrícola en Paine</span>
-                        Cultivar lo humano.
-                    </h1>
-                    <p class="section-text">Somos un ecosistema donde las familias respiran, los colegios aprenden y la tierra nos alimenta.</p>
+            <section class="container grid-2" style="padding-top: 40px;">
+                <div>
+                    <h1 class="hero-title">Tu refugio en el campo, sin <span style="text-decoration: line-through; text-decoration-color: var(--border); text-decoration-thickness: 3px;">el cacho</span> de mantenerlo.</h1>
+                    <p class="hero-subtitle">Abrimos nuestra parcela en Paine para un grupo de familias. Nosotros mantenemos la tierra y la infraestructura. Tú vas a descansar, cosechar y desconectar.</p>
+                    <button class="btn-primary">Postular a la membresía</button>
+                </div>
+                <div>
+                    <img src="assets/familias.jpg" alt="Familias" class="hero-img">
                 </div>
             </section>
 
-            <div class="switcher-wrapper">
-                <div class="switcher-container">
-                    <button class="switch-btn active" id="btn-familias" onclick="switchTab('tab-familias')">Para Familias</button>
-                    <button class="switch-btn" id="btn-colegios" onclick="switchTab('tab-colegios')">Para Colegios</button>
-                    <button class="switch-btn" id="btn-produccion" onclick="switchTab('tab-produccion')">Producción Local</button>
-                </div>
-            </div>
-
-            <div id="tab-familias" class="tab-content active">
-                <section class="alt-bg img-right">
-                    <div class="container grid-2">
-                        <div class="text-content">
-                            <span class="tag">Membresía para Familias</span>
-                            <h2 class="section-title">Tu refugio de fin de semana, sin <span style="text-decoration: line-through; text-decoration-color: var(--text-muted); text-decoration-thickness: 2px; opacity: 0.8;">el cacho de</span> mantenerlo.</h2>
-                            <p class="section-text">La ciudad agota y mantener una parcela requiere tiempo, energía, y no poca plata. Por eso decidimos abrir nuestra parcela a un número limitado de familias afines. El trato es simple:</p>
+            <section class="container" style="padding-top: 0;">
+                <div class="feature-interactive">
+                    <h2 class="feature-interactive-title">Cómo funciona el trato</h2>
+                    
+                    <div class="interactive-grid">
+                        <div class="interactive-list">
                             
-                            <div class="bento-grid">
-                                <div class="bento-card">
-                                    <h3 class="bento-title">Nosotros mantenemos</h3>
-                                    <p class="bento-text">Cuidamos el huerto, podamos los frutales, cortamos el pasto, mantenemos la cocina, el quincho y la piscina impecables.</p>
-                                </div>
-                                <div class="bento-card">
-                                    <h3 class="bento-title">Tú llegas y descansas</h3>
-                                    <p class="bento-text">Usas toda la infraestructura, cosechas lo que da la tierra libremente, y compartes tu tiempo con la tribu.</p>
-                                </div>
+                            <div class="interactive-item active" onclick="changeImageFamilias('item1-fam', 'img1-fam')" id="item1-fam">
+                                <h4>Nosotros mantenemos</h4>
+                                <p>Cuidamos el huerto, podamos los árboles, cortamos el pasto y mantenemos la piscina impecable durante todo el año.</p>
                             </div>
                             
-                            <div style="margin-top: 32px;">
-                                <a href="URL_DE_TU_FORMULARIO" class="btn-primary" target="_blank">Quiero postular a la membresía</a>
+                            <div class="interactive-item" onclick="changeImageFamilias('item2-fam', 'img2-fam')" id="item2-fam">
+                                <h4>Tú llegas y descansas</h4>
+                                <p>Usas el quincho, el horno de barro y la piscina. Cosechas libremente lo que da la tierra según la temporada.</p>
                             </div>
 
-                            <div class="login-box" id="login-box">
-                                <h3 style="font-size: 16px; margin-bottom: 8px;">¿Ya cuentas con membresía?</h3>
-                                <div style="display: flex; gap: 8px;">
-                                    <input type="password" id="passInput" placeholder="Tu clave">
-                                    <button class="btn-primary" style="padding: 12px 20px; white-space: nowrap;" onclick="checkPassword()">Entrar</button>
-                                </div>
-                                <p id="errorMsg">Clave incorrecta. Vuelve a intentarlo</p>
+                            <div class="interactive-item" onclick="changeImageFamilias('item3-fam', 'img3-fam')" id="item3-fam">
+                                <h4>A solo 40 minutos</h4>
+                                <p>Estamos ubicados en El Vínculo, Paine. Suficientemente lejos del ruido, suficientemente cerca para ir por el día.</p>
                             </div>
+
                         </div>
                         
-                        <div class="img-content">
-                            <div class="collage-wrapper">
-                                <img src="assets/familias.jpg" alt="Familias compartiendo en El Otro Huerto" class="collage-main section-img">
-                                <img src="assets/quincho.jpg" alt="Instalaciones del Quincho" class="collage-sub section-img" onerror="this.style.display='none'">
-                            </div>
+                        <div class="interactive-image-container">
+                            <img src="assets/jardin.jpg" id="img1-fam" class="interactive-image active" alt="Mantenimiento">
+                            <img src="assets/quincho.jpg" id="img2-fam" class="interactive-image" alt="Quincho y descanso">
+                            <img src="assets/historia.jpg" id="img3-fam" class="interactive-image" alt="Ubicación Paine">
                         </div>
-                    </div>
-                </section>
-            </div>
-
-            <div id="tab-colegios" class="tab-content">
-                <section class="img-left">
-                    <div class="container grid-2">
-                        <div class="img-content">
-                            <div class="collage-wrapper">
-                                <img src="assets/colegio_escucha.jpg" alt="Niños escuchando indicaciones del huerto" class="collage-main section-img">
-                                <img src="assets/colegio_papas.jpg" alt="Trabajo con las manos" class="collage-sub section-img" onerror="this.style.display='none'">
-                            </div>
-                        </div>
-                        <div class="text-content">
-                            <span class="tag">Aula Abierta Colegios</span>
-                            <h2 class="section-title">La sala de clases con el techo más alto del mundo.</h2>
-                            <p class="section-text">El Otro Huerto está a disposición de proyectos educativos que comprenden que hay cosas que no se aprenden en una pizarra, y que los ritmos naturales son importantes.</p>
-                            
-                            <div class="bento-grid">
-                                <div class="bento-card">
-                                    <h3 class="bento-title">El Ciclo del Trigo</h3>
-                                    <p class="bento-text">Especial para 3ros básicos Waldorf. Desde arar la tierra y sembrar, hasta cosechar y hacer el pan en nuestro horno de barro.</p>
-                                </div>
-                                <div class="bento-card">
-                                    <h3 class="bento-title">Convivencia Escolar</h3>
-                                    <p class="bento-text">Jornadas al aire libre diseñadas para sanar dinámicas de grupo y cultivar la empatía ensuciándose las manos.</p>
-                                </div>
-                            </div>
-
-                            <div style="margin-top: 32px;">
-                                <a href="https://wa.me/56958799778?text=Hola%20Jorge,%20me%20interesa%20conversar%20sobre%20el%20Aula%20Abierta%20para%20colegios" class="btn-primary" target="_blank">Agendar una reunión</a>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-            <div id="tab-produccion" class="tab-content">
-                <section class="alt-bg img-right">
-                    <div class="container grid-2">
-                        <div class="text-content">
-                            <span class="tag">Producción Local</span>
-                            <h2 class="section-title">Lo que nos da la tierra, directo a la Plaza Las Lilas.</h2>
-                            <p class="section-text">No somos un supermercado. Respetamos los tiempos de la tierra. Nuestras cosechas son por temporada, limitadas, agroecológicas y honestas.</p>
-                            <p class="section-text">Vendemos directo a vecinos y tienditas de especialidad en Providencia (Barrio Las Lilas), sin intermediarios. Los almácigos son producidos con dedicación por Luis Miranda, aquí en Paine.</p>
-                            
-                            <div class="bento-grid" style="margin-bottom: 32px;">
-                                <div class="bento-card" style="padding: 16px 20px;">
-                                    <h3 class="bento-title" style="font-size: 16px; margin-bottom: 4px;">Papa Astrid</h3>
-                                    <p class="bento-text" style="font-size: 14px;">Semilla antigua, libre de químicos.</p>
-                                </div>
-                                <div class="bento-card" style="padding: 16px 20px;">
-                                    <h3 class="bento-title" style="font-size: 16px; margin-bottom: 4px;">Guarda de Paine</h3>
-                                    <p class="bento-text" style="font-size: 14px;">Zapallo tradicional de la zona.</p>
-                                </div>
-                                <div class="bento-card" style="padding: 16px 20px; grid-column: span 2;">
-                                    <h3 class="bento-title" style="font-size: 16px; margin-bottom: 4px;">Zapallo Tromboncino</h3>
-                                    <p class="bento-text" style="font-size: 14px;">Variedad italiana de textura firme.</p>
-                                </div>
-                            </div>
-                            
-                            <a href="https://wa.me/56958799778?text=Hola%20Jorge,%20me%20gustaría%20coordinar%20una%20compra%20de%20cosecha%20esta%20semana" class="btn-primary" target="_blank">Consultar stock por WhatsApp</a>
-                        </div>
-                        
-                        <div class="img-content">
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-                                <img src="assets/papa_astrid.jpg" alt="Papa Astrid" class="section-img" style="grid-column: span 2; height: 300px;">
-                                <img src="assets/zapallo_guarda.jpg" alt="Zapallo Guarda" class="section-img" style="height: 200px;">
-                                <img src="assets/zapallo_tromboncino.jpg" alt="Zapallo Tromboncino" class="section-img" style="height: 200px;">
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-            <section id="historia" class="img-left" style="background-color: var(--bg-page); border-top: 1px solid var(--border);">
-                <div class="container grid-2">
-                    <div class="img-content">
-                        <div class="collage-wrapper">
-                            <img src="assets/historia.jpg" alt="Historia de Jorge en el huerto" class="collage-main section-img">
-                            <img src="assets/historia_2.jpg" alt="Inicios del proyecto" class="collage-sub section-img" style="border-color: var(--bg-page);" onerror="this.style.display='none'">
-                        </div>
-                    </div>
-                    <div class="text-content">
-                        <span class="tag">Nuestra Historia</span>
-                        <h2 class="section-title">De la tecnología a la tierra.</h2>
-                        <p class="section-text">Soy Jorge. Trabajé desde los 22 hasta los 30 años en el mundo corporativo (IBM y Oracle). Siempre supe que me tomaría un año para viajar, pero jamás pensé que sería para emprender.</p>
-                        <p class="section-text">El 2013 dejé ese mundo, armé la mochila y, tras varios viajes, me fui a vivir a una parcela en El Vínculo, Paine. Ahí nació Quillagua. Durante 11 años construí un puente entre pequeños productores locales y corporaciones (como Synopsys, Mercado Libre y Nestlé), llevando el campo a las personas en sus lugares de trabajo. Fue ahí donde aprendí de las personas, del campo y comprendí el valor de la historia detrás de los alimentos que consumimos.</p>
-                        <p class="section-text">Hace poco volvimos a la ciudad como familia, buscando la educación Waldorf para nuestros hijos. Al llegar, descubrimos que esa necesidad vital de ensuciarse las manos, ver crecer una semilla y bajar los ritmos no era solo nuestra; es una urgencia compartida en Santiago. Así nace El Otro Huerto.</p>
                     </div>
                 </div>
             </section>
-
         </div>
 
-        <div id="private-view" class="container hidden fade-in" style="padding-top: 60px; padding-bottom: 100px;">
-             <div style="max-width: 800px; margin: 0 auto;">
-                <button onclick="logout()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:14px; margin-bottom:20px; text-decoration:underline; font-family: 'Inter', sans-serif;">← Volver al sitio público</button>
-                
-                <span class="tag">Dashboard Familias</span>
-                <h1 style="font-size: 42px; margin-bottom: 16px;">Qué bueno verte por aquí.</h1>
-                <p style="font-size: 20px; color: var(--text-muted);">Bienvenido al espacio exclusivo para la tribu. Aquí está la logística y cómo funciona esto por dentro.</p>
-                
-                <hr style="margin: 40px 0; border: none; border-top: 1px solid var(--border);">
-                
-                <div class="bento-grid">
-                    <div class="bento-card">
-                        <h3 class="bento-title">Parque y Piscina</h3>
-                        <p class="bento-text">Piscina de 15x5 mts, con uso libre durante el día para la familia.</p>
-                    </div>
-                    <div class="bento-card">
-                        <h3 class="bento-title">Quincho y Fuego</h3>
-                        <p class="bento-text">Quincho full equipado con parrilla y un gran horno de barro.</p>
+
+        <div id="view-colegios" class="view-content">
+            
+            <section class="container grid-2" style="padding-top: 40px;">
+                <div>
+                    <h1 class="hero-title">La sala de clases con el techo más alto del mundo.</h1>
+                    <p class="hero-subtitle">Ponemos nuestro huerto a disposición de proyectos educativos que entienden que ensuciarse las manos y respetar los ritmos naturales es vital para aprender.</p>
+                    <button class="btn-primary">Agendar reunión</button>
+                </div>
+                <div>
+                    <img src="assets/colegio_escucha.jpg" alt="Educación" class="hero-img">
+                </div>
+            </section>
+
+            <section class="container" style="padding-top: 0;">
+                <div class="feature-interactive">
+                    <h2 class="feature-interactive-title">Nuestros programas de Aula Abierta</h2>
+                    
+                    <div class="interactive-grid">
+                        <div class="interactive-list">
+                            
+                            <div class="interactive-item active" onclick="changeImageColegios('item1-col', 'img1-col')" id="item1-col">
+                                <h4>El Ciclo del Trigo</h4>
+                                <p>Diseñado para 3ros básicos Waldorf. Acompañamos a los niños desde arar la tierra y sembrar, hasta cosechar y hornear su propio pan.</p>
+                            </div>
+                            
+                            <div class="interactive-item" onclick="changeImageColegios('item2-col', 'img2-col')" id="item2-col">
+                                <h4>Convivencia Escolar</h4>
+                                <p>Jornadas inmersivas diseñadas para sanar dinámicas de grupo, volver a la naturaleza y cultivar la empatía trabajando la tierra en equipo.</p>
+                            </div>
+
+                        </div>
+                        
+                        <div class="interactive-image-container">
+                            <img src="assets/educacion.jpg" id="img1-col" class="interactive-image active" alt="Ciclo del Trigo">
+                            <img src="assets/colegio_papas.jpg" id="img2-col" class="interactive-image" alt="Convivencia">
+                        </div>
                     </div>
                 </div>
-                
-                <figure style="margin: 40px 0;">
-                    <img src="assets/quincho.jpg" alt="Quincho en El Vínculo" style="width:100%; border-radius:12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); object-fit: cover;">
-                </figure>
-                
-                <h3 style="font-size: 24px; margin-bottom: 16px;">Modelo de suscripción</h3>
-                <div style="background: #F4F4F4; padding: 24px; border-radius: 12px; margin-bottom: 40px;">
-                    <ul style="margin-bottom: 0; padding-left: 20px; color: var(--text-muted); font-size: 16px;">
-                        <li style="margin-bottom: 8px;"><strong style="color: var(--text-main);">Fee Mensual:</strong> $150.000 por familia (acceso ilimitado los fines de semana).</li>
-                        <li><strong style="color: var(--text-main);">Incorporación:</strong> $0 para las primeras 7 familias. $50.000 para las siguientes.</li>
-                    </ul>
-                </div>
-                
-                <a href="https://wa.me/56958799778?text=Hola%20Jorge.%20Quiero%20avisar%20que%20iremos%20al%20huerto%20este%20fin%20de%20semana" class="btn-primary" target="_blank">Avisar que vamos (WhatsApp)</a>
-            </div>
+            </section>
         </div>
+
     </main>
 
-    <footer style="background-color: var(--text-main); color: #FDFCFB; padding: 60px 24px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1);">
-        <div style="max-width: 600px; margin: 0 auto;">
-            <h3 style="color: #FFFFFF; margin-bottom: 16px; font-size: 24px;">El Otro Huerto.</h3>
-            <p style="color: #A0A0A0; font-size: 15px; margin-bottom: 32px;">
-                Un proyecto fundado por Jorge Munoz.<br>
-                Ubicados en El Vínculo, Paine. Región Metropolitana.
-            </p>
-            
-            <div style="display: flex; justify-content: center; gap: 24px; margin-bottom: 40px; font-size: 14px;">
-                <a href="https://andeschain.io" target="_blank" style="color: #A0A0A0; text-decoration: underline;">Tecnología AndesChain</a>
-                <a href="https://linkedin.com/in/jorgemunozar" target="_blank" style="color: #A0A0A0; text-decoration: underline;">LinkedIn</a>
-            </div>
-
-            <p style="color: #515154; font-size: 12px;">
-                &copy; 2026 El Otro Huerto. Todos los derechos reservados.<br>
-                Cultivando lo humano desde 2014 (Ex-Quillagua).
-            </p>
-        </div>
+    <footer>
+        <p>Un proyecto fundado por Jorge Munoz en Paine, Chile.</p>
+        <p style="color: var(--text-muted); margin-top: 8px;">&copy; 2026 El Otro Huerto. Ex-Quillagua.</p>
     </footer>
 
     <script>
-        // Ocultar botón móvil en desktop
-        if(window.innerWidth >= 768) { document.getElementById('mobile-login-btn').style.display = 'none'; }
+        // 1. Lógica del Segmentador (Cambiar entre Familias y Colegios)
+        function switchView(viewName) {
+            // Actualizar botones superiores
+            document.getElementById('btn-familias').classList.remove('active');
+            document.getElementById('btn-colegios').classList.remove('active');
+            document.getElementById('btn-' + viewName).classList.add('active');
 
-        // LÓGICA DEL SWITCHER FINTUAL
-        function switchTab(tabId) {
-            document.querySelectorAll('.switch-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            
-            document.getElementById(tabId).classList.add('active');
-            const targetBtnId = 'btn-' + tabId.split('-')[1];
-            document.getElementById(targetBtnId).classList.add('active');
+            // Actualizar vistas (ocultar todo, mostrar la elegida)
+            document.getElementById('view-familias').classList.remove('active');
+            document.getElementById('view-colegios').classList.remove('active');
+            document.getElementById('view-' + viewName).classList.add('active');
         }
 
-        // SISTEMA DE ACCESO PRIVADO
-        const OBFUSCATED_HASH = "6874786a686d663735373b"; 
+        // 2. Lógica del Componente Interactivo (Familias)
+        function changeImageFamilias(itemId, imageId) {
+            // Limpiar items activos
+            const items = ['item1-fam', 'item2-fam', 'item3-fam'];
+            items.forEach(id => {
+                const el = document.getElementById(id);
+                if(el) el.classList.remove('active');
+            });
+            // Activar item clickeado (muestra el párrafo)
+            document.getElementById(itemId).classList.add('active');
 
-        function hashInput(str) { 
-            return Array.from(str).map(char => (char.charCodeAt(0) + 5).toString(16)).join(''); 
+            // Limpiar imágenes activas
+            const images = ['img1-fam', 'img2-fam', 'img3-fam'];
+            images.forEach(id => {
+                const el = document.getElementById(id);
+                if(el) el.classList.remove('active');
+            });
+            // Activar imagen correspondiente (hace fade in)
+            document.getElementById(imageId).classList.add('active');
         }
 
-        function checkPassword() {
-            const input = document.getElementById("passInput").value.trim().toLowerCase();
-            if(hashInput(input) === OBFUSCATED_HASH) {
-                document.getElementById("public-view").classList.add("hidden");
-                document.getElementById("private-view").classList.remove("hidden");
-                document.getElementById("errorMsg").style.display = "none";
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                document.getElementById("passInput").value = "";
-            } else {
-                document.getElementById("errorMsg").style.display = "block";
-            }
-        }
+        // 3. Lógica del Componente Interactivo (Colegios)
+        function changeImageColegios(itemId, imageId) {
+            // Limpiar items activos
+            const items = ['item1-col', 'item2-col'];
+            items.forEach(id => {
+                const el = document.getElementById(id);
+                if(el) el.classList.remove('active');
+            });
+            document.getElementById(itemId).classList.add('active');
 
-        function logout() {
-            document.getElementById("private-view").classList.add("hidden");
-            document.getElementById("public-view").classList.remove("hidden");
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            // Limpiar imágenes activas
+            const images = ['img1-col', 'img2-col'];
+            images.forEach(id => {
+                const el = document.getElementById(id);
+                if(el) el.classList.remove('active');
+            });
+            document.getElementById(imageId).classList.add('active');
         }
-
-        document.getElementById("passInput").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") { event.preventDefault(); checkPassword(); }
-        });
     </script>
 </body>
 </html>
