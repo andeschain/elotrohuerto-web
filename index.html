@@ -40,11 +40,12 @@
         a { color: var(--text-main); text-decoration: none; transition: color 0.2s; }
         a:hover { color: var(--accent); }
 
-        /* Navegación */
+        /* Navegación (Mejorada con sombra sutil) */
         header.main-nav {
             position: sticky; top: 0; background: var(--nav-bg); backdrop-filter: blur(8px);
             border-bottom: 1px solid var(--border); z-index: 100; padding: 16px 24px;
             display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.02); /* Toque Premium */
         }
 
         .logo-container { display: flex; align-items: center; gap: 12px; font-family: 'Lora', serif; font-weight: 600; font-size: 20px; }
@@ -52,11 +53,14 @@
         .desktop-menu { display: none; align-items: center; gap: 24px; }
         .nav-link { font-size: 15px; font-weight: 500; color: var(--text-muted); }
         .nav-link:hover { color: var(--text-main); }
-        .nav-login-btn { 
-            font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; padding: 8px 16px; 
-            border: 1px solid var(--border); border-radius: 20px; background: transparent; cursor: pointer; transition: all 0.2s; 
+        
+        /* Botón de Venta Principal (Antiguo Login) */
+        .nav-cta-btn { 
+            font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; padding: 10px 20px; 
+            border: 1px solid var(--text-main); border-radius: 20px; background: var(--text-main); color: #fff; 
+            cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-block;
         }
-        .nav-login-btn:hover { border-color: var(--text-main); background: var(--text-main); color: #fff; }
+        .nav-cta-btn:hover { background: transparent; color: var(--text-main); }
 
         /* Hero Fotográfico */
         .hero-section {
@@ -78,26 +82,12 @@
         .container { max-width: 1080px; margin: 0 auto; }
         .grid-2 { display: grid; grid-template-columns: 1fr; gap: 40px; align-items: center; }
         
-        /* Microinteracciones Fintualist */
+        /* Imágenes */
         .section-img { 
             width: 100%; height: auto; border-radius: 8px; object-fit: cover; aspect-ratio: 4/3; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: transform 0.4s ease, box-shadow 0.4s ease; 
         }
         .section-img:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.1); }
-
-        /* NUEVO: Collages Asimétricos Mejorados */
-        .collage-wrapper { 
-            position: relative; margin-bottom: 12%; margin-right: 5%; margin-top: 5%;
-        }
-        .collage-main { 
-            width: 100%; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; z-index: 1; display: block; 
-        }
-        .collage-sub { 
-            position: absolute; bottom: -12%; right: -8%; width: 55%; border-radius: 8px; 
-            border: 8px solid var(--bg-page); box-shadow: 0 15px 40px rgba(0,0,0,0.15); z-index: 2; transition: transform 0.4s ease; 
-        }
-        .alt-bg .collage-sub { border-color: var(--bg-alt); }
-        .collage-wrapper:hover .collage-sub { transform: scale(1.05) translateY(-5px); }
 
         .tag { font-family: 'Inter', sans-serif; text-transform: uppercase; font-size: 12px; font-weight: 600; color: var(--accent); letter-spacing: 1px; margin-bottom: 12px; display: block; }
         .section-title { font-size: 36px; margin-bottom: 20px; }
@@ -111,10 +101,20 @@
         .btn-primary:hover { opacity: 0.9; color: #fff;}
         .btn-primary:active { transform: scale(0.98); }
 
-        .login-box { background: #fff; padding: 24px; border-radius: 8px; border: 1px solid var(--border); margin-top: 24px; }
-        input[type="password"] { width: 100%; padding: 12px 16px; font-size: 16px; border: 1px solid var(--border); border-radius: 6px; margin-bottom: 12px; box-sizing: border-box; }
+        /* Modal Login (Oculto) */
+        #login-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6);
+            display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s;
+        }
+        #login-modal.active { opacity: 1; pointer-events: auto; }
+        .login-box { 
+            background: #fff; padding: 32px; border-radius: 12px; border: 1px solid var(--border); 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15); max-width: 400px; width: 90%; position: relative;
+        }
+        .close-btn { position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text-muted); }
+        input[type="password"] { width: 100%; padding: 12px 16px; font-size: 16px; border: 1px solid var(--border); border-radius: 6px; margin-bottom: 16px; box-sizing: border-box; }
+        #errorMsg { color: #D93025; font-size: 14px; display: none; margin-top: 12px;}
         
-        #errorMsg { color: #D93025; font-size: 14px; display: none; margin-top: 8px;}
         .hidden { display: none !important; }
         .fade-in { animation: fadeIn 0.4s ease-in; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -134,7 +134,6 @@
         @media(max-width: 767px) {
              .hero-content h1 { font-size: 42px; }
              .hero-content p { font-size: 18px; }
-             .collage-wrapper { margin-bottom: 15%; margin-right: 8%; }
         }
     </style>
 </head>
@@ -150,9 +149,9 @@
             <a href="#aula" class="nav-link">Colegios</a>
             <a href="#cosecha" class="nav-link">Mercado Rural</a>
             <a href="#historia" class="nav-link">Historia</a>
-            <button class="nav-login-btn" onclick="document.getElementById('familias').scrollIntoView({behavior: 'smooth'})">Ingreso Membresía</button>
+            <a href="https://wa.me/56958799778?text=Hola%20Jorge,%20me%20gustaría%20saber%20qué%20cosecha%20tienen%20disponible%20esta%20semana" class="nav-cta-btn" target="_blank">Comprar Cosecha</a>
         </nav>
-        <button class="nav-login-btn" style="display: block;" onclick="document.getElementById('familias').scrollIntoView({behavior: 'smooth'})" id="mobile-login-btn">Menú</button>
+        <a href="https://wa.me/56958799778?text=Hola%20Jorge,%20me%20gustaría%20saber%20qué%20cosecha%20tienen%20disponible%20esta%20semana" class="nav-cta-btn" style="display: block;" id="mobile-login-btn" target="_blank">Comprar Cosecha</a>
     </header>
 
     <main>
@@ -174,7 +173,7 @@
                     <div class="text-content">
                         <span class="tag">Membresía para Familias</span>
                         <h2 class="section-title">Tu refugio de fin de semana, sin <span style="text-decoration: line-through; text-decoration-color: var(--text-muted); text-decoration-thickness: 2px; opacity: 0.8;">el cacho de</span> mantenerlo.</h2>
-                        <p class="section-text">La ciudad agota y mantener una parcela requiere tiempo, energía,plata. Por eso decidimos abrir nuestra parcela a un número limitado de familias afines. El trato es simple:</p>
+                        <p class="section-text">La ciudad agota y mantener una parcela requiere tiempo, energía, y plata. Por eso decidimos abrir nuestra parcela a un número limitado de familias afines. El trato es simple:</p>
                         
                         <ul class="section-text" style="padding-left: 20px; list-style-type: disc;">
                             <li style="margin-bottom: 8px;"><strong>Nosotros mantenemos:</strong> El huerto, podamos los frutales, cortamos el pasto, mantenemos la cocina, el quincho y la piscina impecables.</li>
@@ -182,9 +181,8 @@
                         </ul>
                         
                         <div style="margin-top: 32px;">
-                            <a href="URL_DE_TU_FORMULARIO" class="btn-primary" target="_blank">Quiero postular a la membresía</a>
+                            <a href="URL_DE_TU_FORMULARIO" class="btn-primary" target="_blank">Quiero postular (Formulario)</a>
                         </div>
-
                     </div>
                     
                     <div class="img-content">
@@ -207,7 +205,7 @@
                             <li><strong>Ciclos de Convivencia Escolar:</strong> Jornadas diseñadas para sanar dinámicas de grupo y cultivar la empatía ensuciándose las manos en la tierra.</li>
                         </ul>
                         <div style="margin-top: 32px;">
-                            <a href="https://wa.me/56958799778?text=Hola%20Jorge,%20me%20interesa%20conversar%20sobre%20el%20Aula%20Abierta%20para%20colegios" class="btn-primary" target="_blank">Agendar una reunión</a>
+                            <a href="URL_DE_CALENDLY_O_CALENDAR" class="btn-primary" target="_blank">Agendar reunión (Google Calendar)</a>
                         </div>
                     </div>
                 </div>
@@ -223,7 +221,7 @@
                         <p class="section-text">Vendemos directo a vecinos y tiendas de especialidad en Providencia (Barrio Las Lilas).</p>
                         
                         <div style="margin-top: 32px;">
-                            <a href="https://wa.me/56958799778?text=Hola%20Jorge,%20me%20gustaría%20coordinar%20una%20compra%20de%20cosecha%20esta%20semana" class="btn-primary" target="_blank">Consultar stock por WhatsApp</a>
+                            <a href="https://wa.me/56958799778?text=Hola%20Jorge,%20me%20gustaría%20saber%20qué%20cosecha%20tienen%20disponible%20esta%20semana" class="btn-primary" target="_blank">Consultar stock (WhatsApp)</a>
                         </div>
                     </div>
                     
@@ -240,10 +238,7 @@
             <section id="historia" class="img-left">
                 <div class="container grid-2">
                     <div class="img-content">
-                        <div class="collage-wrapper">
-                            <img src="assets/historia.jpg" alt="Historia de Jorge en el huerto" class="collage-main section-img" style="margin-bottom: 0;">
-                            <img src="assets/historia_2.jpg" alt="Inicios del proyecto" class="collage-sub" onerror="this.style.display='none'">
-                        </div>
+                        <img src="assets/historia.jpg" alt="Historia de Jorge en el huerto" class="section-img">
                     </div>
                     <div class="text-content">
                         <span class="tag">Nuestra Historia</span>
@@ -257,6 +252,17 @@
 
         </div>
 
+        <div id="login-modal">
+            <div class="login-box">
+                <button class="close-btn" onclick="closeLogin()">×</button>
+                <h3 style="font-size: 20px; margin-bottom: 8px;">Portal Familias</h3>
+                <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px;">Ingresa tu clave de membresía para acceder a la logística y reservas.</p>
+                <input type="password" id="passInput" placeholder="Tu clave">
+                <button class="btn-primary" style="width: 100%;" onclick="checkPassword()">Entrar</button>
+                <p id="errorMsg">Clave incorrecta. Vuelve a intentarlo.</p>
+            </div>
+        </div>
+
         <div id="private-view" class="container hidden fade-in" style="padding-top: 60px; padding-bottom: 100px;">
              <div style="max-width: 800px; margin: 0 auto;">
                 <button onclick="logout()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:14px; margin-bottom:20px; text-decoration:underline;">← Volver al sitio público</button>
@@ -265,7 +271,7 @@
                 <h1 style="font-size: 42px; margin-bottom: 16px;">Qué bueno verte por aquí.</h1>
                 <p style="font-size: 20px; color: var(--text-muted);">Bienvenido al espacio exclusivo para la tribu. Aquí está la logística y cómo funciona esto por dentro.</p>
                 
-                <hr style="margin: 40px 0;">
+                <hr style="margin: 40px 0; border: none; border-top: 1px solid var(--border);">
                 
                 <h3>Nuestra Infraestructura</h3>
                 <p>El Vínculo, Paine. A menos de 60 minutos de Santiago.</p>
@@ -287,7 +293,7 @@
                     </ul>
                 </div>
                 
-                <a href="https://wa.me/56958799778?text=Hola%20Jorge.%20Quiero%20avisar%20que%20iremos%20al%20huerto%20este%20fin%20de%20semana" class="btn-primary" target="_blank">Avisar que vamos</a>
+                <a href="https://wa.me/56958799778?text=Hola%20Jorge.%20Quiero%20avisar%20que%20iremos%20al%20huerto%20este%20fin%20de%20semana" class="btn-primary" target="_blank">Avisar que vamos (WhatsApp)</a>
             </div>
         </div>
     </main>
@@ -303,6 +309,7 @@
             <div style="display: flex; justify-content: center; gap: 24px; margin-bottom: 40px; font-size: 14px;">
                 <a href="https://andeschain.io" target="_blank" style="color: #A0A0A0; text-decoration: underline;">Tecnología AndesChain</a>
                 <a href="https://linkedin.com/in/jorgemunozar" target="_blank" style="color: #A0A0A0; text-decoration: underline;">LinkedIn</a>
+                <a href="#" onclick="event.preventDefault(); openLogin();" style="color: #A0A0A0; text-decoration: underline;">Portal Familias</a>
             </div>
 
             <p style="color: #515154; font-size: 12px;">
@@ -314,6 +321,19 @@
 
     <script>
         if(window.innerWidth >= 768) { document.getElementById('mobile-login-btn').style.display = 'none'; }
+        
+        /* Funciones Modal Login */
+        function openLogin() {
+            document.getElementById("login-modal").classList.add("active");
+            setTimeout(() => document.getElementById("passInput").focus(), 100);
+        }
+        
+        function closeLogin() {
+            document.getElementById("login-modal").classList.remove("active");
+            document.getElementById("errorMsg").style.display = "none";
+            document.getElementById("passInput").value = "";
+        }
+
         const OBFUSCATED_HASH = "6874786a686d663735373b"; 
 
         function hashInput(str) { 
@@ -323,9 +343,9 @@
         function checkPassword() {
             const input = document.getElementById("passInput").value.trim().toLowerCase();
             if(hashInput(input) === OBFUSCATED_HASH) {
+                closeLogin();
                 document.getElementById("public-view").classList.add("hidden");
                 document.getElementById("private-view").classList.remove("hidden");
-                document.getElementById("errorMsg").style.display = "none";
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             } else {
                 document.getElementById("errorMsg").style.display = "block";
@@ -333,7 +353,6 @@
         }
 
         function logout() {
-            document.getElementById("passInput").value = "";
             document.getElementById("private-view").classList.add("hidden");
             document.getElementById("public-view").classList.remove("hidden");
             window.scrollTo({ top: 0, behavior: 'smooth' });
