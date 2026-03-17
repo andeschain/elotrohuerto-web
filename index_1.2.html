@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>El Otro Huerto | Cultivar lo humano</title>
+    <meta name="description" content="Refugio agrícola en Paine. Un ecosistema que conecta a las personas con la tierra a través de membresías familiares, aula abierta para colegios y un mercado rural agroecológico.">
+    <meta name="author" content="Jorge Munoz - El Otro Huerto">
+    
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="alternate icon" href="assets/favicon.png">
+
+    <meta property="og:title" content="El Otro Huerto | Cultivar lo humano">
+    <meta property="og:description" content="Tu refugio en el campo cerca de Santiago. Membresías para familias, educación al aire libre y mercado rural libre de químicos.">
+    <meta property="og:image" content="https://elotrohuerto.cl/assets/jardin.jpg">
+    <meta property="og:url" content="https://elotrohuerto.cl/">
+    <meta property="og:type" content="website">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Variables y diseño base */
+        :root {
+            --bg-page: #FDFCFB; 
+            --bg-alt: #F4F6F0; 
+            --text-main: #1D1D1F; 
+            --text-muted: #515154; 
+            --accent: #4A5D23; 
+            --border: #EAEAEA;
+            --nav-bg: rgba(253, 252, 251, 0.95);
+        }
+
+        body { 
+            font-family: 'Inter', sans-serif; background-color: var(--bg-page); color: var(--text-main); 
+            margin: 0; padding: 0; line-height: 1.6; scroll-behavior: smooth; -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3 { font-family: 'Lora', serif; color: var(--text-main); margin-top: 0; line-height: 1.25; }
+        a { color: var(--text-main); text-decoration: none; transition: color 0.2s; }
+        a:hover { color: var(--accent); }
+
+        /* Navegación */
+        header.main-nav {
+            position: sticky; top: 0; background: var(--nav-bg); backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border); z-index: 100; padding: 16px 24px;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.02); 
+        }
+
+        .logo-container { display: flex; align-items: center; gap: 12px; font-family: 'Lora', serif; font-weight: 600; font-size: 20px; }
+        .logo-container img { height: 28px; width: auto; }
+        .desktop-menu { display: none; align-items: center; gap: 24px; }
+        .nav-link { font-size: 15px; font-weight: 500; color: var(--text-muted); }
+        .nav-link:hover { color: var(--text-main); }
+        
+        /* Botón de Venta Principal */
+        .nav-cta-btn { 
+            font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; padding: 10px 20px; 
+            border: 1px solid var(--accent); border-radius: 20px; background: var(--accent); color: #fff; 
+            cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-block;
+        }
+        .nav-cta-btn:hover { background: transparent; color: var(--accent); }
+
+        /* Hero Fotográfico */
+        .hero-section {
+            position: relative; background-image: url('assets/jardin.jpg'); background-size: cover;
+            background-position: center bottom; background-repeat: no-repeat; min-height: 75vh; 
+            padding: 80px 24px; display: flex; align-items: center; justify-content: center; color: #FFFFFF;
+        }
+        .hero-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.05) 100%); z-index: 1;
+        }
+        .hero-content { position: relative; z-index: 2; text-align: center; max-width: 800px; transform: translateY(-10%); }
+        .hero-content h1 { color: #FFFFFF; font-size: 56px; margin-bottom: 24px; line-height: 1.1; text-shadow: 0 2px 10px rgba(0,0,0,0.7), 0 0 40px rgba(0,0,0,0.5); }
+        .hero-content p { color: #FDFCFB; font-size: 22px; text-shadow: 0 2px 8px rgba(0,0,0,0.8); font-weight: 500; }
+
+        /* Secciones */
+        section { padding: 80px 24px; }
+        section.alt-bg { background-color: var(--bg-alt); }
+        .container { max-width: 1080px; margin: 0 auto; }
+        .grid-2 { display: grid; grid-template-columns: 1fr; gap: 40px; align-items: center; }
+        
+        /* Imágenes */
+        .section-img { 
+            width: 100%; height: auto; border-radius: 8px; object-fit: cover; aspect-ratio: 4/3; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: transform 0.4s ease, box-shadow 0.4s ease; 
+        }
+        .section-img:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.1); }
+
+        .tag { font-family: 'Inter', sans-serif; text-transform: uppercase; font-size: 12px; font-weight: 600; color: var(--accent); letter-spacing: 1px; margin-bottom: 12px; display: block; }
+        .section-title { font-size: 36px; margin-bottom: 20px; }
+        .section-text { font-size: 18px; color: var(--text-muted); margin-bottom: 24px; }
+
+        /* Botones Principales */
+        .btn-primary { 
+            display: inline-block; background-color: var(--accent); color: #FFFFFF; padding: 14px 24px; 
+            border-radius: 6px; font-weight: 500; text-align: center; border: none; cursor: pointer; 
+            transition: transform 0.2s ease, background-color 0.2s ease; 
+        }
+        .btn-primary:hover { opacity: 0.9; color: #fff;}
+        .btn-primary:active { transform: scale(0.98); }
+
+        /* Modal Login (Oculto) */
+        #login-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6);
+            display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s;
+        }
+        #login-modal.active { opacity: 1; pointer-events: auto; }
+        .login-box { 
+            background: #fff; padding: 32px; border-radius: 12px; border: 1px solid var(--border); 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15); max-width: 400px; width: 90%; position: relative;
+        }
+        .close-btn { position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text-muted); }
+        input[type="password"] { width: 100%; padding: 12px 16px; font-size: 16px; border: 1px solid var(--border); border-radius: 6px; margin-bottom: 16px; box-sizing: border-box; }
+        #errorMsg { color: #D93025; font-size: 14px; display: none; margin-top: 12px;}
+        
+        .hidden { display: none !important; }
+        .fade-in { animation: fadeIn 0.4s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Media Queries Desktop */
+        @media(min-width: 768px) {
+            .desktop-menu { display: flex; }
+            section { padding: 120px 24px; }
+            .hero-section { min-height: 85vh; padding: 120px 24px; }
+            .grid-2 { grid-template-columns: 1fr 1fr; gap: 80px; }
+            .img-right .text-content { order: 1; }
+            .img-right .img-content { order: 2; }
+            .img-left .text-content { order: 2; }
+            .img-left .img-content { order: 1; }
+            .section-title { font-size: 44px; }
+        }
+        @media(max-width: 767px) {
+             .hero-content h1 { font-size: 42px; }
+             .hero-content p { font-size: 18px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="main-nav">
+        <div class="logo-container">
+            <img src="assets/logo.svg" alt="Icono" onerror="this.style.display='none'">
+            El Otro Huerto.
+        </div>
+        <nav class="desktop-menu">
+            <a href="#cosecha" class="nav-link">Mercado Rural</a>
+            <a href="#aula" class="nav-link">Colegios</a>
+            <a href="#familias" class="nav-link">Familias</a>
+            <a href="#historia" class="nav-link">Historia</a>
+            <a href="https://wa.me/56958799778?text=Hola%20Jorge,%20me%20gustaría%20saber%20qué%20cosecha%20tienen%20disponible%20esta%20semana" class="nav-cta-btn" target="_blank">Comprar Cosecha</a>
+        </nav>
+        <a href="https://wa.me/56958799778?text=Hola%20Jorge,%20me%20gustaría%20saber%20qué%20cosecha%20tienen%20disponible%20esta%20semana" class="nav-cta-btn" style="display: block;" id="mobile-login-btn" target="_blank">Comprar Cosecha</a>
+    </header>
+
+    <main>
+        <div id="public-view" class="fade-in">
+            
+            <section class="hero-section">
+                <div class="hero-overlay"></div>
+                <div class="container hero-content">
+                    <h1>
+                        <span style="display: block; font-size: 18px; font-family: 'Inter', sans-serif; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: #EAEAEA; margin-bottom: 12px; text-shadow: none;">Refugio Agrícola en Paine</span>
+                        Cultivar lo humano.
+                    </h1>
+                    <p class="section-text">Un espacio que conecta a las personas con la tierra a través de membresías familiares, aula abierta para colegios y un mercado rural agroecológico.</p>
+                </div>
+            </section>
+
+            <section id="cosecha" class="alt-bg img-right">
+                <div class="container grid-2">
+                    <div class="text-content">
+                        <span class="tag">Mercado Rural</span>
+                        <h2 class="section-title">Lo que nos da la tierra, directo a la Plaza Las Lilas.</h2>
+                        <p class="section-text">No somos un supermercado. Respetamos los tiempos de la tierra, por lo que nuestras cosechas son por temporada, limitadas, agroecológicas y honestas.</p>
+                        <p class="section-text">Actualmente estamos cosechando <strong>papa astrid y zapallos guarda de Paine y tromboncinos</strong>, de semillas antiguas y libres de químicos producidas por Luis Miranda en Paine.</p>
+                        <p class="section-text">Vendemos directo a vecinos y tiendas de especialidad en Providencia (Barrio Las Lilas).</p>
+                        
+                        <div style="margin-top: 32px;">
+                            <a href="https://wa.me/56958799778?text=Hola%20Jorge,%20me%20gustaría%20saber%20qué%20cosecha%20tienen%20disponible%20esta%20semana" class="btn-primary" target="_blank">Consultar stock (WhatsApp)</a>
+                        </div>
+                    </div>
+                    
+                    <div class="img-content">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                            <img src="assets/papa_astrid.jpg" alt="Papa Astrid" class="section-img" style="grid-column: span 2; height: 300px; margin-bottom: 0;">
+                            <img src="assets/zapallo_guarda.jpg" alt="Zapallo Guarda" class="section-img" style="height: 220px; margin-bottom: 0;">
+                            <img src="assets/zapallo_tromboncino.jpg" alt="Zapallo Tromboncino" class="section-img" style="height: 220px; margin-bottom: 0;">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="aula" class="img-left">
+                <div class="container grid-2">
+                    <div class="img-content">
+                         <img src="assets/colegio_escucha.jpg" alt="Niños escuchando indicaciones del huerto" class="section-img">
+                    </div>
+                    <div class="text-content">
+                        <span class="tag">Colegios & Educación</span>
+                        <h2 class="section-title">La sala de clases con el techo más alto del mundo.</h2>
+                        <p class="section-text">El Otro Huerto está a disposición de proyectos educativos que comprenden que hay cosas que no se aprenden en una pizarra, y que los ritmos naturales son importantes para el aprendizaje.</p>
+                        <ul class="section-text" style="padding-left: 20px;">
+                            <li style="margin-bottom: 12px;"><strong>El Ciclo del Trigo (3ero Básicos Waldorf):</strong> Desde arar la tierra y sembrar, hasta cosechar y hacer el pan en tu colegio o en nuestro horno de barro.</li>
+                            <li><strong>Ciclos de Convivencia Escolar:</strong> Jornadas diseñadas para sanar dinámicas de grupo y cultivar la empatía ensuciándose las manos en la tierra.</li>
+                        </ul>
+                        <div style="margin-top: 32px;">
+                            <a href="https://calendar.app.google/c2ZjvUoPj2PMCdky7" class="btn-primary" target="_blank">Agendar reunión (Google Calendar)</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="familias" class="alt-bg img-right">
+                <div class="container grid-2">
+                    <div class="text-content">
+                        <span class="tag">Membresía para Familias (Cupos Limitados)</span>
+                        <h2 class="section-title">Tu refugio de fin de semana, sin <span style="text-decoration: line-through; text-decoration-color: var(--text-muted); text-decoration-thickness: 2px; opacity: 0.8;">el cacho de</span> mantenerlo.</h2>
+                        <p class="section-text">La ciudad agota y mantener una parcela requiere tiempo, energía, y plata. Por eso decidimos abrir nuestra parcela a un número limitado de familias afines. El trato es simple:</p>
+                        
+                        <ul class="section-text" style="padding-left: 20px; list-style-type: disc;">
+                            <li style="margin-bottom: 8px;"><strong>Nosotros mantenemos:</strong> El huerto, podamos los frutales, cortamos el pasto, mantenemos la cocina, el quincho y la piscina impecables.</li>
+                            <li style="margin-bottom: 8px;"><strong>Tú llegas y descansas:</strong> Usas toda la infraestructura, cosechas lo que da la tierra, y compartes.</li>
+                        </ul>
+                        
+                        <div style="margin-top: 32px;">
+                            <a href="https://wa.me/56958799778?text=Hola%20Jorge,%20estaba%20viendo%20la%20web%20de%20El%20Otro%20Huerto%20y%20me%20encant%C3%B3%20la%20idea%20de%20la%20membres%C3%ADa%20para%20familias.%20%C2%BFMe%20podr%C3%ADas%20contar%20si%20les%20quedan%20cupos%20para%20el%20piloto?" class="btn-primary" target="_blank">Solicitar Invitación (WhatsApp)</a>
+                        </div>
+                    </div>
+                    
+                    <div class="img-content">
+                        <img src="assets/familias.jpg" alt="Familias compartiendo en El Otro Huerto" class="section-img">
+                    </div>
+                </div>
+            </section>
+
+            <section id="historia" class="img-left">
+                <div class="container grid-2">
+                    <div class="img-content">
+                        <img src="assets/historia.jpg" alt="Historia de Jorge en el huerto" class="section-img">
+                    </div>
+                    <div class="text-content">
+                        <span class="tag">Nuestra Historia</span>
+                        <h2 class="section-title">De la tecnología a la tierra.</h2>
+                        <p class="section-text">Soy Jorge. Trabajé desde los 22 hasta los 30 años en el mundo corporativo (IBM y Oracle). Siempre supe que me tomaría un año para viajar, pero jamás pensé que sería para emprender.</p>
+                        <p class="section-text">El 2013 dejé ese mundo, armé la mochila y, tras varios viajes, me fui a vivir a una parcela en El Vínculo, Paine. Ahí nació Quillagua. Durante 11 years construí un puente entre pequeños productores locales y corporaciones (como Synopsys, Mercado Libre y Nestlé), llevando el campo a las personas en sus lugares de trabajo. Fue ahí donde aprendí de las personas, del campo y comprendí el valor de la historia detrás de los alimentos que consumimos.</p>
+                        <p class="section-text">Hace poco volvimos a la ciudad como familia, buscando la educación Waldorf para nuestros hijos. Al llegar, descubrimos que esa necesidad vital de ensuciarse las manos, ver crecer una semilla y bajar los ritmos no era solo nuestra; es una urgencia compartida en Santiago. Así nace El Otro Huerto.</p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <div id="login-modal">
+            <div class="login-box">
+                <button class="close-btn" onclick="closeLogin()">×</button>
+                <h3 style="font-size: 20px; margin-bottom: 8px;">Portal Familias</h3>
+                <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px;">Ingresa tu clave de membresía para acceder a la logística y reservas.</p>
+                <input type="password" id="passInput" placeholder="Tu clave">
+                <button class="btn-primary" style="width: 100%;" onclick="checkPassword()">Entrar</button>
+                <p id="errorMsg">Clave incorrecta. Vuelve a intentarlo.</p>
+            </div>
+        </div>
+
+        <div id="private-view" class="container hidden fade-in" style="padding-top: 60px; padding-bottom: 100px;">
+             <div style="max-width: 800px; margin: 0 auto;">
+                <button onclick="logout()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:14px; margin-bottom:20px; text-decoration:underline;">← Volver al sitio público</button>
+                
+                <span class="tag">Dashboard Familias</span>
+                <h1 style="font-size: 42px; margin-bottom: 16px;">Qué bueno verte por aquí.</h1>
+                <p style="font-size: 20px; color: var(--text-muted);">Bienvenido al espacio exclusivo para la tribu. Aquí está la logística y cómo funciona esto por dentro.</p>
+                
+                <hr style="margin: 40px 0; border: none; border-top: 1px solid var(--border);">
+                
+                <h3>Nuestra Infraestructura</h3>
+                <p>El Vínculo, Paine. A menos de 60 minutos de Santiago.</p>
+                <ul>
+                    <li><strong>Parque y Piscina:</strong> Piscina de 15x5 mts, uso libre.</li>
+                    <li><strong>Quincho y Fuego:</strong> Quincho full equipado con horno de barro.</li>
+                    <li><strong>Alojamiento:</strong> Opción de alojar un finde cada tres meses en sala acondicionada.</li>
+                </ul>
+                
+                <figure style="margin: 40px 0;">
+                    <img src="assets/quincho.jpg" alt="Quincho en El Vínculo" style="width:100%; border-radius:8px;">
+                </figure>
+                
+                <h3>Modelo de suscripción</h3>
+                <div style="background: #F4F4F4; padding: 24px; border-radius: 8px; margin-bottom: 40px;">
+                    <ul style="margin-bottom: 0;">
+                        <li><strong>Fee Mensual:</strong> $158.000 por familia (acceso ilimitado fines de semana).</li>
+                        <li><strong>Incorporación:</strong> $0 para las primeras 7 familias. $50.000 para las siguientes.</li>
+                    </ul>
+                </div>
+                
+                <a href="https://wa.me/56958799778?text=Hola%20Jorge.%20Quiero%20avisar%20que%20iremos%20al%20huerto%20este%20fin%20de%20semana" class="btn-primary" target="_blank">Avisar que vamos (WhatsApp)</a>
+            </div>
+        </div>
+    </main>
+
+    <footer style="background-color: var(--text-main); color: #FDFCFB; padding: 60px 24px; text-align: center;">
+        <div style="max-width: 600px; margin: 0 auto;">
+            <h3 style="color: #FFFFFF; margin-bottom: 16px;">El Otro Huerto.</h3>
+            <p style="color: #A0A0A0; font-size: 15px; margin-bottom: 32px;">
+                Un proyecto creado por Jorge Munoz.<br>
+                Ubicados en El Vínculo, Paine. Región Metropolitana.
+            </p>
+            
+            <div style="display: flex; justify-content: center; gap: 24px; margin-bottom: 40px; font-size: 14px;">
+                <a href="https://andeschain.io" target="_blank" style="color: #A0A0A0; text-decoration: underline;">Tecnología AndesChain</a>
+                <a href="https://linkedin.com/in/jorgemunozar" target="_blank" style="color: #A0A0A0; text-decoration: underline;">LinkedIn</a>
+                <a href="membresia/index.html" style="color: #A0A0A0; text-decoration: underline;">Invitación Familias</a>
+            </div>
+
+            <p style="color: #515154; font-size: 12px;">
+                &copy; 2026 El Otro Huerto. Todos los derechos reservados.<br>
+                Cultivando lo humano desde 2014 (Ex-Quillagua).
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        if(window.innerWidth >= 768) { document.getElementById('mobile-login-btn').style.display = 'none'; }
+        
+        /* Funciones Modal Login */
+        function openLogin() {
+            document.getElementById("login-modal").classList.add("active");
+            setTimeout(() => document.getElementById("passInput").focus(), 100);
+        }
+        
+        function closeLogin() {
+            document.getElementById("login-modal").classList.remove("active");
+            document.getElementById("errorMsg").style.display = "none";
+            document.getElementById("passInput").value = "";
+        }
+
+        const OBFUSCATED_HASH = "6874786a686d663735373b"; 
+
+        function hashInput(str) { 
+            return Array.from(str).map(char => (char.charCodeAt(0) + 5).toString(16)).join(''); 
+        }
+
+        function checkPassword() {
+            const input = document.getElementById("passInput").value.trim().toLowerCase();
+            if(hashInput(input) === OBFUSCATED_HASH) {
+                closeLogin();
+                document.getElementById("public-view").classList.add("hidden");
+                document.getElementById("private-view").classList.remove("hidden");
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                document.getElementById("errorMsg").style.display = "block";
+            }
+        }
+
+        function logout() {
+            document.getElementById("private-view").classList.add("hidden");
+            document.getElementById("public-view").classList.remove("hidden");
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        document.getElementById("passInput").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") { event.preventDefault(); checkPassword(); }
+        });
+    </script>
+</body>
+</html>
