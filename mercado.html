@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Mercado Rural | El Otro Huerto</title>
     
+    <meta property="og:title" content="Mercado Rural | El Otro Huerto 🧺">
+    <meta property="og:description" content="Cosecha agroecológica directa desde Paine a Plaza Las Lilas. Papas nativas, zapallos de guarda y más. ¡Reserva tu canasta aquí!">
+    <meta property="og:image" content="https://elotrohuerto.cl/assets/papa_astrid.jpg"> 
+    <meta property="og:url" content="https://elotrohuerto.cl/mercado">
+    <meta property="og:type" content="website">
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600&display=swap" rel="stylesheet">
     
     <style>
@@ -19,11 +25,12 @@
 
         body { 
             font-family: 'Inter', sans-serif; background-color: var(--bg-page); color: var(--text-main); 
-            margin: 0; padding: 0; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+            margin: 0; padding: 0; -webkit-font-smoothing: antialiased; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh;
         }
 
         *, *:before, *:after { box-sizing: border-box; }
         h1, h2, h3 { font-family: 'Lora', serif; margin-top: 0; color: var(--text-main); }
+        main { flex-grow: 1; }
         
         /* HEADER NAVEGACIÓN */
         header {
@@ -33,6 +40,7 @@
         }
         .logo-container { display: flex; align-items: center; gap: 12px; font-family: 'Lora', serif; font-weight: 600; font-size: 20px; text-decoration: none; color: var(--text-main);}
         .logo-container img { height: 28px; width: auto; }
+        .logo-muted { font-weight: 400; color: var(--text-muted); font-size: 18px; }
         
         .cart-btn {
             background: none; border: none; cursor: pointer; position: relative;
@@ -55,20 +63,28 @@
         }
         .card {
             background: #fff; border: 1px solid var(--border); border-radius: 16px; 
-            overflow: hidden; transition: transform 0.2s, box-shadow 0.2s;
+            overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column;
         }
         .card:hover { transform: translateY(-4px); box-shadow: 0 16px 32px rgba(0,0,0,0.06); }
         .card-img { width: 100%; height: 220px; object-fit: cover; background-color: var(--bg-alt); }
-        .card-body { padding: 24px; display: flex; flex-direction: column; height: calc(100% - 220px); }
-        .card-tag { font-size: 12px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+        .card-body { padding: 24px; display: flex; flex-direction: column; flex-grow: 1; }
+        .card-tag { font-size: 12px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; display: inline-block;}
         .card-title { font-size: 22px; margin-bottom: 8px; }
-        .card-desc { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.5; flex-grow: 1; }
+        .card-desc { font-size: 14px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.5; }
+        
+        /* Enlace AndesChain Trazabilidad */
+        .trace-link {
+            display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--accent);
+            text-decoration: none; font-weight: 600; margin-bottom: 24px; background: var(--bg-alt); padding: 6px 12px; border-radius: 16px; align-self: flex-start; transition: opacity 0.2s;
+        }
+        .trace-link:hover { opacity: 0.8; }
+        .trace-link svg { width: 14px; height: 14px; }
         
         .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 16px; margin-top: auto;}
         .price { font-size: 18px; font-weight: 600; color: var(--text-main); }
         .btn-add {
             background: var(--bg-alt); color: var(--accent); border: none; padding: 8px 16px; 
-            border-radius: 20px; font-weight: 600; font-size: 14px; cursor: pointer; transition: background 0.2s;
+            border-radius: 20px; font-weight: 600; font-size: 14px; cursor: pointer; transition: background 0.2s; -webkit-appearance: none;
         }
         .btn-add:hover { background: var(--accent); color: #fff; }
 
@@ -92,7 +108,6 @@
         
         .drawer-body { padding: 24px; overflow-y: auto; flex-grow: 1; }
         
-        /* Items del Carrito */
         .cart-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px dashed var(--border); }
         .item-info h4 { margin: 0 0 4px 0; font-size: 15px; font-family: 'Inter', sans-serif;}
         .item-info p { margin: 0; font-size: 13px; color: var(--text-muted); }
@@ -102,11 +117,11 @@
         /* Formulario Logística */
         .form-section { margin-top: 32px; }
         .form-section h3 { font-size: 18px; margin-bottom: 16px; font-family: 'Inter', sans-serif; }
-        input[type="text"], input[type="email"] {
-            width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 12px; font-size: 15px; background: #FAFAFA;
+        input[type="text"], input[type="email"], select {
+            width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 12px; font-size: 15px; background: #FAFAFA; -webkit-appearance: none;
         }
+        input:focus, select:focus { outline: none; border-color: var(--accent); background: #fff;}
         
-        /* Radio Buttons Custom */
         .radio-group { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
         .radio-card {
             border: 1px solid var(--border); border-radius: 8px; padding: 16px; cursor: pointer; transition: 0.2s; position: relative;
@@ -116,21 +131,32 @@
         .radio-title { font-weight: 600; font-size: 15px; margin-bottom: 4px; display: block;}
         .radio-desc { font-size: 13px; color: var(--text-muted); margin: 0; line-height: 1.4; }
 
+        /* Opciones de Cafetería Ocultas por defecto */
+        #cafeOptions {
+            display: none; padding: 16px; background: #fff; border: 1px solid var(--accent); border-top: none; 
+            border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; margin-top: -8px;
+        }
+
         .drawer-footer { padding: 24px; border-top: 1px solid var(--border); background: #fff; }
         .total-row { display: flex; justify-content: space-between; font-size: 18px; font-weight: 600; margin-bottom: 16px; }
         .btn-checkout {
             width: 100%; background: var(--accent); color: #fff; border: none; padding: 16px; 
-            border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.2s;
+            border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.2s; -webkit-appearance: none;
         }
         .btn-checkout:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        /* Vacio State */
         .empty-cart { text-align: center; color: var(--text-muted); padding: 40px 0; display: none; }
         .empty-cart.active { display: block; }
 
+        /* FOOTER SIMPLIFICADO */
+        footer { background-color: var(--text-main); color: #FDFCFB; padding: 40px 24px; text-align: center; margin-top: auto; }
+        footer h3 { color: #FFFFFF; margin-bottom: 12px; font-size: 20px; }
+        footer p { color: #A0A0A0; font-size: 14px; margin-bottom: 24px; line-height: 1.6; }
+        footer a { color: #A0A0A0; text-decoration: underline; font-size: 13px; }
+
         @media(max-width: 767px) {
             .hero h1 { font-size: 32px; }
-            .grid { grid-template-columns: 1fr; padding: 0 16px 80px; }
+            .grid { grid-template-columns: 1fr; padding: 0 16px 60px; }
             .drawer { width: 100%; right: -100%; }
         }
     </style>
@@ -140,7 +166,7 @@
     <header>
         <a href="index.html" class="logo-container">
             <img src="assets/logo.svg" alt="Icono" onerror="this.style.display='none'">
-            El Otro Huerto.
+            El Otro Huerto <span class="logo-muted">| Mercado</span>
         </a>
         <button class="cart-btn" onclick="toggleDrawer()">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
@@ -161,6 +187,12 @@
                     <span class="card-tag">Temporada Alta</span>
                     <h2 class="card-title">Papas Astrid (Malla 2kg)</h2>
                     <p class="card-desc">Cosechadas en nuestra parcela. La semilla original proviene de la familia Alburquenque de Paine. Perfectas para asar o puré rústico.</p>
+                    
+                    <a href="https://andeschain.io" target="_blank" class="trace-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        Origen certificado
+                    </a>
+
                     <div class="card-footer">
                         <span class="price">$3.500</span>
                         <button class="btn-add" onclick="addToCart('papas', 'Papas Astrid (2kg)', 3500)">Agregar +</button>
@@ -174,6 +206,12 @@
                     <span class="card-tag">Semilla Antigua</span>
                     <h2 class="card-title">Zapallo Guarda de Paine</h2>
                     <p class="card-desc">Almácigos traídos de Luis Miranda y cultivados en nuestra tierra. Una textura dulce y densa, ideal para sopas de otoño.</p>
+                    
+                    <a href="https://andeschain.io" target="_blank" class="trace-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        Origen certificado
+                    </a>
+
                     <div class="card-footer">
                         <span class="price">$4.000 <span style="font-size:12px; color:#515154; font-weight:normal;">/un</span></span>
                         <button class="btn-add" onclick="addToCart('zapallo_g', 'Zapallo Guarda (Unidad)', 4000)">Agregar +</button>
@@ -186,7 +224,13 @@
                 <div class="card-body">
                     <span class="card-tag">Edición Especial</span>
                     <h2 class="card-title">Zapallo Tromboncino</h2>
-                    <p class="card-desc">Cultivado en El Otro Huerto (almácigos de Luis Miranda). Un zapallo de forma única, carne firme y sabor suave a nuez. Quedan pocas unidades.</p>
+                    <p class="card-desc">Cultivado en El Otro Huerto (almácigos de Luis Miranda). Un zapallo de forma única, carne firme y sabor suave a nuez. Quedan pocos.</p>
+                    
+                    <a href="https://andeschain.io" target="_blank" class="trace-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        Origen certificado
+                    </a>
+
                     <div class="card-footer">
                         <span class="price">$3.800 <span style="font-size:12px; color:#515154; font-weight:normal;">/un</span></span>
                         <button class="btn-add" onclick="addToCart('zapallo_t', 'Zapallo Tromboncino (Unidad)', 3800)">Agregar +</button>
@@ -195,6 +239,17 @@
             </div>
         </section>
     </main>
+
+    <footer>
+        <div style="max-width: 600px; margin: 0 auto;">
+            <h3>El Otro Huerto | Mercado</h3>
+            <p>Cosechas limitadas, agroecológicas y honestas.<br>De Paine a Providencia.</p>
+            <div style="display: flex; justify-content: center; gap: 24px;">
+                <a href="index.html">Volver al sitio principal</a>
+                <a href="https://wa.me/56958799778" target="_blank">Contacto WhatsApp</a>
+            </div>
+        </div>
+    </footer>
 
     <div class="overlay" id="overlay" onclick="toggleDrawer()"></div>
     <div class="drawer" id="drawer">
@@ -208,28 +263,42 @@
                 <p>Tu canasta está vacía por ahora. 🌱</p>
             </div>
             
-            <div id="cartItemsContainer">
-                </div>
+            <div id="cartItemsContainer"></div>
 
             <div class="form-section" id="checkoutForm" style="display: none;">
                 <h3>Tus Datos</h3>
                 <input type="text" id="custName" placeholder="Nombre completo" required>
                 <input type="email" id="custEmail" placeholder="Correo electrónico" required>
                 <input type="text" id="custPhone" placeholder="WhatsApp (Ej: +569...)" required>
+                <input type="text" id="custAddress" placeholder="Dirección (Nos ayuda a planear rutas a futuro)">
 
-                <h3>¿Cómo quieres recibirlo?</h3>
+                <h3 style="margin-top: 24px;">¿Cómo quieres recibirlo?</h3>
                 <div class="radio-group">
-                    <label class="radio-card selected" onclick="selectRadio(this)">
+                    <label class="radio-card selected" onclick="selectDelivery('plaza', this)">
                         <input type="radio" name="delivery" value="plaza" checked>
                         <span class="radio-title">📍 Plaza Las Lilas (Sábado)</span>
                         <p class="radio-desc">Retiro presencial este sábado de 10:00 a 13:00 hrs. Búscanos en la camioneta.</p>
                     </label>
                     
-                    <label class="radio-card" onclick="selectRadio(this)">
+                    <label class="radio-card" onclick="selectDelivery('cafe', this)" style="border-bottom-left-radius: 0; border-bottom-right-radius: 0;">
                         <input type="radio" name="delivery" value="cafe">
-                        <span class="radio-title">☕ Punto Vecino (Cafetería)</span>
-                        <p class="radio-desc">Retira durante la semana en [Nombre de Café en Providencia]. Te avisaremos por WhatsApp.</p>
+                        <span class="radio-title">☕ Punto Vecino (Cafetería aliada)</span>
+                        <p class="radio-desc">Busca el sello de El Otro Huerto y retira tu canasta en el local más cercano a tu casa.</p>
                     </label>
+                    
+                    <div id="cafeOptions">
+                        <label style="font-size: 13px; color: var(--text-muted); display: block; margin-bottom: 8px;">Elige tu punto de retiro:</label>
+                        <select id="selectedCafe">
+                            <option value="">-- Selecciona una cafetería cercana --</option>
+                            <option value="Café del Lector (Plaza Las Lilas)">Café del Lector (Plaza Las Lilas)</option>
+                            <option value="Bloom Café (Eliodoro Yáñez)">Bloom Café (Eliodoro Yáñez)</option>
+                            <option value="Colmado Coffee (Pocuro)">Colmado Coffee (Pocuro)</option>
+                            <option value="Félix Café (Carlos Antúnez)">Félix Café (Carlos Antúnez)</option>
+                            <option value="Café de la Candelaria (Bilbao)">Café de la Candelaria (Av. Bilbao)</option>
+                            <option value="Rendibú (Los Leones)">Rendibú (Av. Los Leones)</option>
+                            <option value="Singular Coffee (Suecia)">Singular Coffee (Suecia)</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
@@ -244,7 +313,7 @@
     </div>
 
     <script>
-        // ESTADO DEL CARRITO (Lógica Javascript)
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycb...TU_URL_AQUI.../exec';
         let cart = {};
 
         function toggleDrawer() {
@@ -253,25 +322,16 @@
         }
 
         function addToCart(id, name, price) {
-            if(cart[id]) {
-                cart[id].qty += 1;
-            } else {
-                cart[id] = { name: name, price: price, qty: 1 };
-            }
+            if(cart[id]) { cart[id].qty += 1; } 
+            else { cart[id] = { name: name, price: price, qty: 1 }; }
             updateCartUI();
-            
-            // Abre el carrito automáticamente al agregar un producto
-            if(!document.getElementById('drawer').classList.contains('open')) {
-                toggleDrawer();
-            }
+            if(!document.getElementById('drawer').classList.contains('open')) { toggleDrawer(); }
         }
 
         function updateQty(id, change) {
             if(cart[id]) {
                 cart[id].qty += change;
-                if(cart[id].qty <= 0) {
-                    delete cart[id];
-                }
+                if(cart[id].qty <= 0) { delete cart[id]; }
                 updateCartUI();
             }
         }
@@ -284,21 +344,15 @@
             const badge = document.getElementById('cartCount');
             
             container.innerHTML = '';
-            let total = 0;
-            let totalItems = 0;
-
+            let total = 0; let totalItems = 0;
             const keys = Object.keys(cart);
 
             if(keys.length === 0) {
-                emptyState.classList.add('active');
-                formState.style.display = 'none';
-                btnPagar.disabled = true;
-                badge.style.display = 'none';
+                emptyState.classList.add('active'); formState.style.display = 'none';
+                btnPagar.disabled = true; badge.style.display = 'none';
             } else {
-                emptyState.classList.remove('active');
-                formState.style.display = 'block';
-                btnPagar.disabled = false;
-                badge.style.display = 'block';
+                emptyState.classList.remove('active'); formState.style.display = 'block';
+                btnPagar.disabled = false; badge.style.display = 'block';
 
                 keys.forEach(id => {
                     const item = cart[id];
@@ -325,34 +379,90 @@
             badge.innerText = totalItems;
         }
 
-        // Lógica visual para los Radio Buttons
-        function selectRadio(element) {
+        // NUEVA LÓGICA: Mostrar/Ocultar menú de cafeterías
+        function selectDelivery(type, element) {
             document.querySelectorAll('.radio-card').forEach(el => el.classList.remove('selected'));
             element.classList.add('selected');
             element.querySelector('input').checked = true;
+            
+            const cafeOptions = document.getElementById('cafeOptions');
+            if(type === 'cafe') {
+                cafeOptions.style.display = 'block';
+            } else {
+                cafeOptions.style.display = 'none';
+                document.getElementById('selectedCafe').value = ''; // Resetear selección
+            }
         }
 
-        // Función "Simulada" de envío (La conectaremos a Google Sheets en la Fase B)
-        function procesarPedido() {
+        async function procesarPedido() {
             const btn = document.getElementById('btnPagar');
-            const name = document.getElementById('custName').value;
-            const email = document.getElementById('custEmail').value;
+            const name = document.getElementById('custName').value.trim();
+            const email = document.getElementById('custEmail').value.trim();
+            const phone = document.getElementById('custPhone').value.trim();
+            const address = document.getElementById('custAddress').value.trim();
             
-            if(!name || !email) {
-                alert("Por favor completa tus datos básicos (Nombre y Correo) antes de pagar.");
+            if(!name || !email || !phone) {
+                alert("Por favor completa tus datos básicos (Nombre, Email y WhatsApp).");
                 return;
             }
 
-            btn.innerHTML = "Procesando...";
-            btn.disabled = true;
+            const deliveryType = document.querySelector('input[name="delivery"]:checked').value;
+            let logisticaFinal = "Plaza Las Lilas";
 
-            // Aquí irá el código para enviar los datos a tu Google Sheet (Fase B).
-            // Por ahora, simulamos un tiempo de carga y un mensaje de éxito.
-            setTimeout(() => {
-                alert("¡Arquitectura lista! En la próxima fase conectaremos este botón a Google Sheets para guardar el pedido y luego a Mercado Pago para el cobro.");
-                btn.innerHTML = "Completar Pedido";
-                btn.disabled = false;
-            }, 1500);
+            // Validar que eligió una cafetería si seleccionó esa opción
+            if(deliveryType === 'cafe') {
+                const cafeElegido = document.getElementById('selectedCafe').value;
+                if(!cafeElegido) {
+                    alert("Por favor, selecciona en qué cafetería aliada quieres retirar tu pedido.");
+                    return;
+                }
+                logisticaFinal = "Retiro en: " + cafeElegido;
+            }
+
+            let resumenPedido = ""; let totalAPagar = 0;
+            Object.keys(cart).forEach(id => {
+                const item = cart[id];
+                resumenPedido += `${item.qty}x ${item.name} | `;
+                totalAPagar += (item.price * item.qty);
+            });
+
+            const payload = {
+                nombre: name,
+                email: email,
+                telefono: phone,
+                direccion: address || "No indicada",
+                logistica: logisticaFinal,
+                total: totalAPagar,
+                detalle: resumenPedido
+            };
+
+            btn.innerHTML = "Generando pedido..."; btn.disabled = true;
+
+            try {
+                // AVISO: Descomentar esto en la Fase B
+                // await fetch(GOOGLE_SCRIPT_URL, {
+                //     method: 'POST', mode: 'no-cors', 
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: JSON.stringify(payload)
+                // });
+
+                setTimeout(() => {
+                    alert("¡Pedido guardado con éxito! Ahora te contactaremos por WhatsApp para el pago.");
+                    
+                    cart = {}; updateCartUI(); toggleDrawer();
+                    document.getElementById('custName').value = '';
+                    document.getElementById('custEmail').value = '';
+                    document.getElementById('custPhone').value = '';
+                    document.getElementById('custAddress').value = '';
+                    // Resetear delivery a plaza
+                    selectDelivery('plaza', document.querySelector('label[onclick="selectDelivery(\'plaza\', this)"]'));
+                    btn.innerHTML = "Completar Pedido";
+                }, 1500);
+
+            } catch (error) {
+                alert("Hubo un problema. Por favor intenta de nuevo.");
+                btn.innerHTML = "Completar Pedido"; btn.disabled = false;
+            }
         }
     </script>
 </body>
