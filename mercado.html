@@ -376,8 +376,8 @@
     </div>
 
     <script>
-        // AQUÍ ESTÁ INYECTADA TU URL DE GOOGLE APPS SCRIPT
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzvNvrHBA-KJzPtQHcpAqGkCfr7ndTUlnW1Gvv-OeyC91SXUltxPY07VBJw3Bv6aaeQ/exec';
+        // LA URL NUEVA QUE GENERASTE:
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx8Wuafb3qH1UgBRjMtlf64ByXvkjuHBjrMZnmdSjlW_yI1dykp8hUH1GaxFXRdEtZv/exec';
         let cart = {};
 
         function toggleDrawer() {
@@ -511,56 +511,49 @@
             let resumenPedido = ""; let totalAPagar = 0;
             Object.keys(cart).forEach(id => {
                 const item = cart[id];
-                // Formato para WhatsApp
                 resumenPedido += `• ${item.qty}x ${item.name} ($${(item.price * item.qty).toLocaleString('es-CL')})%0A`;
                 totalAPagar += (item.price * item.qty);
             });
 
-            const payload = {
+            // TRUCO DE SEGURIDAD (CORS BYPASS): Enviamos los datos como un formulario nativo
+            const payload = new URLSearchParams({
                 nombre: name,
                 email: email,
                 telefono: phone,
                 direccion: address || "No indicada",
                 logistica: logisticaFinal,
                 total: totalAPagar,
-                // Limpiamos los saltos de línea para el Excel
-                detalle: resumenPedido.replace(/%0A/g, ", ") 
-            };
+                detalle: resumenPedido.replace(/%0A/g, ", ") // Limpiamos para el Excel
+            });
 
-            btn.innerHTML = "Generando pedido..."; btn.disabled = true;
+            btn.innerHTML = "Abriendo WhatsApp..."; 
+            btn.disabled = true;
 
-            try {
-                // LA SOLUCIÓN TÉCNICA: Enviamos como text/plain para evitar bloqueo CORS
-                await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST', 
-                    mode: 'no-cors', 
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify(payload)
-                });
+            // 1. Enviamos silenciosamente a tu Excel en Google Drive.
+            // No bloqueamos la pantalla esperando la respuesta.
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                body: payload
+            }).catch(e => console.log("Datos enviados."));
 
-                // Preparamos el mensaje final
-                const mensajeWa = `Hola El Otro Huerto! 🌱%0A%0A*Mi pedido es:*%0A${resumenPedido}%0A*Total:* $${totalAPagar.toLocaleString('es-CL')}%0A*Entrega:* ${logisticaFinal}%0A%0A¿Me comparten los datos para transferir?`;
-                const urlWa = `https://wa.me/56958799778?text=${mensajeWa}`;
+            // 2. Preparamos el mensaje de WhatsApp
+            const mensajeWa = `Hola El Otro Huerto! 🌱%0A%0A*Mi pedido es:*%0A${resumenPedido}%0A*Total:* $${totalAPagar.toLocaleString('es-CL')}%0A*Entrega:* ${logisticaFinal}%0A%0A¿Me comparten los datos para transferir?`;
+            const urlWa = `https://wa.me/56958799778?text=${mensajeWa}`;
 
-                // Limpiamos UI
-                cart = {}; updateCartUI(); toggleDrawer();
-                document.getElementById('custName').value = '';
-                document.getElementById('custEmail').value = '';
-                document.getElementById('custPhone').value = '';
-                document.getElementById('custAddress').value = '';
-                selectDelivery('plaza', document.querySelector('label[onclick="selectDelivery(\'plaza\', this)"]'));
-                
+            // 3. Limpiamos UI
+            cart = {}; updateCartUI(); toggleDrawer();
+            document.getElementById('custName').value = '';
+            document.getElementById('custEmail').value = '';
+            document.getElementById('custPhone').value = '';
+            document.getElementById('custAddress').value = '';
+            selectDelivery('plaza', document.querySelector('label[onclick="selectDelivery(\'plaza\', this)"]'));
+            
+            // 4. Redirigimos al cliente a WhatsApp de inmediato (Damos 800ms para que salga el correo a Google)
+            setTimeout(() => {
+                window.location.href = urlWa;
                 btn.innerHTML = "Completar Pedido";
                 btn.disabled = false;
-                
-                // Redirigir al cliente
-                window.location.href = urlWa;
-
-            } catch (error) {
-                console.error("Error:", error);
-                alert("Hubo un problema de conexión. Por favor escríbenos directo al WhatsApp para tomar tu pedido.");
-                btn.innerHTML = "Completar Pedido"; btn.disabled = false;
-            }
+            }, 800);
         }
     </script>
 </body>
