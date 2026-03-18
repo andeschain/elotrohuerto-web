@@ -376,7 +376,7 @@
     </div>
 
     <script>
-        // AQUÍ ESTÁ INYECTADA TU URL DE GOOGLE APPS SCRIPT:
+        // AQUÍ ESTÁ INYECTADA TU URL DE GOOGLE APPS SCRIPT
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzvNvrHBA-KJzPtQHcpAqGkCfr7ndTUlnW1Gvv-OeyC91SXUltxPY07VBJw3Bv6aaeQ/exec';
         let cart = {};
 
@@ -511,7 +511,7 @@
             let resumenPedido = ""; let totalAPagar = 0;
             Object.keys(cart).forEach(id => {
                 const item = cart[id];
-                // Usamos el formato %0A para saltos de línea en WhatsApp
+                // Formato para WhatsApp
                 resumenPedido += `• ${item.qty}x ${item.name} ($${(item.price * item.qty).toLocaleString('es-CL')})%0A`;
                 totalAPagar += (item.price * item.qty);
             });
@@ -523,40 +523,42 @@
                 direccion: address || "No indicada",
                 logistica: logisticaFinal,
                 total: totalAPagar,
-                detalle: resumenPedido.replace(/%0A/g, ", ") // Limpiamos para el Excel
+                // Limpiamos los saltos de línea para el Excel
+                detalle: resumenPedido.replace(/%0A/g, ", ") 
             };
 
             btn.innerHTML = "Generando pedido..."; btn.disabled = true;
 
             try {
-                // 1. Enviamos silenciosamente a tu Excel en Google Drive
+                // LA SOLUCIÓN TÉCNICA: Enviamos como text/plain para evitar bloqueo CORS
                 await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST', 
                     mode: 'no-cors', 
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify(payload)
                 });
 
-                // 2. Preparamos el mensaje de WhatsApp para el cobro manual
+                // Preparamos el mensaje final
                 const mensajeWa = `Hola El Otro Huerto! 🌱%0A%0A*Mi pedido es:*%0A${resumenPedido}%0A*Total:* $${totalAPagar.toLocaleString('es-CL')}%0A*Entrega:* ${logisticaFinal}%0A%0A¿Me comparten los datos para transferir?`;
                 const urlWa = `https://wa.me/56958799778?text=${mensajeWa}`;
 
-                // 3. Limpiamos y redirigimos
+                // Limpiamos UI
                 cart = {}; updateCartUI(); toggleDrawer();
                 document.getElementById('custName').value = '';
                 document.getElementById('custEmail').value = '';
                 document.getElementById('custPhone').value = '';
                 document.getElementById('custAddress').value = '';
                 selectDelivery('plaza', document.querySelector('label[onclick="selectDelivery(\'plaza\', this)"]'));
+                
                 btn.innerHTML = "Completar Pedido";
                 btn.disabled = false;
                 
-                // Redirigir al cliente a WhatsApp
+                // Redirigir al cliente
                 window.location.href = urlWa;
 
             } catch (error) {
                 console.error("Error:", error);
-                alert("Hubo un pequeño problema al procesar. Por favor escríbenos directo por WhatsApp para tomar tu pedido.");
+                alert("Hubo un problema de conexión. Por favor escríbenos directo al WhatsApp para tomar tu pedido.");
                 btn.innerHTML = "Completar Pedido"; btn.disabled = false;
             }
         }
