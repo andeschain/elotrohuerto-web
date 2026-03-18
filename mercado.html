@@ -38,17 +38,18 @@
             border-bottom: 1px solid var(--border); z-index: 100; padding: 16px 24px;
             display: flex; justify-content: space-between; align-items: center;
         }
-        .logo-container { display: flex; align-items: center; gap: 12px; font-family: 'Lora', serif; font-weight: 600; font-size: 20px; text-decoration: none; color: var(--text-main);}
+        .logo-container { display: flex; align-items: center; gap: 12px; font-family: 'Lora', serif; font-weight: 600; font-size: 20px; text-decoration: none; color: var(--text-main); letter-spacing: -0.5px;}
         .logo-container img { height: 28px; width: auto; }
         .logo-muted { font-weight: 400; color: var(--text-muted); font-size: 18px; }
         
         .cart-btn {
             background: none; border: none; cursor: pointer; position: relative;
-            display: flex; align-items: center; gap: 8px; font-family: 'Inter', sans-serif; font-weight: 600; color: var(--accent);
+            display: flex; align-items: center; gap: 8px; font-family: 'Inter', sans-serif; font-weight: 600; color: var(--accent); padding: 8px;
         }
         .cart-badge {
             background: var(--accent); color: white; font-size: 12px; padding: 2px 6px; 
-            border-radius: 12px; position: absolute; top: -8px; right: -12px; display: none;
+            border-radius: 12px; position: absolute; top: -2px; right: -8px; display: none;
+            border: 2px solid #fff; font-weight: 700;
         }
 
         /* HERO SECTION */
@@ -62,101 +63,125 @@
             gap: 32px; padding: 0 24px 80px; max-width: 1080px; margin: 0 auto;
         }
         .card {
-            background: #fff; border: 1px solid var(--border); border-radius: 16px; 
+            background: #fff; border: 1px solid var(--border); border-radius: 20px; 
             overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column;
         }
         .card:hover { transform: translateY(-4px); box-shadow: 0 16px 32px rgba(0,0,0,0.06); }
-        .card-img { width: 100%; height: 220px; object-fit: cover; background-color: var(--bg-alt); }
+        .card-img { width: 100%; height: 240px; object-fit: cover; background-color: var(--bg-alt); border-bottom: 1px solid var(--border); }
         .card-body { padding: 24px; display: flex; flex-direction: column; flex-grow: 1; }
-        .card-tag { font-size: 12px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; display: inline-block;}
-        .card-title { font-size: 22px; margin-bottom: 8px; }
-        .card-desc { font-size: 14px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.5; }
+        .card-tag { font-size: 12px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; display: inline-block;}
+        .card-title { font-size: 24px; margin-bottom: 8px; letter-spacing: -0.5px;}
+        .card-desc { font-size: 15px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.6; flex-grow: 1;}
         
         /* Enlace AndesChain Trazabilidad */
         .trace-link {
             display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--accent);
-            text-decoration: none; font-weight: 600; margin-bottom: 24px; background: var(--bg-alt); padding: 6px 12px; border-radius: 16px; align-self: flex-start; transition: opacity 0.2s;
+            text-decoration: none; font-weight: 600; margin-bottom: 24px; background: var(--bg-alt); padding: 8px 14px; border-radius: 16px; align-self: flex-start; transition: opacity 0.2s; border: 1px solid rgba(74, 93, 35, 0.1);
         }
-        .trace-link:hover { opacity: 0.8; }
+        .trace-link:hover { opacity: 0.8; background: rgba(74, 93, 35, 0.1); }
         .trace-link svg { width: 14px; height: 14px; }
         
-        .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 16px; margin-top: auto;}
-        .price { font-size: 18px; font-weight: 600; color: var(--text-main); }
+        .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 20px; margin-top: auto;}
+        .price { font-size: 20px; font-weight: 600; color: var(--text-main); }
         .btn-add {
-            background: var(--bg-alt); color: var(--accent); border: none; padding: 8px 16px; 
-            border-radius: 20px; font-weight: 600; font-size: 14px; cursor: pointer; transition: background 0.2s; -webkit-appearance: none;
+            background: var(--text-main); color: #fff; border: none; padding: 12px 20px; 
+            border-radius: 24px; font-weight: 600; font-size: 14px; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; -webkit-appearance: none;
         }
-        .btn-add:hover { background: var(--accent); color: #fff; }
+        .btn-add:hover { transform: translateY(-2px); box-shadow: 0 8px 16px rgba(0,0,0,0.15); }
+        .btn-add:active { transform: translateY(0); box-shadow: none; }
 
         /* DRAWER (CARRITO LATERAL) */
         .overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 999; 
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 999; 
             opacity: 0; visibility: hidden; transition: 0.3s;
         }
         .drawer {
-            position: fixed; top: 0; right: -400px; width: 100%; max-width: 400px; height: 100vh; 
+            position: fixed; top: 0; right: -400px; width: 100%; max-width: 420px; height: 100vh; 
             background: #fff; z-index: 1000; box-shadow: -10px 0 40px rgba(0,0,0,0.1); 
             display: flex; flex-direction: column; transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
         .drawer.open { right: 0; }
         .overlay.open { opacity: 1; visibility: visible; }
         
-        .drawer-header { padding: 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .drawer-header { padding: 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #fff;}
         .drawer-header h2 { font-size: 24px; margin: 0; }
-        .close-drawer { background: none; border: none; font-size: 28px; cursor: pointer; color: var(--text-muted); }
+        .close-drawer { background: var(--bg-alt); border: none; font-size: 24px; cursor: pointer; color: var(--text-main); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;}
         
-        .drawer-body { padding: 24px; overflow-y: auto; flex-grow: 1; }
+        .drawer-body { padding: 24px; overflow-y: auto; flex-grow: 1; padding-bottom: 40px; }
         
         .cart-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px dashed var(--border); }
-        .item-info h4 { margin: 0 0 4px 0; font-size: 15px; font-family: 'Inter', sans-serif;}
-        .item-info p { margin: 0; font-size: 13px; color: var(--text-muted); }
-        .item-controls { display: flex; align-items: center; gap: 12px; }
-        .btn-qty { background: var(--bg-alt); border: none; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; font-weight: bold; color: var(--text-main); }
+        .item-info h4 { margin: 0 0 6px 0; font-size: 15px; font-family: 'Inter', sans-serif;}
+        .item-info p { margin: 0; font-size: 14px; color: var(--text-muted); }
+        .item-controls { display: flex; align-items: center; gap: 14px; background: var(--bg-alt); border-radius: 20px; padding: 4px 8px;}
+        .btn-qty { background: none; border: none; width: 24px; height: 24px; border-radius: 50%; cursor: pointer; font-weight: bold; font-size: 16px; color: var(--text-main); display: flex; justify-content: center; align-items: center;}
         
-        /* Formulario Logística */
+        /* Formulario Logística UX */
         .form-section { margin-top: 32px; }
-        .form-section h3 { font-size: 18px; margin-bottom: 16px; font-family: 'Inter', sans-serif; }
+        .form-section h3 { font-size: 18px; margin-bottom: 16px; font-family: 'Inter', sans-serif; letter-spacing: -0.5px;}
+        /* 16px exactos en font-size previene el Auto-Zoom en iOS */
         input[type="text"], input[type="email"], select {
-            width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 12px; font-size: 15px; background: #FAFAFA; -webkit-appearance: none;
+            width: 100%; padding: 16px; border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; font-size: 16px; background: #FAFAFA; -webkit-appearance: none; font-family: 'Inter', sans-serif;
         }
-        input:focus, select:focus { outline: none; border-color: var(--accent); background: #fff;}
+        input:focus, select:focus { outline: none; border-color: var(--accent); background: #fff; box-shadow: 0 0 0 3px rgba(74, 93, 35, 0.1);}
         
         .radio-group { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
         .radio-card {
-            border: 1px solid var(--border); border-radius: 8px; padding: 16px; cursor: pointer; transition: 0.2s; position: relative;
+            border: 1px solid var(--border); border-radius: 12px; padding: 16px; cursor: pointer; transition: 0.2s; position: relative;
         }
-        .radio-card.selected { border-color: var(--accent); background-color: var(--bg-alt); }
+        .radio-card.selected { border-color: var(--accent); background-color: var(--bg-alt); border-width: 2px; padding: 15px; /* Compensa el borde extra */}
         .radio-card input { position: absolute; opacity: 0; }
-        .radio-title { font-weight: 600; font-size: 15px; margin-bottom: 4px; display: block;}
-        .radio-desc { font-size: 13px; color: var(--text-muted); margin: 0; line-height: 1.4; }
+        .radio-title { font-weight: 600; font-size: 15px; margin-bottom: 6px; display: block;}
+        .radio-desc { font-size: 14px; color: var(--text-muted); margin: 0; line-height: 1.4; }
 
-        /* Opciones de Cafetería Ocultas por defecto */
         #cafeOptions {
-            display: none; padding: 16px; background: #fff; border: 1px solid var(--accent); border-top: none; 
-            border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; margin-top: -8px;
+            display: none; padding: 20px 16px; background: var(--bg-alt); border: 2px solid var(--accent); border-top: none; 
+            border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; margin-top: -12px;
         }
 
-        .drawer-footer { padding: 24px; border-top: 1px solid var(--border); background: #fff; }
-        .total-row { display: flex; justify-content: space-between; font-size: 18px; font-weight: 600; margin-bottom: 16px; }
+        .drawer-footer { padding: 24px; border-top: 1px solid var(--border); background: #fff; position: sticky; bottom: 0; box-shadow: 0 -10px 20px rgba(0,0,0,0.03); z-index: 10;}
+        .total-row { display: flex; justify-content: space-between; font-size: 20px; font-weight: 600; margin-bottom: 20px; }
         .btn-checkout {
-            width: 100%; background: var(--accent); color: #fff; border: none; padding: 16px; 
-            border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.2s; -webkit-appearance: none;
+            width: 100%; background: var(--accent); color: #fff; border: none; padding: 18px; 
+            border-radius: 16px; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform 0.2s; -webkit-appearance: none;
         }
         .btn-checkout:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-checkout:active:not(:disabled) { transform: scale(0.98); }
 
         .empty-cart { text-align: center; color: var(--text-muted); padding: 40px 0; display: none; }
         .empty-cart.active { display: block; }
 
         /* FOOTER SIMPLIFICADO */
-        footer { background-color: var(--text-main); color: #FDFCFB; padding: 40px 24px; text-align: center; margin-top: auto; }
+        footer { background-color: var(--text-main); color: #FDFCFB; padding: 48px 24px; text-align: center; margin-top: auto; }
         footer h3 { color: #FFFFFF; margin-bottom: 12px; font-size: 20px; }
-        footer p { color: #A0A0A0; font-size: 14px; margin-bottom: 24px; line-height: 1.6; }
-        footer a { color: #A0A0A0; text-decoration: underline; font-size: 13px; }
+        footer p { color: #A0A0A0; font-size: 15px; margin-bottom: 32px; line-height: 1.6; }
+        footer a { color: #A0A0A0; text-decoration: underline; font-size: 14px; transition: color 0.2s;}
+        footer a:hover { color: #fff; }
 
+        /* BOTÓN FLOTANTE MÓVIL (Touch-first experience) */
+        .mobile-cart-float {
+            display: none; position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+            width: calc(100% - 48px); max-width: 400px; background: var(--text-main); color: #fff; border: none;
+            padding: 16px 24px; border-radius: 30px; font-size: 16px; font-weight: 600; z-index: 90;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.2); cursor: pointer; align-items: center; justify-content: space-between;
+            font-family: 'Inter', sans-serif; transition: bottom 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .mobile-cart-float.show { display: flex; }
+
+        /* ADAPTACIONES EXTREMAS PARA MÓVIL */
         @media(max-width: 767px) {
-            .hero h1 { font-size: 32px; }
-            .grid { grid-template-columns: 1fr; padding: 0 16px 60px; }
+            header { padding: 12px 20px; }
+            .logo-container { font-size: 18px; }
+            .hero { padding: 40px 20px 20px; }
+            .hero h1 { font-size: 36px; }
+            .grid { grid-template-columns: 1fr; padding: 0 20px 100px; gap: 24px; }
+            .card-img { height: 200px; }
+            
+            /* Optimización de botones para dedos (Touch targets grandes) */
+            .card-footer { flex-direction: column; gap: 16px; align-items: stretch;}
+            .price { text-align: center; }
+            .btn-add { width: 100%; padding: 16px; font-size: 16px; }
+            
             .drawer { width: 100%; right: -100%; }
         }
     </style>
@@ -195,7 +220,7 @@
 
                     <div class="card-footer">
                         <span class="price">$3.500</span>
-                        <button class="btn-add" onclick="addToCart('papas', 'Papas Astrid (2kg)', 3500)">Agregar +</button>
+                        <button class="btn-add" onclick="addToCart('papas', 'Papas Astrid (2kg)', 3500)">Agregar a la canasta</button>
                     </div>
                 </div>
             </div>
@@ -213,8 +238,8 @@
                     </a>
 
                     <div class="card-footer">
-                        <span class="price">$4.000 <span style="font-size:12px; color:#515154; font-weight:normal;">/un</span></span>
-                        <button class="btn-add" onclick="addToCart('zapallo_g', 'Zapallo Guarda (Unidad)', 4000)">Agregar +</button>
+                        <span class="price">$4.000 <span style="font-size:14px; color:#515154; font-weight:normal;">/un</span></span>
+                        <button class="btn-add" onclick="addToCart('zapallo_g', 'Zapallo Guarda (Unidad)', 4000)">Agregar a la canasta</button>
                     </div>
                 </div>
             </div>
@@ -232,13 +257,18 @@
                     </a>
 
                     <div class="card-footer">
-                        <span class="price">$3.800 <span style="font-size:12px; color:#515154; font-weight:normal;">/un</span></span>
-                        <button class="btn-add" onclick="addToCart('zapallo_t', 'Zapallo Tromboncino (Unidad)', 3800)">Agregar +</button>
+                        <span class="price">$3.800 <span style="font-size:14px; color:#515154; font-weight:normal;">/un</span></span>
+                        <button class="btn-add" onclick="addToCart('zapallo_t', 'Zapallo Tromboncino (Unidad)', 3800)">Agregar a la canasta</button>
                     </div>
                 </div>
             </div>
         </section>
     </main>
+
+    <button id="mobileCartBtn" class="mobile-cart-float" onclick="toggleDrawer()">
+        <span>🛒 Ver tu cosecha (<span id="mobileItemCount">0</span>)</span>
+        <span id="mobileCartTotal">$0</span>
+    </button>
 
     <footer>
         <div style="max-width: 600px; margin: 0 auto;">
@@ -260,7 +290,7 @@
         
         <div class="drawer-body">
             <div class="empty-cart active" id="emptyCart">
-                <p>Tu cosecha aún no disponible, agregalos!. 🌱</p>
+                <p>Tu canasta está vacía por ahora. 🌱</p>
             </div>
             
             <div id="cartItemsContainer"></div>
@@ -272,7 +302,7 @@
                 <input type="text" id="custPhone" placeholder="WhatsApp (Ej: +569...)" required>
                 <input type="text" id="custAddress" placeholder="Dirección">
 
-                <h3 style="margin-top: 24px;">¿Cómo quieres recibirlo?</h3>
+                <h3 style="margin-top: 32px;">¿Cómo quieres recibirlo?</h3>
                 <div class="radio-group">
                     <label class="radio-card selected" onclick="selectDelivery('plaza', this)">
                         <input type="radio" name="delivery" value="plaza" checked>
@@ -282,12 +312,12 @@
                     
                     <label class="radio-card" onclick="selectDelivery('cafe', this)" style="border-bottom-left-radius: 0; border-bottom-right-radius: 0;">
                         <input type="radio" name="delivery" value="cafe">
-                        <span class="radio-title">☕ Retiro en tu cafeteria más cercana</span>
+                        <span class="radio-title">☕ Retiro en tu cafetería aliada</span>
                         <p class="radio-desc">Busca el sello de El Otro Huerto y retira tu canasta en el local más próximo a tu depto/casa.</p>
                     </label>
                     
                     <div id="cafeOptions">
-                        <label style="font-size: 13px; color: var(--text-muted); display: block; margin-bottom: 8px;">Elige tu punto de retiro:</label>
+                        <label style="font-size: 14px; font-weight: 500; color: var(--text-main); display: block; margin-bottom: 12px;">Elige tu punto de retiro:</label>
                         <select id="selectedCafe">
                             <option value="">-- Selecciona tu cafetería --</option>
                             <option value="Dolce & Salato">Dolce & Salato</option>
@@ -319,13 +349,26 @@
         function toggleDrawer() {
             document.getElementById('drawer').classList.toggle('open');
             document.getElementById('overlay').classList.toggle('open');
+            
+            // Ocultar el botón flotante si abrimos el drawer
+            const floatBtn = document.getElementById('mobileCartBtn');
+            if(document.getElementById('drawer').classList.contains('open')) {
+                floatBtn.style.bottom = "-100px";
+            } else {
+                updateCartUI(); // Restaurar posición si corresponde
+            }
         }
 
         function addToCart(id, name, price) {
             if(cart[id]) { cart[id].qty += 1; } 
             else { cart[id] = { name: name, price: price, qty: 1 }; }
             updateCartUI();
-            if(!document.getElementById('drawer').classList.contains('open')) { toggleDrawer(); }
+            
+            // Si estamos en desktop, abrir el drawer automático. 
+            // En móvil, dejamos que el botón flotante haga su trabajo para no interrumpir.
+            if(!document.getElementById('drawer').classList.contains('open') && window.innerWidth >= 768) { 
+                toggleDrawer(); 
+            }
         }
 
         function updateQty(id, change) {
@@ -333,6 +376,11 @@
                 cart[id].qty += change;
                 if(cart[id].qty <= 0) { delete cart[id]; }
                 updateCartUI();
+                
+                // Si vacía el carro desde el celular, cerramos el drawer
+                if(Object.keys(cart).length === 0 && window.innerWidth < 768) {
+                    setTimeout(() => { toggleDrawer(); }, 300);
+                }
             }
         }
 
@@ -342,6 +390,7 @@
             const formState = document.getElementById('checkoutForm');
             const btnPagar = document.getElementById('btnPagar');
             const badge = document.getElementById('cartCount');
+            const floatBtn = document.getElementById('mobileCartBtn');
             
             container.innerHTML = '';
             let total = 0; let totalItems = 0;
@@ -350,9 +399,16 @@
             if(keys.length === 0) {
                 emptyState.classList.add('active'); formState.style.display = 'none';
                 btnPagar.disabled = true; badge.style.display = 'none';
+                floatBtn.classList.remove('show');
             } else {
                 emptyState.classList.remove('active'); formState.style.display = 'block';
                 btnPagar.disabled = false; badge.style.display = 'block';
+                
+                // Mostrar botón flotante en móviles si el drawer NO está abierto
+                if(window.innerWidth < 768 && !document.getElementById('drawer').classList.contains('open')) {
+                    floatBtn.classList.add('show');
+                    floatBtn.style.bottom = "24px";
+                }
 
                 keys.forEach(id => {
                     const item = cart[id];
@@ -375,11 +431,13 @@
                 });
             }
 
-            document.getElementById('cartTotal').innerText = '$' + total.toLocaleString('es-CL');
+            const formatTotal = '$' + total.toLocaleString('es-CL');
+            document.getElementById('cartTotal').innerText = formatTotal;
+            document.getElementById('mobileCartTotal').innerText = formatTotal;
+            document.getElementById('mobileItemCount').innerText = totalItems;
             badge.innerText = totalItems;
         }
 
-        // NUEVA LÓGICA: Mostrar/Ocultar menú de cafeterías
         function selectDelivery(type, element) {
             document.querySelectorAll('.radio-card').forEach(el => el.classList.remove('selected'));
             element.classList.add('selected');
@@ -388,9 +446,13 @@
             const cafeOptions = document.getElementById('cafeOptions');
             if(type === 'cafe') {
                 cafeOptions.style.display = 'block';
+                // Hacer scroll suave hacia las opciones en móvil
+                setTimeout(() => { 
+                    cafeOptions.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); 
+                }, 150);
             } else {
                 cafeOptions.style.display = 'none';
-                document.getElementById('selectedCafe').value = ''; // Resetear selección
+                document.getElementById('selectedCafe').value = ''; 
             }
         }
 
@@ -402,14 +464,13 @@
             const address = document.getElementById('custAddress').value.trim();
             
             if(!name || !email || !phone) {
-                alert("Por favor completa tus datos básicos antes de pagar).");
+                alert("Por favor completa tus datos básicos antes de pagar.");
                 return;
             }
 
             const deliveryType = document.querySelector('input[name="delivery"]:checked').value;
             let logisticaFinal = "Plaza Las Lilas";
 
-            // Validar que eligió una cafetería si seleccionó esa opción
             if(deliveryType === 'cafe') {
                 const cafeElegido = document.getElementById('selectedCafe').value;
                 if(!cafeElegido) {
@@ -439,7 +500,7 @@
             btn.innerHTML = "Generando pedido..."; btn.disabled = true;
 
             try {
-                // AVISO: Descomentar esto en la Fase B
+                // AVISO: Descomentar esto en la Fase B para Google Sheets
                 // await fetch(GOOGLE_SCRIPT_URL, {
                 //     method: 'POST', mode: 'no-cors', 
                 //     headers: { 'Content-Type': 'application/json' },
@@ -454,7 +515,6 @@
                     document.getElementById('custEmail').value = '';
                     document.getElementById('custPhone').value = '';
                     document.getElementById('custAddress').value = '';
-                    // Resetear delivery a plaza
                     selectDelivery('plaza', document.querySelector('label[onclick="selectDelivery(\'plaza\', this)"]'));
                     btn.innerHTML = "Completar Pedido";
                 }, 1500);
