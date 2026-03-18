@@ -254,49 +254,49 @@
     <div class="overlay" id="overlay" onclick="toggleDrawer()"></div>
     <div class="drawer" id="drawer">
         <div class="drawer-header">
-            <h2>Tu Canasta</h2>
+            <h2>Tu Cosecha</h2>
             <button class="close-drawer" onclick="toggleDrawer()">×</button>
         </div>
         
         <div class="drawer-body">
             <div class="empty-cart active" id="emptyCart">
-                <p>Tu canasta está vacía por ahora. 🌱</p>
+                <p>Tu cosecha aún no disponible, agregalos!. 🌱</p>
             </div>
             
             <div id="cartItemsContainer"></div>
 
             <div class="form-section" id="checkoutForm" style="display: none;">
                 <h3>Tus Datos</h3>
-                <input type="text" id="custName" placeholder="Nombre completo" required>
+                <input type="text" id="custName" placeholder="Nombre y Apellido" required>
                 <input type="email" id="custEmail" placeholder="Correo electrónico" required>
                 <input type="text" id="custPhone" placeholder="WhatsApp (Ej: +569...)" required>
-                <input type="text" id="custAddress" placeholder="Dirección (Nos ayuda a planear rutas a futuro)">
+                <input type="text" id="custAddress" placeholder="Dirección">
 
                 <h3 style="margin-top: 24px;">¿Cómo quieres recibirlo?</h3>
                 <div class="radio-group">
                     <label class="radio-card selected" onclick="selectDelivery('plaza', this)">
                         <input type="radio" name="delivery" value="plaza" checked>
                         <span class="radio-title">📍 Plaza Las Lilas (Sábado)</span>
-                        <p class="radio-desc">Retiro presencial este sábado de 10:00 a 13:00 hrs. Búscanos en la camioneta.</p>
+                        <p class="radio-desc">Te esperamos cada sábado de 10:00 a 11:00 hrs en Plaza Loreto Cousiño (frente a Dolce y Salato).</p>
                     </label>
                     
                     <label class="radio-card" onclick="selectDelivery('cafe', this)" style="border-bottom-left-radius: 0; border-bottom-right-radius: 0;">
                         <input type="radio" name="delivery" value="cafe">
-                        <span class="radio-title">☕ Punto Vecino (Cafetería aliada)</span>
-                        <p class="radio-desc">Busca el sello de El Otro Huerto y retira tu canasta en el local más cercano a tu casa.</p>
+                        <span class="radio-title">☕ Retiro en tu cafeteria preferida (Alianzas de El Otro Huerto)</span>
+                        <p class="radio-desc">Busca el sello de El Otro Huerto y retira tu canasta en el local más cercano a tu depto/casa.</p>
                     </label>
                     
                     <div id="cafeOptions">
                         <label style="font-size: 13px; color: var(--text-muted); display: block; margin-bottom: 8px;">Elige tu punto de retiro:</label>
                         <select id="selectedCafe">
-                            <option value="">-- Selecciona una cafetería cercana --</option>
-                            <option value="Café del Lector (Plaza Las Lilas)">Café del Lector (Plaza Las Lilas)</option>
-                            <option value="Bloom Café (Eliodoro Yáñez)">Bloom Café (Eliodoro Yáñez)</option>
-                            <option value="Colmado Coffee (Pocuro)">Colmado Coffee (Pocuro)</option>
-                            <option value="Félix Café (Carlos Antúnez)">Félix Café (Carlos Antúnez)</option>
-                            <option value="Café de la Candelaria (Bilbao)">Café de la Candelaria (Av. Bilbao)</option>
-                            <option value="Rendibú (Los Leones)">Rendibú (Av. Los Leones)</option>
-                            <option value="Singular Coffee (Suecia)">Singular Coffee (Suecia)</option>
+                            <option value="">-- Selecciona tu cafetería cercana --</option>
+                            <option value="Dolce & Salato">Dolce & Salato</option>
+                            <option value="The Animal Coffe (Pop Hotel)">The Animal Coffe (Pop Hotel)</option>
+                            <option value="BlackSheep">BlackSheep</option>
+                            <option value="La Panadera">La Panadera</option>
+                            <option value="Sabor de Buenos Aires">Sabor de Buenos Aires</option>
+                            <option value="La Popular (Bilbao)">La Popular (Bilbao)</option>
+                            <option value="NN">NN</option>
                         </select>
                     </div>
                 </div>
