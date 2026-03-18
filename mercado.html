@@ -277,19 +277,19 @@
                     <label class="radio-card selected" onclick="selectDelivery('plaza', this)">
                         <input type="radio" name="delivery" value="plaza" checked>
                         <span class="radio-title">📍 Plaza Las Lilas (Sábado)</span>
-                        <p class="radio-desc">Te esperamos cada sábado de 10:00 a 11:00 hrs en Plaza Loreto Cousiño (frente a Dolce y Salato).</p>
+                        <p class="radio-desc">Te esperamos cada sábado de 10:00 a 11:30 hrs en Plaza Loreto Cousiño (frente a Dolce y Salato).</p>
                     </label>
                     
                     <label class="radio-card" onclick="selectDelivery('cafe', this)" style="border-bottom-left-radius: 0; border-bottom-right-radius: 0;">
                         <input type="radio" name="delivery" value="cafe">
-                        <span class="radio-title">☕ Retiro en tu cafeteria preferida (Alianzas de El Otro Huerto)</span>
-                        <p class="radio-desc">Busca el sello de El Otro Huerto y retira tu canasta en el local más cercano a tu depto/casa.</p>
+                        <span class="radio-title">☕ Retiro en tu cafeteria más cercana</span>
+                        <p class="radio-desc">Busca el sello de El Otro Huerto y retira tu canasta en el local más próximo a tu depto/casa.</p>
                     </label>
                     
                     <div id="cafeOptions">
                         <label style="font-size: 13px; color: var(--text-muted); display: block; margin-bottom: 8px;">Elige tu punto de retiro:</label>
                         <select id="selectedCafe">
-                            <option value="">-- Selecciona tu cafetería cercana --</option>
+                            <option value="">-- Selecciona tu cafetería --</option>
                             <option value="Dolce & Salato">Dolce & Salato</option>
                             <option value="The Animal Coffe (Pop Hotel)">The Animal Coffe (Pop Hotel)</option>
                             <option value="BlackSheep">BlackSheep</option>
@@ -402,7 +402,7 @@
             const address = document.getElementById('custAddress').value.trim();
             
             if(!name || !email || !phone) {
-                alert("Por favor completa tus datos básicos (Nombre, Email y WhatsApp).");
+                alert("Por favor completa tus datos básicos antes de pagar).");
                 return;
             }
 
@@ -413,7 +413,7 @@
             if(deliveryType === 'cafe') {
                 const cafeElegido = document.getElementById('selectedCafe').value;
                 if(!cafeElegido) {
-                    alert("Por favor, selecciona en qué cafetería aliada quieres retirar tu pedido.");
+                    alert("Por favor, selecciona en qué cafetería quieres retirar tu pedido.");
                     return;
                 }
                 logisticaFinal = "Retiro en: " + cafeElegido;
