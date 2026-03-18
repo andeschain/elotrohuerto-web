@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mercado Rural | El Otro Huerto</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-page: #FDFCFB; 
+            --bg-alt: #F4F6F0; 
+            --text-main: #1D1D1F; 
+            --text-muted: #515154; 
+            --accent: #4A5D23; 
+            --border: #EAEAEA;
+        }
+
+        body { 
+            font-family: 'Inter', sans-serif; background-color: var(--bg-page); color: var(--text-main); 
+            margin: 0; padding: 0; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+        }
+
+        *, *:before, *:after { box-sizing: border-box; }
+        h1, h2, h3 { font-family: 'Lora', serif; margin-top: 0; color: var(--text-main); }
+        
+        /* HEADER NAVEGACIÓN */
+        header {
+            position: sticky; top: 0; background: rgba(253, 252, 251, 0.95); backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border); z-index: 100; padding: 16px 24px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo-container { display: flex; align-items: center; gap: 12px; font-family: 'Lora', serif; font-weight: 600; font-size: 20px; text-decoration: none; color: var(--text-main);}
+        .logo-container img { height: 28px; width: auto; }
+        
+        .cart-btn {
+            background: none; border: none; cursor: pointer; position: relative;
+            display: flex; align-items: center; gap: 8px; font-family: 'Inter', sans-serif; font-weight: 600; color: var(--accent);
+        }
+        .cart-badge {
+            background: var(--accent); color: white; font-size: 12px; padding: 2px 6px; 
+            border-radius: 12px; position: absolute; top: -8px; right: -12px; display: none;
+        }
+
+        /* HERO SECTION */
+        .hero { padding: 60px 24px 40px; text-align: center; max-width: 800px; margin: 0 auto; }
+        .hero h1 { font-size: 42px; line-height: 1.1; margin-bottom: 16px; letter-spacing: -1px; }
+        .hero p { font-size: 18px; color: var(--text-muted); line-height: 1.6; }
+
+        /* PRODUCT GRID */
+        .grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+            gap: 32px; padding: 0 24px 80px; max-width: 1080px; margin: 0 auto;
+        }
+        .card {
+            background: #fff; border: 1px solid var(--border); border-radius: 16px; 
+            overflow: hidden; transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover { transform: translateY(-4px); box-shadow: 0 16px 32px rgba(0,0,0,0.06); }
+        .card-img { width: 100%; height: 220px; object-fit: cover; background-color: var(--bg-alt); }
+        .card-body { padding: 24px; display: flex; flex-direction: column; height: calc(100% - 220px); }
+        .card-tag { font-size: 12px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+        .card-title { font-size: 22px; margin-bottom: 8px; }
+        .card-desc { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.5; flex-grow: 1; }
+        
+        .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 16px; margin-top: auto;}
+        .price { font-size: 18px; font-weight: 600; color: var(--text-main); }
+        .btn-add {
+            background: var(--bg-alt); color: var(--accent); border: none; padding: 8px 16px; 
+            border-radius: 20px; font-weight: 600; font-size: 14px; cursor: pointer; transition: background 0.2s;
+        }
+        .btn-add:hover { background: var(--accent); color: #fff; }
+
+        /* DRAWER (CARRITO LATERAL) */
+        .overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 999; 
+            opacity: 0; visibility: hidden; transition: 0.3s;
+        }
+        .drawer {
+            position: fixed; top: 0; right: -400px; width: 100%; max-width: 400px; height: 100vh; 
+            background: #fff; z-index: 1000; box-shadow: -10px 0 40px rgba(0,0,0,0.1); 
+            display: flex; flex-direction: column; transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .drawer.open { right: 0; }
+        .overlay.open { opacity: 1; visibility: visible; }
+        
+        .drawer-header { padding: 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .drawer-header h2 { font-size: 24px; margin: 0; }
+        .close-drawer { background: none; border: none; font-size: 28px; cursor: pointer; color: var(--text-muted); }
+        
+        .drawer-body { padding: 24px; overflow-y: auto; flex-grow: 1; }
+        
+        /* Items del Carrito */
+        .cart-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px dashed var(--border); }
+        .item-info h4 { margin: 0 0 4px 0; font-size: 15px; font-family: 'Inter', sans-serif;}
+        .item-info p { margin: 0; font-size: 13px; color: var(--text-muted); }
+        .item-controls { display: flex; align-items: center; gap: 12px; }
+        .btn-qty { background: var(--bg-alt); border: none; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; font-weight: bold; color: var(--text-main); }
+        
+        /* Formulario Logística */
+        .form-section { margin-top: 32px; }
+        .form-section h3 { font-size: 18px; margin-bottom: 16px; font-family: 'Inter', sans-serif; }
+        input[type="text"], input[type="email"] {
+            width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 12px; font-size: 15px; background: #FAFAFA;
+        }
+        
+        /* Radio Buttons Custom */
+        .radio-group { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
+        .radio-card {
+            border: 1px solid var(--border); border-radius: 8px; padding: 16px; cursor: pointer; transition: 0.2s; position: relative;
+        }
+        .radio-card.selected { border-color: var(--accent); background-color: var(--bg-alt); }
+        .radio-card input { position: absolute; opacity: 0; }
+        .radio-title { font-weight: 600; font-size: 15px; margin-bottom: 4px; display: block;}
+        .radio-desc { font-size: 13px; color: var(--text-muted); margin: 0; line-height: 1.4; }
+
+        .drawer-footer { padding: 24px; border-top: 1px solid var(--border); background: #fff; }
+        .total-row { display: flex; justify-content: space-between; font-size: 18px; font-weight: 600; margin-bottom: 16px; }
+        .btn-checkout {
+            width: 100%; background: var(--accent); color: #fff; border: none; padding: 16px; 
+            border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.2s;
+        }
+        .btn-checkout:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* Vacio State */
+        .empty-cart { text-align: center; color: var(--text-muted); padding: 40px 0; display: none; }
+        .empty-cart.active { display: block; }
+
+        @media(max-width: 767px) {
+            .hero h1 { font-size: 32px; }
+            .grid { grid-template-columns: 1fr; padding: 0 16px 80px; }
+            .drawer { width: 100%; right: -100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo-container">
+            <img src="assets/logo.svg" alt="Icono" onerror="this.style.display='none'">
+            El Otro Huerto.
+        </a>
+        <button class="cart-btn" onclick="toggleDrawer()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+            <span class="cart-badge" id="cartCount">0</span>
+        </button>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>Cosecha limitada, directo a tu mesa.</h1>
+            <p>Nosotros pusimos la tierra en Paine, y junto a semillas tradicionales de agricultores locales, cultivamos de forma agroecológica. 100% libre de químicos.</p>
+        </section>
+
+        <section class="grid">
+            <div class="card">
+                <img src="assets/papa_astrid.jpg" alt="Papas Astrid" class="card-img" onerror="this.src='https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&q=80&w=400'">
+                <div class="card-body">
+                    <span class="card-tag">Temporada Alta</span>
+                    <h2 class="card-title">Papas Astrid (Malla 2kg)</h2>
+                    <p class="card-desc">Cosechadas en nuestra parcela. La semilla original proviene de la familia Alburquenque de Paine. Perfectas para asar o puré rústico.</p>
+                    <div class="card-footer">
+                        <span class="price">$3.500</span>
+                        <button class="btn-add" onclick="addToCart('papas', 'Papas Astrid (2kg)', 3500)">Agregar +</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="assets/zapallo_guarda.jpg" alt="Zapallo Guarda" class="card-img" onerror="this.src='https://images.unsplash.com/photo-1570586437263-ab629fccc818?auto=format&fit=crop&q=80&w=400'">
+                <div class="card-body">
+                    <span class="card-tag">Semilla Antigua</span>
+                    <h2 class="card-title">Zapallo Guarda de Paine</h2>
+                    <p class="card-desc">Almácigos traídos de Luis Miranda y cultivados en nuestra tierra. Una textura dulce y densa, ideal para sopas de otoño.</p>
+                    <div class="card-footer">
+                        <span class="price">$4.000 <span style="font-size:12px; color:#515154; font-weight:normal;">/un</span></span>
+                        <button class="btn-add" onclick="addToCart('zapallo_g', 'Zapallo Guarda (Unidad)', 4000)">Agregar +</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="assets/zapallo_tromboncino.jpg" alt="Zapallo Tromboncino" class="card-img" onerror="this.src='https://images.unsplash.com/photo-1590415307218-c55fb21cb170?auto=format&fit=crop&q=80&w=400'">
+                <div class="card-body">
+                    <span class="card-tag">Edición Especial</span>
+                    <h2 class="card-title">Zapallo Tromboncino</h2>
+                    <p class="card-desc">Cultivado en El Otro Huerto (almácigos de Luis Miranda). Un zapallo de forma única, carne firme y sabor suave a nuez. Quedan pocas unidades.</p>
+                    <div class="card-footer">
+                        <span class="price">$3.800 <span style="font-size:12px; color:#515154; font-weight:normal;">/un</span></span>
+                        <button class="btn-add" onclick="addToCart('zapallo_t', 'Zapallo Tromboncino (Unidad)', 3800)">Agregar +</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="overlay" id="overlay" onclick="toggleDrawer()"></div>
+    <div class="drawer" id="drawer">
+        <div class="drawer-header">
+            <h2>Tu Canasta</h2>
+            <button class="close-drawer" onclick="toggleDrawer()">×</button>
+        </div>
+        
+        <div class="drawer-body">
+            <div class="empty-cart active" id="emptyCart">
+                <p>Tu canasta está vacía por ahora. 🌱</p>
+            </div>
+            
+            <div id="cartItemsContainer">
+                </div>
+
+            <div class="form-section" id="checkoutForm" style="display: none;">
+                <h3>Tus Datos</h3>
+                <input type="text" id="custName" placeholder="Nombre completo" required>
+                <input type="email" id="custEmail" placeholder="Correo electrónico" required>
+                <input type="text" id="custPhone" placeholder="WhatsApp (Ej: +569...)" required>
+
+                <h3>¿Cómo quieres recibirlo?</h3>
+                <div class="radio-group">
+                    <label class="radio-card selected" onclick="selectRadio(this)">
+                        <input type="radio" name="delivery" value="plaza" checked>
+                        <span class="radio-title">📍 Plaza Las Lilas (Sábado)</span>
+                        <p class="radio-desc">Retiro presencial este sábado de 10:00 a 13:00 hrs. Búscanos en la camioneta.</p>
+                    </label>
+                    
+                    <label class="radio-card" onclick="selectRadio(this)">
+                        <input type="radio" name="delivery" value="cafe">
+                        <span class="radio-title">☕ Punto Vecino (Cafetería)</span>
+                        <p class="radio-desc">Retira durante la semana en [Nombre de Café en Providencia]. Te avisaremos por WhatsApp.</p>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="drawer-footer">
+            <div class="total-row">
+                <span>Total a Pagar:</span>
+                <span id="cartTotal">$0</span>
+            </div>
+            <button class="btn-checkout" id="btnPagar" disabled onclick="procesarPedido()">Completar Pedido</button>
+        </div>
+    </div>
+
+    <script>
+        // ESTADO DEL CARRITO (Lógica Javascript)
+        let cart = {};
+
+        function toggleDrawer() {
+            document.getElementById('drawer').classList.toggle('open');
+            document.getElementById('overlay').classList.toggle('open');
+        }
+
+        function addToCart(id, name, price) {
+            if(cart[id]) {
+                cart[id].qty += 1;
+            } else {
+                cart[id] = { name: name, price: price, qty: 1 };
+            }
+            updateCartUI();
+            
+            // Abre el carrito automáticamente al agregar un producto
+            if(!document.getElementById('drawer').classList.contains('open')) {
+                toggleDrawer();
+            }
+        }
+
+        function updateQty(id, change) {
+            if(cart[id]) {
+                cart[id].qty += change;
+                if(cart[id].qty <= 0) {
+                    delete cart[id];
+                }
+                updateCartUI();
+            }
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cartItemsContainer');
+            const emptyState = document.getElementById('emptyCart');
+            const formState = document.getElementById('checkoutForm');
+            const btnPagar = document.getElementById('btnPagar');
+            const badge = document.getElementById('cartCount');
+            
+            container.innerHTML = '';
+            let total = 0;
+            let totalItems = 0;
+
+            const keys = Object.keys(cart);
+
+            if(keys.length === 0) {
+                emptyState.classList.add('active');
+                formState.style.display = 'none';
+                btnPagar.disabled = true;
+                badge.style.display = 'none';
+            } else {
+                emptyState.classList.remove('active');
+                formState.style.display = 'block';
+                btnPagar.disabled = false;
+                badge.style.display = 'block';
+
+                keys.forEach(id => {
+                    const item = cart[id];
+                    total += item.price * item.qty;
+                    totalItems += item.qty;
+
+                    container.innerHTML += `
+                        <div class="cart-item">
+                            <div class="item-info">
+                                <h4>${item.name}</h4>
+                                <p>$${item.price.toLocaleString('es-CL')} c/u</p>
+                            </div>
+                            <div class="item-controls">
+                                <button class="btn-qty" onclick="updateQty('${id}', -1)">-</button>
+                                <span>${item.qty}</span>
+                                <button class="btn-qty" onclick="updateQty('${id}', 1)">+</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            document.getElementById('cartTotal').innerText = '$' + total.toLocaleString('es-CL');
+            badge.innerText = totalItems;
+        }
+
+        // Lógica visual para los Radio Buttons
+        function selectRadio(element) {
+            document.querySelectorAll('.radio-card').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+            element.querySelector('input').checked = true;
+        }
+
+        // Función "Simulada" de envío (La conectaremos a Google Sheets en la Fase B)
+        function procesarPedido() {
+            const btn = document.getElementById('btnPagar');
+            const name = document.getElementById('custName').value;
+            const email = document.getElementById('custEmail').value;
+            
+            if(!name || !email) {
+                alert("Por favor completa tus datos básicos (Nombre y Correo) antes de pagar.");
+                return;
+            }
+
+            btn.innerHTML = "Procesando...";
+            btn.disabled = true;
+
+            // Aquí irá el código para enviar los datos a tu Google Sheet (Fase B).
+            // Por ahora, simulamos un tiempo de carga y un mensaje de éxito.
+            setTimeout(() => {
+                alert("¡Arquitectura lista! En la próxima fase conectaremos este botón a Google Sheets para guardar el pedido y luego a Mercado Pago para el cobro.");
+                btn.innerHTML = "Completar Pedido";
+                btn.disabled = false;
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
