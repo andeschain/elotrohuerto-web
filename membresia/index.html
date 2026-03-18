@@ -2,7 +2,7 @@
 <html lang="es-CL">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Invitación Privada | El Otro Huerto</title>
     
     <meta property="og:title" content="Tu refugio de fin de semana, sin ~el cacho de~ mantenerlo 🌿">
@@ -24,22 +24,29 @@
 
         body { 
             font-family: 'Inter', sans-serif; background-color: var(--bg-page); color: var(--text-main); 
-            margin: 0; padding: 24px; min-height: 100vh; display: flex; flex-direction: column; 
+            margin: 0; padding: 20px; min-height: 100vh; display: flex; flex-direction: column; 
             align-items: center; justify-content: center; -webkit-font-smoothing: antialiased;
             box-sizing: border-box;
         }
 
-        /* Diseño de tarjeta Premium */
+        /* Diseño de tarjeta Premium con Animación de Entrada */
         .login-card {
-            background: #fff; border-radius: 20px; border: 1px solid var(--border);
-            box-shadow: 0 24px 48px rgba(0,0,0,0.08); max-width: 420px; width: 100%; 
+            background: #fff; border-radius: 24px; border: 1px solid var(--border);
+            box-shadow: 0 24px 48px rgba(0,0,0,0.06); max-width: 420px; width: 100%; 
             overflow: hidden; 
             text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
         }
         
         /* Foto en la parte superior de la tarjeta */
         .card-image {
-            width: 100%; height: 200px; 
+            width: 100%; height: 220px; 
             background-image: url('../assets/familias.jpg'); 
             background-size: cover; background-position: center;
             border-bottom: 4px solid var(--accent);
@@ -49,7 +56,6 @@
         
         .card-content img { height: 32px; margin-bottom: 24px; }
         
-        /* Ajuste exacto para coincidir con la imagen enviada */
         h1 { 
             font-family: 'Lora', serif; 
             font-size: 26px; 
@@ -57,25 +63,51 @@
             margin-bottom: 12px; 
             line-height: 1.25; 
             color: var(--text-main); 
+            letter-spacing: -0.5px;
         }
         
-        p.subtitle { font-size: 15px; color: var(--text-muted); margin-bottom: 32px; line-height: 1.5; }
+        p.subtitle { 
+            font-size: 15px; 
+            color: var(--text-muted); 
+            margin-bottom: 32px; 
+            line-height: 1.6; /* Aumentado para mejor lectura en celular */
+        }
         
+        /* Inputs y Botones optimizados para "Touch" (Dedos) */
         input[type="password"] {
-            width: 100%; padding: 16px; font-size: 16px; border: 1px solid var(--border); border-radius: 8px; 
+            width: 100%; padding: 16px; font-size: 16px; border: 1px solid var(--border); 
+            border-radius: 12px; /* Más redondo para look móvil moderno */
             margin-bottom: 16px; box-sizing: border-box; text-align: center; letter-spacing: 2px;
             background-color: #FAFAFA;
+            -webkit-appearance: none; /* Evita estilos feos por defecto en iOS */
+            transition: all 0.2s ease;
         }
-        input[type="password"]:focus { outline: none; border-color: var(--accent); background-color: #FFF; }
+        input[type="password"]:focus { 
+            outline: none; 
+            border-color: var(--accent); 
+            background-color: #FFF;
+            box-shadow: 0 0 0 3px rgba(74, 93, 35, 0.1);
+        }
         
         .btn-primary { 
-            display: inline-block; background-color: var(--accent); color: #FFFFFF; padding: 16px 24px; 
-            border-radius: 8px; font-weight: 600; text-align: center; border: none; cursor: pointer; 
-            transition: all 0.2s ease; width: 100%; font-size: 16px; letter-spacing: 0.5px;
+            display: inline-block; background-color: var(--accent); color: #FFFFFF; 
+            padding: 16px 24px; border-radius: 12px; font-weight: 600; text-align: center; 
+            border: none; cursor: pointer; transition: all 0.2s ease; width: 100%; 
+            font-size: 16px; letter-spacing: 0.5px;
+            -webkit-appearance: none;
         }
         .btn-primary:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(74,93,35,0.2); }
+        .btn-primary:active { transform: translateY(0); box-shadow: none; } /* Efecto de toque real */
         
         #errorMsg { color: #D93025; font-size: 14px; display: none; margin-top: 16px; font-weight: 500; }
+
+        /* Ajustes específicos para celulares (Pantallas chicas) */
+        @media (max-width: 480px) {
+            .card-content { padding: 24px 20px 32px 20px; }
+            h1 { font-size: 24px; }
+            .card-image { height: 180px; }
+            p.subtitle { font-size: 14px; margin-bottom: 24px; }
+        }
     </style>
 </head>
 <body>
@@ -126,9 +158,12 @@
             }
         }
 
+        // Permitir que la gente en celular le dé a "Ir" o "Enter" en el teclado
         document.getElementById("passInput").addEventListener("keypress", function(event) {
             if (event.key === "Enter") { 
                 event.preventDefault(); 
+                // Ocultar el teclado en celulares para que vean el efecto de abrir
+                this.blur(); 
                 checkAccess(); 
             }
         });
