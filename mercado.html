@@ -68,7 +68,7 @@
         
         /* HEADER NAVEGACIÓN */
         header {
-            position: sticky; top: 0; background: rgba(253, 252, 251, 0.95); backdrop-filter: blur(8px);
+            position: sticky; top: 0; background: rgba(253, 252, 251, 0.95); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
             border-bottom: 1px solid var(--border); z-index: 100; padding: 16px 24px;
             display: flex; justify-content: space-between; align-items: center;
         }
@@ -127,7 +127,7 @@
         /* DRAWER (CARRITO LATERAL) */
         .overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 999; 
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); z-index: 999; 
             opacity: 0; visibility: hidden; transition: 0.3s;
         }
         .drawer {
@@ -140,7 +140,8 @@
         
         .drawer-header { padding: 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #fff;}
         .drawer-header h2 { font-size: 24px; margin: 0; }
-        .close-drawer { background: var(--bg-alt); border: none; font-size: 24px; cursor: pointer; color: var(--text-main); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;}
+        .close-drawer { background: var(--bg-alt); border: none; font-size: 24px; cursor: pointer; color: var(--text-main); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.2s;}
+        .close-drawer:hover { background: #EAEAEA; }
         
         .drawer-body { padding: 24px; overflow-y: auto; flex-grow: 1; padding-bottom: 40px; }
         
@@ -153,9 +154,8 @@
         /* Formulario Logística UX */
         .form-section { margin-top: 32px; }
         .form-section h3 { font-size: 18px; margin-bottom: 16px; font-family: 'Inter', sans-serif; letter-spacing: -0.5px;}
-        /* 16px exactos en font-size previene el Auto-Zoom en iOS */
         input[type="text"], input[type="email"], select {
-            width: 100%; padding: 16px; border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; font-size: 16px; background: #FAFAFA; -webkit-appearance: none; font-family: 'Inter', sans-serif;
+            width: 100%; padding: 16px; border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; font-size: 16px; background: #FAFAFA; -webkit-appearance: none; font-family: 'Inter', sans-serif; transition: border-color 0.2s;
         }
         input:focus, select:focus { outline: none; border-color: var(--accent); background: #fff; box-shadow: 0 0 0 3px rgba(74, 93, 35, 0.1);}
         
@@ -163,7 +163,7 @@
         .radio-card {
             border: 1px solid var(--border); border-radius: 12px; padding: 16px; cursor: pointer; transition: 0.2s; position: relative;
         }
-        .radio-card.selected { border-color: var(--accent); background-color: var(--bg-alt); border-width: 2px; padding: 15px; /* Compensa el borde extra */}
+        .radio-card.selected { border-color: var(--accent); background-color: var(--bg-alt); border-width: 2px; padding: 15px; }
         .radio-card input { position: absolute; opacity: 0; }
         .radio-title { font-weight: 600; font-size: 15px; margin-bottom: 6px; display: block;}
         .radio-desc { font-size: 14px; color: var(--text-muted); margin: 0; line-height: 1.4; }
@@ -192,7 +192,7 @@
         footer a { color: #A0A0A0; text-decoration: underline; font-size: 14px; transition: color 0.2s;}
         footer a:hover { color: #fff; }
 
-        /* BOTÓN FLOTANTE MÓVIL (Touch-first experience) */
+        /* BOTÓN FLOTANTE MÓVIL */
         .mobile-cart-float {
             display: none; position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
             width: calc(100% - 48px); max-width: 400px; background: var(--text-main); color: #fff; border: none;
@@ -202,7 +202,7 @@
         }
         .mobile-cart-float.show { display: flex; }
 
-        /* ADAPTACIONES EXTREMAS PARA MÓVIL */
+        /* ADAPTACIONES MÓVIL */
         @media(max-width: 767px) {
             header { padding: 12px 20px; }
             .logo-container { font-size: 18px; }
@@ -211,7 +211,6 @@
             .grid { grid-template-columns: 1fr; padding: 0 20px 100px; gap: 24px; }
             .card-img { height: 200px; }
             
-            /* Optimización de botones para dedos (Touch targets grandes) */
             .card-footer { flex-direction: column; gap: 16px; align-items: stretch;}
             .price { text-align: center; }
             .btn-add { width: 100%; padding: 16px; font-size: 16px; }
@@ -254,7 +253,7 @@
 
                     <div class="card-footer">
                         <span class="price">$3.500</span>
-                        <button class="btn-add" onclick="addToCart('papas', 'Papas Astrid (2kg)', 3500)">Agregar a la canasta</button>
+                        <button class="btn-add" onclick="addToCart('papas', 'Papas Astrid (Bolsa 3kg)', 3500)">Agregar a la canasta</button>
                     </div>
                 </div>
             </div>
@@ -272,8 +271,8 @@
                     </a>
 
                     <div class="card-footer">
-                        <span class="price">3.000 <span style="font-size:14px; color:#515154; font-weight:normal;">/un</span></span>
-                        <button class="btn-add" onclick="addToCart('zapallo_g', 'Zapallo Guarda (Unidad)', 4000)">Agregar a la canasta</button>
+                        <span class="price">$3.000 <span style="font-size:14px; color:#515154; font-weight:normal;">/un</span></span>
+                        <button class="btn-add" onclick="addToCart('zapallo_g', 'Zapallo Guarda (Unidad)', 3000)">Agregar a la canasta</button>
                     </div>
                 </div>
             </div>
@@ -292,7 +291,7 @@
 
                     <div class="card-footer">
                         <span class="price">$3.500 <span style="font-size:14px; color:#515154; font-weight:normal;">/un</span></span>
-                        <button class="btn-add" onclick="addToCart('zapallo_t', 'Zapallo Tromboncino (Unidad)', 3800)">Agregar a la canasta</button>
+                        <button class="btn-add" onclick="addToCart('zapallo_t', 'Zapallo Tromboncino (Unidad)', 3500)">Agregar a la canasta</button>
                     </div>
                 </div>
             </div>
@@ -377,7 +376,8 @@
     </div>
 
     <script>
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycb...TU_URL_AQUI.../exec';
+        // AQUÍ ESTÁ INYECTADA TU URL DE GOOGLE APPS SCRIPT:
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzvNvrHBA-KJzPtQHcpAqGkCfr7ndTUlnW1Gvv-OeyC91SXUltxPY07VBJw3Bv6aaeQ/exec';
         let cart = {};
 
         function toggleDrawer() {
@@ -511,7 +511,8 @@
             let resumenPedido = ""; let totalAPagar = 0;
             Object.keys(cart).forEach(id => {
                 const item = cart[id];
-                resumenPedido += `${item.qty}x ${item.name} | `;
+                // Usamos el formato %0A para saltos de línea en WhatsApp
+                resumenPedido += `• ${item.qty}x ${item.name} ($${(item.price * item.qty).toLocaleString('es-CL')})%0A`;
                 totalAPagar += (item.price * item.qty);
             });
 
@@ -522,33 +523,40 @@
                 direccion: address || "No indicada",
                 logistica: logisticaFinal,
                 total: totalAPagar,
-                detalle: resumenPedido
+                detalle: resumenPedido.replace(/%0A/g, ", ") // Limpiamos para el Excel
             };
 
             btn.innerHTML = "Generando pedido..."; btn.disabled = true;
 
             try {
-                // AVISO: Descomentar esto en la Fase B para Google Sheets
-                // await fetch(GOOGLE_SCRIPT_URL, {
-                //     method: 'POST', mode: 'no-cors', 
-                //     headers: { 'Content-Type': 'application/json' },
-                //     body: JSON.stringify(payload)
-                // });
+                // 1. Enviamos silenciosamente a tu Excel en Google Drive
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST', 
+                    mode: 'no-cors', 
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
 
-                setTimeout(() => {
-                    alert("¡Pedido guardado con éxito! Ahora te contactaremos por WhatsApp para el pago.");
-                    
-                    cart = {}; updateCartUI(); toggleDrawer();
-                    document.getElementById('custName').value = '';
-                    document.getElementById('custEmail').value = '';
-                    document.getElementById('custPhone').value = '';
-                    document.getElementById('custAddress').value = '';
-                    selectDelivery('plaza', document.querySelector('label[onclick="selectDelivery(\'plaza\', this)"]'));
-                    btn.innerHTML = "Completar Pedido";
-                }, 1500);
+                // 2. Preparamos el mensaje de WhatsApp para el cobro manual
+                const mensajeWa = `Hola El Otro Huerto! 🌱%0A%0A*Mi pedido es:*%0A${resumenPedido}%0A*Total:* $${totalAPagar.toLocaleString('es-CL')}%0A*Entrega:* ${logisticaFinal}%0A%0A¿Me comparten los datos para transferir?`;
+                const urlWa = `https://wa.me/56958799778?text=${mensajeWa}`;
+
+                // 3. Limpiamos y redirigimos
+                cart = {}; updateCartUI(); toggleDrawer();
+                document.getElementById('custName').value = '';
+                document.getElementById('custEmail').value = '';
+                document.getElementById('custPhone').value = '';
+                document.getElementById('custAddress').value = '';
+                selectDelivery('plaza', document.querySelector('label[onclick="selectDelivery(\'plaza\', this)"]'));
+                btn.innerHTML = "Completar Pedido";
+                btn.disabled = false;
+                
+                // Redirigir al cliente a WhatsApp
+                window.location.href = urlWa;
 
             } catch (error) {
-                alert("Hubo un problema. Por favor intenta de nuevo.");
+                console.error("Error:", error);
+                alert("Hubo un pequeño problema al procesar. Por favor escríbenos directo por WhatsApp para tomar tu pedido.");
                 btn.innerHTML = "Completar Pedido"; btn.disabled = false;
             }
         }
