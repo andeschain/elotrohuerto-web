@@ -3,15 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mercado Rural | El Otro Huerto</title>
     
-    <meta property="og:title" content="Mercado Rural | El Otro Huerto 🧺">
-    <meta property="og:description" content="Cosecha agroecológica directa desde Paine a Plaza Las Lilas. Papas Astrid, zapallos de guarda y más. ¡Reserva tu cosecha aquí!">
+    <title>Mercado Agroecológico en Barrio Las Lilas y alrededores | El Otro Huerto</title>
+    <meta name="description" content="Cosecha agroecológica directa de Paine a tu mesa. Reserva papas nativas y zapallos libres de químicos. Retiro en Plaza Las Lilas y cafeterías de Providencia y alrededores.">
+    <meta name="keywords" content="verduras agroecologicas providencia, mercado rural las lilas, verduras a domicilio providencia, papas nativas santiago, zapallo de guarda, comida sana providencia, el otro huerto">
+    <meta name="author" content="Jorge Munoz - El Otro Huerto">
+
+    <meta property="og:title" content="Mercado Rural | Barrio Las Lilas y alrededores 🧺">
+    <meta property="og:description" content="Cosecha agroecológica directa desde Paine. Papas Astrid, zapallos de guarda y más. ¡Reserva tu canasta aquí y retira cerca de tu casa!">
     <meta property="og:image" content="https://elotrohuerto.cl/assets/papa_astrid.jpg"> 
     <meta property="og:url" content="https://elotrohuerto.cl/mercado">
     <meta property="og:type" content="website">
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600&display=swap" rel="stylesheet">
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FarmersMarket",
+      "name": "El Otro Huerto | Mercado Rural",
+      "image": "https://elotrohuerto.cl/assets/papa_astrid.jpg",
+      "description": "Mercado rural de cosechas agroecológicas, limitadas y libres de químicos. Entregas directas en Plaza Las Lilas y puntos vecinos en Providencia y alrededores.",
+      "url": "https://elotrohuerto.cl/mercado",
+      "telephone": "+56958799778",
+      "areaServed": [
+        {
+          "@type": "Neighborhood",
+          "name": "Barrio Las Lilas"
+        },
+        {
+          "@type": "City",
+          "name": "Providencia"
+        },
+        {
+          "@type": "City",
+          "name": "Santiago"
+        }
+      ],
+      "founder": {
+        "@type": "Person",
+        "name": "Jorge Munoz"
+      }
+    }
+    </script>
     
     <style>
         :root {
@@ -350,12 +384,11 @@
             document.getElementById('drawer').classList.toggle('open');
             document.getElementById('overlay').classList.toggle('open');
             
-            // Ocultar el botón flotante si abrimos el drawer
             const floatBtn = document.getElementById('mobileCartBtn');
             if(document.getElementById('drawer').classList.contains('open')) {
                 floatBtn.style.bottom = "-100px";
             } else {
-                updateCartUI(); // Restaurar posición si corresponde
+                updateCartUI(); 
             }
         }
 
@@ -364,8 +397,6 @@
             else { cart[id] = { name: name, price: price, qty: 1 }; }
             updateCartUI();
             
-            // Si estamos en desktop, abrir el drawer automático. 
-            // En móvil, dejamos que el botón flotante haga su trabajo para no interrumpir.
             if(!document.getElementById('drawer').classList.contains('open') && window.innerWidth >= 768) { 
                 toggleDrawer(); 
             }
@@ -377,7 +408,6 @@
                 if(cart[id].qty <= 0) { delete cart[id]; }
                 updateCartUI();
                 
-                // Si vacía el carro desde el celular, cerramos el drawer
                 if(Object.keys(cart).length === 0 && window.innerWidth < 768) {
                     setTimeout(() => { toggleDrawer(); }, 300);
                 }
@@ -404,7 +434,6 @@
                 emptyState.classList.remove('active'); formState.style.display = 'block';
                 btnPagar.disabled = false; badge.style.display = 'block';
                 
-                // Mostrar botón flotante en móviles si el drawer NO está abierto
                 if(window.innerWidth < 768 && !document.getElementById('drawer').classList.contains('open')) {
                     floatBtn.classList.add('show');
                     floatBtn.style.bottom = "24px";
@@ -446,7 +475,6 @@
             const cafeOptions = document.getElementById('cafeOptions');
             if(type === 'cafe') {
                 cafeOptions.style.display = 'block';
-                // Hacer scroll suave hacia las opciones en móvil
                 setTimeout(() => { 
                     cafeOptions.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); 
                 }, 150);
