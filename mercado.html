@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <title>Mercado Rural Agroecológico en Barrio Las Lilas y alrededores | El Otro Huerto</title>
-    <meta name="description" content="Cosecha agroecológica directa de Paine a tu mesa. Reserva papas nativas y zapallos libres de químicos. Retiro en Plaza Las Lilas y cafeterías del barrio y alrededores.">
+    <title>Mercado Agroecológico en Barrio Las Lilas y alrededores | El Otro Huerto</title>
+    <meta name="description" content="Cosecha agroecológica directa de Paine a tu mesa. Reserva papas nativas y zapallos libres de químicos. Retiro en Plaza Las Lilas y cafeterías de Providencia y alrededores.">
     <meta name="keywords" content="verduras agroecologicas providencia, mercado rural las lilas, verduras a domicilio providencia, papas nativas santiago, zapallo de guarda, comida sana providencia, el otro huerto">
     <meta name="author" content="Jorge Munoz - El Otro Huerto">
 
@@ -23,27 +23,15 @@
       "@type": "FarmersMarket",
       "name": "El Otro Huerto | Mercado Rural",
       "image": "https://elotrohuerto.cl/assets/papa_astrid.jpg",
-      "description": "Mercado rural de cosechas agroecológicas, con trazabailidad de origen y libres de químicos (en proceso de certificación biodinámica). Entregas directas en Plaza Las Lilas y/o cafeterías del barrio y alrededores.",
+      "description": "Mercado rural de cosechas agroecológicas, limitadas y libres de químicos. Entregas directas en Plaza Las Lilas y puntos vecinos en Providencia y alrededores.",
       "url": "https://elotrohuerto.cl/mercado",
       "telephone": "+56958799778",
       "areaServed": [
-        {
-          "@type": "Neighborhood",
-          "name": "Barrio Las Lilas"
-        },
-        {
-          "@type": "City",
-          "name": "Providencia"
-        },
-        {
-          "@type": "City",
-          "name": "Santiago"
-        }
+        { "@type": "Neighborhood", "name": "Barrio Las Lilas" },
+        { "@type": "City", "name": "Providencia" },
+        { "@type": "City", "name": "Santiago" }
       ],
-      "founder": {
-        "@type": "Person",
-        "name": "Jorge Munoz"
-      }
+      "founder": { "@type": "Person", "name": "Jorge Munoz" }
     }
     </script>
     
@@ -86,7 +74,7 @@
             border: 2px solid #fff; font-weight: 700;
         }
 
-        /* HERO SECTION */
+        /* HERO SECTION MEJORADO */
         .hero { padding: 60px 24px 40px; text-align: center; max-width: 800px; margin: 0 auto; }
         .hero h1 { font-size: 42px; line-height: 1.1; margin-bottom: 16px; letter-spacing: -1px; }
         .hero p { font-size: 18px; color: var(--text-muted); line-height: 1.6; }
@@ -107,10 +95,10 @@
         .card-title { font-size: 24px; margin-bottom: 8px; letter-spacing: -0.5px;}
         .card-desc { font-size: 15px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.6; flex-grow: 1;}
         
-        /* Enlace AndesChain Trazabilidad */
+        /* Enlace AndesChain Modificado para Modal */
         .trace-link {
             display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--accent);
-            text-decoration: none; font-weight: 600; margin-bottom: 24px; background: var(--bg-alt); padding: 8px 14px; border-radius: 16px; align-self: flex-start; transition: opacity 0.2s; border: 1px solid rgba(74, 93, 35, 0.1);
+            text-decoration: none; font-weight: 600; margin-bottom: 24px; background: var(--bg-alt); padding: 8px 14px; border-radius: 16px; align-self: flex-start; transition: opacity 0.2s; border: 1px solid rgba(74, 93, 35, 0.1); cursor: pointer;
         }
         .trace-link:hover { opacity: 0.8; background: rgba(74, 93, 35, 0.1); }
         .trace-link svg { width: 14px; height: 14px; }
@@ -185,6 +173,29 @@
         .empty-cart { text-align: center; color: var(--text-muted); padding: 40px 0; display: none; }
         .empty-cart.active { display: block; }
 
+        /* MODAL ANDESCHAIN (Pasaporte Trazabilidad) */
+        .passport-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+            z-index: 2000; opacity: 0; visibility: hidden; transition: 0.3s;
+            display: flex; align-items: flex-end; justify-content: center; /* Bottom sheet en móvil */
+        }
+        .passport-overlay.open { opacity: 1; visibility: visible; }
+        
+        .passport-modal {
+            background: #fff; width: 100%; max-width: 600px; height: 90vh;
+            border-radius: 24px 24px 0 0; overflow: hidden;
+            transform: translateY(100%); transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: flex; flex-direction: column; box-shadow: 0 -20px 40px rgba(0,0,0,0.2);
+        }
+        .passport-overlay.open .passport-modal { transform: translateY(0); }
+        
+        .passport-header {
+            padding: 16px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #fff;
+        }
+        .passport-header h3 { margin: 0; font-size: 15px; font-family: 'Inter', sans-serif; display: flex; align-items: center; gap: 8px; color: var(--text-main);}
+        .passport-iframe { flex-grow: 1; width: 100%; border: none; background: #fcfcfc;}
+
         /* FOOTER SIMPLIFICADO */
         footer { background-color: var(--text-main); color: #FDFCFB; padding: 48px 24px; text-align: center; margin-top: auto; }
         footer h3 { color: #FFFFFF; margin-bottom: 12px; font-size: 20px; }
@@ -202,7 +213,13 @@
         }
         .mobile-cart-float.show { display: flex; }
 
-        /* ADAPTACIONES MÓVIL */
+        /* ADAPTACIONES MÓVIL / DESKTOP */
+        @media(min-width: 768px) {
+            .passport-overlay { align-items: center; }
+            .passport-modal { height: 85vh; border-radius: 24px; transform: translateY(50px) scale(0.95); opacity: 0;}
+            .passport-overlay.open .passport-modal { transform: translateY(0) scale(1); opacity: 1;}
+        }
+
         @media(max-width: 767px) {
             header { padding: 12px 20px; }
             .logo-container { font-size: 18px; }
@@ -232,9 +249,10 @@
         </button>
     </header>
 
-    <section class="hero">
-            <h1>Cosecha real, 100% libre de químicos.</h1>
-            <p>Cultivamos en Paine con semillas tradicionales y respeto absoluto por la tierra. Un proceso agroecológico, transparente de origen y en proceso de certificación biodinámica.</p>
+    <main>
+        <section class="hero">
+            <h1>Cosecha limpia y honesta. Directo a tu mesa.</h1>
+            <p>Desde nuestra parcela en Paine, rescatamos semillas locales para cultivar de forma agroecológica. Alimentos 100% libres de químicos y en camino a la certificación biodinámica.</p>
         </section>
 
         <section class="grid">
@@ -245,13 +263,13 @@
                     <h2 class="card-title">Papas Astrid (Bolsa 3kg)</h2>
                     <p class="card-desc">Cosechadas en nuestra parcela. La semilla original proviene de la familia Alburquenque de Paine. Perfectas para asar o puré rústico.</p>
                     
-                    <a href="https://andeschain.io" target="_blank" class="trace-link">
+                    <button onclick="openPassport('https://andeschain.io/producto.html?id=1')" class="trace-link">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
                         Origen certificado
-                    </a>
+                    </button>
 
                     <div class="card-footer">
-                        <span class="price">$3.500<span style="font-size:14px; color:#515154; font-weight:normal;">/3kgs</span></span>
+                        <span class="price">$3.500</span>
                         <button class="btn-add" onclick="addToCart('papas', 'Papas Astrid (Bolsa 3kg)', 3500)">Agregar a la canasta</button>
                     </div>
                 </div>
@@ -264,10 +282,10 @@
                     <h2 class="card-title">Zapallo Guarda de Paine</h2>
                     <p class="card-desc">Almácigos traídos de Luis Miranda y cultivados en nuestra tierra. Una textura dulce y densa, ideal para sopas de otoño.</p>
                     
-                    <a href="https://andeschain.io" target="_blank" class="trace-link">
+                    <button onclick="openPassport('https://andeschain.io/producto.html?id=2')" class="trace-link">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
                         Origen certificado
-                    </a>
+                    </button>
 
                     <div class="card-footer">
                         <span class="price">$3.000 <span style="font-size:14px; color:#515154; font-weight:normal;">/un</span></span>
@@ -283,10 +301,10 @@
                     <h2 class="card-title">Zapallo Tromboncino</h2>
                     <p class="card-desc">Cultivado en El Otro Huerto (almácigos de Luis Miranda). Un zapallo de forma única, carne firme y sabor suave a nuez. Quedan pocos.</p>
                     
-                    <a href="https://andeschain.io" target="_blank" class="trace-link">
+                    <button onclick="openPassport('https://andeschain.io/producto.html?id=3')" class="trace-link">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
                         Origen certificado
-                    </a>
+                    </button>
 
                     <div class="card-footer">
                         <span class="price">$3.500 <span style="font-size:14px; color:#515154; font-weight:normal;">/un</span></span>
@@ -297,6 +315,19 @@
         </section>
     </main>
 
+    <div class="passport-overlay" id="passportOverlay" onclick="closePassport()">
+        <div class="passport-modal" onclick="event.stopPropagation()">
+            <div class="passport-header">
+                <h3>
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    Pasaporte de Origen
+                </h3>
+                <button class="close-drawer" onclick="closePassport()">×</button>
+            </div>
+            <iframe id="passportIframe" class="passport-iframe" src=""></iframe>
+        </div>
+    </div>
+
     <button id="mobileCartBtn" class="mobile-cart-float" onclick="toggleDrawer()">
         <span>🛒 Ver tu cosecha (<span id="mobileItemCount">0</span>)</span>
         <span id="mobileCartTotal">$0</span>
@@ -305,7 +336,7 @@
     <footer>
         <div style="max-width: 600px; margin: 0 auto;">
             <h3>El Otro Huerto | Mercado</h3>
-            <p>Cosechas agroecológicas y con trazabilidad de origen.<br>De Paine a Providencia.</p>
+            <p>Cosechas limitadas, agroecológicas y honestas.<br>De Paine a Providencia.</p>
             <div style="display: flex; justify-content: center; gap: 24px;">
                 <a href="index.html">Volver al sitio principal</a>
                 <a href="https://wa.me/56958799778" target="_blank">Contacto WhatsApp</a>
@@ -322,7 +353,7 @@
         
         <div class="drawer-body">
             <div class="empty-cart active" id="emptyCart">
-                <p>Tu canasta está vacía (por ahora). 🌱</p>
+                <p>Tu canasta está vacía por ahora. 🌱</p>
             </div>
             
             <div id="cartItemsContainer"></div>
@@ -375,9 +406,22 @@
     </div>
 
     <script>
-        // LA URL NUEVA QUE GENERASTE:
+        // LA URL DE GOOGLE APPS SCRIPT:
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx8Wuafb3qH1UgBRjMtlf64ByXvkjuHBjrMZnmdSjlW_yI1dykp8hUH1GaxFXRdEtZv/exec';
         let cart = {};
+
+        // FUNCIONES DEL MODAL ANDESCHAIN
+        function openPassport(url) {
+            document.getElementById('passportIframe').src = url;
+            document.getElementById('passportOverlay').classList.add('open');
+            document.body.style.overflow = 'hidden'; // Evita que se haga scroll atrás
+        }
+
+        function closePassport() {
+            document.getElementById('passportOverlay').classList.remove('open');
+            setTimeout(() => { document.getElementById('passportIframe').src = ""; }, 300); // Limpia iframe al cerrar
+            document.body.style.overflow = ''; // Restaura el scroll
+        }
 
         function toggleDrawer() {
             document.getElementById('drawer').classList.toggle('open');
@@ -386,8 +430,10 @@
             const floatBtn = document.getElementById('mobileCartBtn');
             if(document.getElementById('drawer').classList.contains('open')) {
                 floatBtn.style.bottom = "-100px";
+                document.body.style.overflow = 'hidden';
             } else {
                 updateCartUI(); 
+                document.body.style.overflow = '';
             }
         }
 
@@ -514,7 +560,7 @@
                 totalAPagar += (item.price * item.qty);
             });
 
-            // TRUCO DE SEGURIDAD (CORS BYPASS): Enviamos los datos como un formulario nativo
+            // Formato Formulario para evitar bloqueos CORS
             const payload = new URLSearchParams({
                 nombre: name,
                 email: email,
@@ -522,24 +568,22 @@
                 direccion: address || "No indicada",
                 logistica: logisticaFinal,
                 total: totalAPagar,
-                detalle: resumenPedido.replace(/%0A/g, ", ") // Limpiamos para el Excel
+                detalle: resumenPedido.replace(/%0A/g, ", ") 
             });
 
-            btn.innerHTML = "Abriendo WhatsApp..."; 
-            btn.disabled = true;
+            btn.innerHTML = "Generando pedido..."; btn.disabled = true;
 
-            // 1. Enviamos silenciosamente a tu Excel en Google Drive.
-            // No bloqueamos la pantalla esperando la respuesta.
+            // 1. Enviar silenciosamente
             fetch(GOOGLE_SCRIPT_URL, {
                 method: 'POST',
                 body: payload
-            }).catch(e => console.log("Datos enviados."));
+            }).catch(e => console.log("Enviado."));
 
-            // 2. Preparamos el mensaje de WhatsApp
+            // 2. Preparar WhatsApp
             const mensajeWa = `Hola El Otro Huerto! 🌱%0A%0A*Mi pedido es:*%0A${resumenPedido}%0A*Total:* $${totalAPagar.toLocaleString('es-CL')}%0A*Entrega:* ${logisticaFinal}%0A%0A¿Me comparten los datos para transferir?`;
             const urlWa = `https://wa.me/56958799778?text=${mensajeWa}`;
 
-            // 3. Limpiamos UI
+            // 3. Limpiar y redirigir rápido
             cart = {}; updateCartUI(); toggleDrawer();
             document.getElementById('custName').value = '';
             document.getElementById('custEmail').value = '';
@@ -547,7 +591,6 @@
             document.getElementById('custAddress').value = '';
             selectDelivery('plaza', document.querySelector('label[onclick="selectDelivery(\'plaza\', this)"]'));
             
-            // 4. Redirigimos al cliente a WhatsApp de inmediato (Damos 800ms para que salga el correo a Google)
             setTimeout(() => {
                 window.location.href = urlWa;
                 btn.innerHTML = "Completar Pedido";
