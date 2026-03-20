@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <title>Mercado Agroecológico en Barrio Las Lilas y alrededores | El Otro Huerto</title>
+    <meta name="description" content="Cosecha agroecológica directa de Paine a tu mesa. Reserva papas nativas y zapallos libres de químicos. Retiro en Plaza Las Lilas y cafeterías de Providencia y alrededores.">
+    <meta name="keywords" content="verduras agroecologicas providencia, mercado rural las lilas, verduras a domicilio providencia, papas nativas santiago, zapallo de guarda, comida sana providencia, el otro huerto">
+    <meta name="author" content="Jorge Munoz - El Otro Huerto">
+
+    <meta property="og:title" content="Mercado Rural | Barrio Las Lilas y alrededores 🧺">
+    <meta property="og:description" content="Cosecha agroecológica directa desde Paine. Papas Astrid, zapallos de guarda y más. ¡Reserva tu canasta aquí y retira cerca de tu casa!">
+    <meta property="og:image" content="https://elotrohuerto.cl/assets/papa_astrid.jpg"> 
+    <meta property="og:url" content="https://elotrohuerto.cl/mercado">
+    <meta property="og:type" content="website">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600&display=swap" rel="stylesheet">
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FarmersMarket",
+      "name": "El Otro Huerto | Mercado Rural",
+      "image": "https://elotrohuerto.cl/assets/papa_astrid.jpg",
+      "description": "Mercado rural de cosechas agroecológicas, limitadas y libres de químicos. Entregas directas en Plaza Las Lilas y puntos vecinos en Providencia y alrededores.",
+      "url": "https://elotrohuerto.cl/mercado",
+      "telephone": "+56958799778",
+      "areaServed": [
+        { "@type": "Neighborhood", "name": "Barrio Las Lilas" },
+        { "@type": "City", "name": "Providencia" },
+        { "@type": "City", "name": "Santiago" }
+      ],
+      "founder": { "@type": "Person", "name": "Jorge Munoz" }
+    }
+    </script>
+    
+    <style>
+        :root {
+            --bg-page: #FDFCFB; 
+            --bg-alt: #F4F6F0; 
+            --text-main: #1D1D1F; 
+            --text-muted: #515154; 
+            --accent: #4A5D23; 
+            --border: #EAEAEA;
+        }
+
+        body { 
+            font-family: 'Inter', sans-serif; background-color: var(--bg-page); color: var(--text-main); 
+            margin: 0; padding: 0; -webkit-font-smoothing: antialiased; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh;
+        }
+
+        *, *:before, *:after { box-sizing: border-box; }
+        h1, h2, h3 { font-family: 'Lora', serif; margin-top: 0; color: var(--text-main); }
+        main { flex-grow: 1; }
+        
+        /* HEADER NAVEGACIÓN */
+        header {
+            position: sticky; top: 0; background: rgba(253, 252, 251, 0.95); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border); z-index: 100; padding: 16px 24px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo-container { display: flex; align-items: center; gap: 12px; font-family: 'Lora', serif; font-weight: 600; font-size: 20px; text-decoration: none; color: var(--text-main); letter-spacing: -0.5px;}
+        .logo-container img { height: 28px; width: auto; }
+        .logo-muted { font-weight: 400; color: var(--text-muted); font-size: 18px; }
+        
+        .cart-btn {
+            background: none; border: none; cursor: pointer; position: relative;
+            display: flex; align-items: center; gap: 8px; font-family: 'Inter', sans-serif; font-weight: 600; color: var(--accent); padding: 8px;
+        }
+        .cart-badge {
+            background: var(--accent); color: white; font-size: 12px; padding: 2px 6px; 
+            border-radius: 12px; position: absolute; top: -2px; right: -8px; display: none;
+            border: 2px solid #fff; font-weight: 700;
+        }
+
+        /* HERO SECTION MEJORADO */
+        .hero { padding: 60px 24px 40px; text-align: center; max-width: 800px; margin: 0 auto; }
+        .hero h1 { font-size: 42px; line-height: 1.1; margin-bottom: 16px; letter-spacing: -1px; }
+        .hero p { font-size: 18px; color: var(--text-muted); line-height: 1.6; }
+
+        /* PRODUCT GRID */
+        .grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+            gap: 32px; padding: 0 24px 80px; max-width: 1080px; margin: 0 auto;
+        }
+        .card {
+            background: #fff; border: 1px solid var(--border); border-radius: 20px; 
+            overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column;
+        }
+        .card:hover { transform: translateY(-4px); box-shadow: 0 16px 32px rgba(0,0,0,0.06); }
+        .card-img { width: 100%; height: 240px; object-fit: cover; background-color: var(--bg-alt); border-bottom: 1px solid var(--border); }
+        .card-body { padding: 24px; display: flex; flex-direction: column; flex-grow: 1; }
+        .card-tag { font-size: 12px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; display: inline-block;}
+        .card-title { font-size: 24px; margin-bottom: 8px; letter-spacing: -0.5px;}
+        .card-desc { font-size: 15px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.6; flex-grow: 1;}
+        
+        /* Enlace AndesChain Modificado para Modal */
+        .trace-link {
+            display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--accent);
+            text-decoration: none; font-weight: 600; margin-bottom: 24px; background: var(--bg-alt); padding: 8px 14px; border-radius: 16px; align-self: flex-start; transition: opacity 0.2s; border: 1px solid rgba(74, 93, 35, 0.1); cursor: pointer;
+        }
+        .trace-link:hover { opacity: 0.8; background: rgba(74, 93, 35, 0.1); }
+        .trace-link svg { width: 14px; height: 14px; }
+        
+        .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 20px; margin-top: auto;}
+        .price { font-size: 20px; font-weight: 600; color: var(--text-main); }
+        .btn-add {
+            background: var(--text-main); color: #fff; border: none; padding: 12px 20px; 
+            border-radius: 24px; font-weight: 600; font-size: 14px; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; -webkit-appearance: none;
+        }
+        .btn-add:hover { transform: translateY(-2px); box-shadow: 0 8px 16px rgba(0,0,0,0.15); }
+        .btn-add:active { transform: translateY(0); box-shadow: none; }
+
+        /* DRAWER (CARRITO LATERAL) */
+        .overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); z-index: 999; 
+            opacity: 0; visibility: hidden; transition: 0.3s;
+        }
+        .drawer {
+            position: fixed; top: 0; right: -400px; width: 100%; max-width: 420px; height: 100vh; 
+            background: #fff; z-index: 1000; box-shadow: -10px 0 40px rgba(0,0,0,0.1); 
+            display: flex; flex-direction: column; transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .drawer.open { right: 0; }
+        .overlay.open { opacity: 1; visibility: visible; }
+        
+        .drawer-header { padding: 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #fff;}
+        .drawer-header h2 { font-size: 24px; margin: 0; }
+        .close-drawer { background: var(--bg-alt); border: none; font-size: 24px; cursor: pointer; color: var(--text-main); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.2s;}
+        .close-drawer:hover { background: #EAEAEA; }
+        
+        .drawer-body { padding: 24px; overflow-y: auto; flex-grow: 1; padding-bottom: 40px; }
+        
+        .cart-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px dashed var(--border); }
+        .item-info h4 { margin: 0 0 6px 0; font-size: 15px; font-family: 'Inter', sans-serif;}
+        .item-info p { margin: 0; font-size: 14px; color: var(--text-muted); }
+        .item-controls { display: flex; align-items: center; gap: 14px; background: var(--bg-alt); border-radius: 20px; padding: 4px 8px;}
+        .btn-qty { background: none; border: none; width: 24px; height: 24px; border-radius: 50%; cursor: pointer; font-weight: bold; font-size: 16px; color: var(--text-main); display: flex; justify-content: center; align-items: center;}
+        
+        /* Formulario Logística UX */
+        .form-section { margin-top: 32px; }
+        .form-section h3 { font-size: 18px; margin-bottom: 16px; font-family: 'Inter', sans-serif; letter-spacing: -0.5px;}
+        input[type="text"], input[type="email"], select {
+            width: 100%; padding: 16px; border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; font-size: 16px; background: #FAFAFA; -webkit-appearance: none; font-family: 'Inter', sans-serif; transition: border-color 0.2s;
+        }
+        input:focus, select:focus { outline: none; border-color: var(--accent); background: #fff; box-shadow: 0 0 0 3px rgba(74, 93, 35, 0.1);}
+        
+        .radio-group { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
+        .radio-card {
+            border: 1px solid var(--border); border-radius: 12px; padding: 16px; cursor: pointer; transition: 0.2s; position: relative;
+        }
+        .radio-card.selected { border-color: var(--accent); background-color: var(--bg-alt); border-width: 2px; padding: 15px; }
+        .radio-card input { position: absolute; opacity: 0; }
+        .radio-title { font-weight: 600; font-size: 15px; margin-bottom: 6px; display: block;}
+        .radio-desc { font-size: 14px; color: var(--text-muted); margin: 0; line-height: 1.4; }
+
+        #cafeOptions {
+            display: none; padding: 20px 16px; background: var(--bg-alt); border: 2px solid var(--accent); border-top: none; 
+            border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; margin-top: -12px;
+        }
+
+        .drawer-footer { padding: 24px; border-top: 1px solid var(--border); background: #fff; position: sticky; bottom: 0; box-shadow: 0 -10px 20px rgba(0,0,0,0.03); z-index: 10;}
+        .total-row { display: flex; justify-content: space-between; font-size: 20px; font-weight: 600; margin-bottom: 20px; }
+        .btn-checkout {
+            width: 100%; background: var(--accent); color: #fff; border: none; padding: 18px; 
+            border-radius: 16px; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform 0.2s; -webkit-appearance: none;
+        }
+        .btn-checkout:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-checkout:active:not(:disabled) { transform: scale(0.98); }
+
+        .empty-cart { text-align: center; color: var(--text-muted); padding: 40px 0; display: none; }
+        .empty-cart.active { display: block; }
+
+        /* MODAL ANDESCHAIN (Pasaporte Trazabilidad) */
+        .passport-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+            z-index: 2000; opacity: 0; visibility: hidden; transition: 0.3s;
+            display: flex; align-items: flex-end; justify-content: center; /* Bottom sheet en móvil */
+        }
+        .passport-overlay.open { opacity: 1; visibility: visible; }
+        
+        .passport-modal {
+            background: #fff; width: 100%; max-width: 600px; height: 90vh;
+            border-radius: 24px 24px 0 0; overflow: hidden;
+            transform: translateY(100%); transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: flex; flex-direction: column; box-shadow: 0 -20px 40px rgba(0,0,0,0.2);
+        }
+        .passport-overlay.open .passport-modal { transform: translateY(0); }
+        
+        .passport-header {
+            padding: 16px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #fff;
+        }
+        .passport-header h3 { margin: 0; font-size: 15px; font-family: 'Inter', sans-serif; display: flex; align-items: center; gap: 8px; color: var(--text-main);}
+        .passport-iframe { flex-grow: 1; width: 100%; border: none; background: #fcfcfc;}
+
+        /* FOOTER SIMPLIFICADO */
+        footer { background-color: var(--text-main); color: #FDFCFB; padding: 48px 24px; text-align: center; margin-top: auto; }
+        footer h3 { color: #FFFFFF; margin-bottom: 12px; font-size: 20px; }
+        footer p { color: #A0A0A0; font-size: 15px; margin-bottom: 32px; line-height: 1.6; }
+        footer a { color: #A0A0A0; text-decoration: underline; font-size: 14px; transition: color 0.2s;}
+        footer a:hover { color: #fff; }
+
+        /* BOTÓN FLOTANTE MÓVIL */
+        .mobile-cart-float {
+            display: none; position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+            width: calc(100% - 48px); max-width: 400px; background: var(--text-main); color: #fff; border: none;
+            padding: 16px 24px; border-radius: 30px; font-size: 16px; font-weight: 600; z-index: 90;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.2); cursor: pointer; align-items: center; justify-content: space-between;
+            font-family: 'Inter', sans-serif; transition: bottom 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .mobile-cart-float.show { display: flex; }
+
+        /* ADAPTACIONES MÓVIL / DESKTOP */
+        @media(min-width: 768px) {
+            .passport-overlay { align-items: center; }
+            .passport-modal { height: 85vh; border-radius: 24px; transform: translateY(50px) scale(0.95); opacity: 0;}
+            .passport-overlay.open .passport-modal { transform: translateY(0) scale(1); opacity: 1;}
+        }
+
+        @media(max-width: 767px) {
+            header { padding: 12px 20px; }
+            .logo-container { font-size: 18px; }
+            .hero { padding: 40px 20px 20px; }
+            .hero h1 { font-size: 36px; }
+            .grid { grid-template-columns: 1fr; padding: 0 20px 100px; gap: 24px; }
+            .card-img { height: 200px; }
+            
+            .card-footer { flex-direction: column; gap: 16px; align-items: stretch;}
+            .price { text-align: center; }
+            .btn-add { width: 100%; padding: 16px; font-size: 16px; }
+            
+            .drawer { width: 100%; right: -100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo-container">
+            <img src="assets/logo.svg" alt="Icono" onerror="this.style.display='none'">
+            El Otro Huerto <span class="logo-muted">| Mercado</span>
+        </a>
+        <button class="cart-btn" onclick="toggleDrawer()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+            <span class="cart-badge" id="cartCount">0</span>
+        </button>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>Cosecha limpia y honesta. Directo a tu mesa.</h1>
+            <p>Desde nuestra parcela en Paine, rescatamos semillas locales para cultivar de forma agroecológica. Alimentos 100% libres de químicos y en camino a la certificación biodinámica.</p>
+        </section>
+
+        <section class="grid">
+            <div class="card">
+                <img src="assets/papa_astrid.jpg" alt="Papas Astrid" class="card-img" onerror="this.src='https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&q=80&w=400'">
+                <div class="card-body">
+                    <span class="card-tag">Temporada Alta</span>
+                    <h2 class="card-title">Papas Astrid (Bolsa 3kg)</h2>
+                    <p class="card-desc">Cosechadas en nuestra parcela. La semilla original proviene de la familia Alburquenque de Paine. Perfectas para asar o puré rústico.</p>
+                    
+                    <button onclick="openPassport('https://andeschain.io/producto.html?id=1')" class="trace-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        Origen certificado
+                    </button>
+
+                    <div class="card-footer">
+                        <span class="price">$3.500</span>
+                        <button class="btn-add" onclick="addToCart('papas', 'Papas Astrid (Bolsa 3kg)', 3500)">Agregar a la canasta</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="assets/zapallo_guarda.jpg" alt="Zapallo Guarda" class="card-img" onerror="this.src='https://images.unsplash.com/photo-1570586437263-ab629fccc818?auto=format&fit=crop&q=80&w=400'">
+                <div class="card-body">
+                    <span class="card-tag">Semilla Antigua</span>
+                    <h2 class="card-title">Zapallo Guarda de Paine</h2>
+                    <p class="card-desc">Almácigos traídos de Luis Miranda y cultivados en nuestra tierra. Una textura dulce y densa, ideal para sopas de otoño.</p>
+                    
+                    <button onclick="openPassport('https://andeschain.io/producto.html?id=2')" class="trace-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        Origen certificado
+                    </button>
+
+                    <div class="card-footer">
+                        <span class="price">$3.000 <span style="font-size:14px; color:#515154; font-weight:normal;">/un</span></span>
+                        <button class="btn-add" onclick="addToCart('zapallo_g', 'Zapallo Guarda (Unidad)', 3000)">Agregar a la canasta</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="assets/zapallo_tromboncino.jpg" alt="Zapallo Tromboncino" class="card-img" onerror="this.src='https://images.unsplash.com/photo-1590415307218-c55fb21cb170?auto=format&fit=crop&q=80&w=400'">
+                <div class="card-body">
+                    <span class="card-tag">Edición Especial</span>
+                    <h2 class="card-title">Zapallo Tromboncino</h2>
+                    <p class="card-desc">Cultivado en El Otro Huerto (almácigos de Luis Miranda). Un zapallo de forma única, carne firme y sabor suave a nuez. Quedan pocos.</p>
+                    
+                    <button onclick="openPassport('https://andeschain.io/producto.html?id=3')" class="trace-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        Origen certificado
+                    </button>
+
+                    <div class="card-footer">
+                        <span class="price">$3.500 <span style="font-size:14px; color:#515154; font-weight:normal;">/un</span></span>
+                        <button class="btn-add" onclick="addToCart('zapallo_t', 'Zapallo Tromboncino (Unidad)', 3500)">Agregar a la canasta</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="passport-overlay" id="passportOverlay" onclick="closePassport()">
+        <div class="passport-modal" onclick="event.stopPropagation()">
+            <div class="passport-header">
+                <h3>
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    Pasaporte de Origen
+                </h3>
+                <button class="close-drawer" onclick="closePassport()">×</button>
+            </div>
+            <iframe id="passportIframe" class="passport-iframe" src=""></iframe>
+        </div>
+    </div>
+
+    <button id="mobileCartBtn" class="mobile-cart-float" onclick="toggleDrawer()">
+        <span>🛒 Ver tu cosecha (<span id="mobileItemCount">0</span>)</span>
+        <span id="mobileCartTotal">$0</span>
+    </button>
+
+    <footer>
+        <div style="max-width: 600px; margin: 0 auto;">
+            <h3>El Otro Huerto | Mercado</h3>
+            <p>Cosechas limitadas, agroecológicas y honestas.<br>De Paine a Providencia.</p>
+            <div style="display: flex; justify-content: center; gap: 24px;">
+                <a href="index.html">Volver al sitio principal</a>
+                <a href="https://wa.me/56958799778" target="_blank">Contacto WhatsApp</a>
+            </div>
+        </div>
+    </footer>
+
+    <div class="overlay" id="overlay" onclick="toggleDrawer()"></div>
+    <div class="drawer" id="drawer">
+        <div class="drawer-header">
+            <h2>Tu Cosecha</h2>
+            <button class="close-drawer" onclick="toggleDrawer()">×</button>
+        </div>
+        
+        <div class="drawer-body">
+            <div class="empty-cart active" id="emptyCart">
+                <p>Tu canasta está vacía por ahora. 🌱</p>
+            </div>
+            
+            <div id="cartItemsContainer"></div>
+
+            <div class="form-section" id="checkoutForm" style="display: none;">
+                <h3>Tus Datos</h3>
+                <input type="text" id="custName" placeholder="Nombre y Apellido" required>
+                <input type="email" id="custEmail" placeholder="Correo electrónico" required>
+                <input type="text" id="custPhone" placeholder="WhatsApp (Ej: +569...)" required>
+                <input type="text" id="custAddress" placeholder="Dirección">
+
+                <h3 style="margin-top: 32px;">¿Cómo quieres recibirlo?</h3>
+                <div class="radio-group">
+                    <label class="radio-card selected" onclick="selectDelivery('plaza', this)">
+                        <input type="radio" name="delivery" value="plaza" checked>
+                        <span class="radio-title">📍 Plaza Las Lilas (Sábado)</span>
+                        <p class="radio-desc">Te esperamos cada sábado de 10:00 a 11:30 hrs en Plaza Loreto Cousiño (frente a Dolce y Salato).</p>
+                    </label>
+                    
+                    <label class="radio-card" onclick="selectDelivery('cafe', this)" style="border-bottom-left-radius: 0; border-bottom-right-radius: 0;">
+                        <input type="radio" name="delivery" value="cafe">
+                        <span class="radio-title">☕ Retiro en tu cafetería aliada</span>
+                        <p class="radio-desc">Busca el sello de El Otro Huerto y retira tu canasta en el local más próximo a tu depto/casa.</p>
+                    </label>
+                    
+                    <div id="cafeOptions">
+                        <label style="font-size: 14px; font-weight: 500; color: var(--text-main); display: block; margin-bottom: 12px;">Elige tu punto de retiro:</label>
+                        <select id="selectedCafe">
+                            <option value="">-- Selecciona tu cafetería --</option>
+                            <option value="Dolce & Salato">Dolce & Salato</option>
+                            <option value="The Animal Coffe (Pop Hotel)">The Animal Coffe (Pop Hotel)</option>
+                            <option value="BlackSheep">BlackSheep</option>
+                            <option value="La Panadera">La Panadera</option>
+                            <option value="Sabor de Buenos Aires">Sabor de Buenos Aires</option>
+                            <option value="La Popular (Bilbao)">La Popular (Bilbao)</option>
+                            <option value="NN">NN</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="drawer-footer">
+            <div class="total-row">
+                <span>Total a Pagar:</span>
+                <span id="cartTotal">$0</span>
+            </div>
+            <button class="btn-checkout" id="btnPagar" disabled onclick="procesarPedido()">Completar Pedido</button>
+        </div>
+    </div>
+
+    <script>
+        // PEGA AQUÍ TU URL DEFINITIVA DE GOOGLE APPS SCRIPT
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/TU_URL_AQUI/exec';
+        let cart = {};
+
+        // FUNCIONES DEL MODAL ANDESCHAIN
+        function openPassport(url) {
+            document.getElementById('passportIframe').src = url;
+            document.getElementById('passportOverlay').classList.add('open');
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function closePassport() {
+            document.getElementById('passportOverlay').classList.remove('open');
+            setTimeout(() => { document.getElementById('passportIframe').src = ""; }, 300);
+            document.body.style.overflow = ''; 
+        }
+
+        function toggleDrawer() {
+            document.getElementById('drawer').classList.toggle('open');
+            document.getElementById('overlay').classList.toggle('open');
+            
+            const floatBtn = document.getElementById('mobileCartBtn');
+            if(document.getElementById('drawer').classList.contains('open')) {
+                floatBtn.style.bottom = "-100px";
+                document.body.style.overflow = 'hidden';
+            } else {
+                updateCartUI(); 
+                document.body.style.overflow = '';
+            }
+        }
+
+        function addToCart(id, name, price) {
+            if(cart[id]) { cart[id].qty += 1; } 
+            else { cart[id] = { name: name, price: price, qty: 1 }; }
+            updateCartUI();
+            
+            if(!document.getElementById('drawer').classList.contains('open') && window.innerWidth >= 768) { 
+                toggleDrawer(); 
+            }
+        }
+
+        function updateQty(id, change) {
+            if(cart[id]) {
+                cart[id].qty += change;
+                if(cart[id].qty <= 0) { delete cart[id]; }
+                updateCartUI();
+                
+                if(Object.keys(cart).length === 0 && window.innerWidth < 768) {
+                    setTimeout(() => { toggleDrawer(); }, 300);
+                }
+            }
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cartItemsContainer');
+            const emptyState = document.getElementById('emptyCart');
+            const formState = document.getElementById('checkoutForm');
+            const btnPagar = document.getElementById('btnPagar');
+            const badge = document.getElementById('cartCount');
+            const floatBtn = document.getElementById('mobileCartBtn');
+            
+            container.innerHTML = '';
+            let total = 0; let totalItems = 0;
+            const keys = Object.keys(cart);
+
+            if(keys.length === 0) {
+                emptyState.classList.add('active'); formState.style.display = 'none';
+                btnPagar.disabled = true; badge.style.display = 'none';
+                floatBtn.classList.remove('show');
+            } else {
+                emptyState.classList.remove('active'); formState.style.display = 'block';
+                btnPagar.disabled = false; badge.style.display = 'block';
+                
+                if(window.innerWidth < 768 && !document.getElementById('drawer').classList.contains('open')) {
+                    floatBtn.classList.add('show');
+                    floatBtn.style.bottom = "24px";
+                }
+
+                keys.forEach(id => {
+                    const item = cart[id];
+                    total += item.price * item.qty;
+                    totalItems += item.qty;
+
+                    container.innerHTML += `
+                        <div class="cart-item">
+                            <div class="item-info">
+                                <h4>${item.name}</h4>
+                                <p>$${item.price.toLocaleString('es-CL')} c/u</p>
+                            </div>
+                            <div class="item-controls">
+                                <button class="btn-qty" onclick="updateQty('${id}', -1)">-</button>
+                                <span>${item.qty}</span>
+                                <button class="btn-qty" onclick="updateQty('${id}', 1)">+</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            const formatTotal = '$' + total.toLocaleString('es-CL');
+            document.getElementById('cartTotal').innerText = formatTotal;
+            document.getElementById('mobileCartTotal').innerText = formatTotal;
+            document.getElementById('mobileItemCount').innerText = totalItems;
+            badge.innerText = totalItems;
+        }
+
+        function selectDelivery(type, element) {
+            document.querySelectorAll('.radio-card').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+            element.querySelector('input').checked = true;
+            
+            const cafeOptions = document.getElementById('cafeOptions');
+            if(type === 'cafe') {
+                cafeOptions.style.display = 'block';
+                setTimeout(() => { 
+                    cafeOptions.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); 
+                }, 150);
+            } else {
+                cafeOptions.style.display = 'none';
+                document.getElementById('selectedCafe').value = ''; 
+            }
+        }
+
+        async function procesarPedido() {
+            const btn = document.getElementById('btnPagar');
+            const name = document.getElementById('custName').value.trim();
+            const email = document.getElementById('custEmail').value.trim();
+            const phone = document.getElementById('custPhone').value.trim();
+            const address = document.getElementById('custAddress').value.trim();
+            
+            if(!name || !email || !phone) {
+                alert("Por favor completa tus datos básicos antes de pagar.");
+                return;
+            }
+
+            const deliveryType = document.querySelector('input[name="delivery"]:checked').value;
+            let logisticaFinal = "Plaza Las Lilas";
+
+            if(deliveryType === 'cafe') {
+                const cafeElegido = document.getElementById('selectedCafe').value;
+                if(!cafeElegido) {
+                    alert("Por favor, selecciona en qué cafetería quieres retirar tu pedido.");
+                    return;
+                }
+                logisticaFinal = "Retiro en: " + cafeElegido;
+            }
+
+            let resumenPedido = ""; let totalAPagar = 0;
+            Object.keys(cart).forEach(id => {
+                const item = cart[id];
+                resumenPedido += `• ${item.qty}x ${item.name} | `;
+                totalAPagar += (item.price * item.qty);
+            });
+
+            // Usamos formato JSON normal para que Google Sheets lo procese y le pida el link a Mercado Pago
+            const payload = {
+                nombre: name,
+                email: email,
+                telefono: phone,
+                direccion: address || "No indicada",
+                logistica: logisticaFinal,
+                total: totalAPagar,
+                detalle: resumenPedido
+            };
+
+            btn.innerHTML = "Abriendo pago seguro..."; 
+            btn.disabled = true;
+
+            try {
+                // Hacemos el llamado como text/plain para que el navegador no bloquee (CORS) y podamos leer la respuesta JSON
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload)
+                });
+                
+                const data = await response.json();
+
+                if(data.status === 'success' && data.paymentUrl) {
+                    cart = {}; updateCartUI(); toggleDrawer();
+                    document.getElementById('custName').value = '';
+                    document.getElementById('custEmail').value = '';
+                    document.getElementById('custPhone').value = '';
+                    document.getElementById('custAddress').value = '';
+                    selectDelivery('plaza', document.querySelector('label[onclick="selectDelivery(\'plaza\', this)"]'));
+                    
+                    btn.innerHTML = "Completar Pedido";
+                    btn.disabled = false;
+                    
+                    // REDIRIGIMOS A MERCADO PAGO
+                    window.location.href = data.paymentUrl;
+                } else {
+                    throw new Error("No se pudo generar el link.");
+                }
+
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Tuvimos un problema al conectar con Mercado Pago. Por favor escríbenos al WhatsApp para ayudarte.");
+                btn.innerHTML = "Completar Pedido"; 
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
