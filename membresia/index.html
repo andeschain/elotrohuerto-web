@@ -54,7 +54,14 @@
 
         .card-content { padding: 32px 32px 40px 32px; }
         
-        .card-content img { height: 32px; margin-bottom: 24px; }
+        /* LOGO COHERENTE CON MERCADO */
+        .brand-header {
+            display: flex; align-items: center; justify-content: center; gap: 8px; 
+            font-family: 'Lora', serif; font-weight: 600; font-size: 20px; 
+            color: var(--text-main); letter-spacing: -0.5px; margin-bottom: 24px;
+        }
+        .brand-header img { height: 28px; width: auto; }
+        .brand-muted { font-weight: 400; color: var(--text-muted); font-size: 18px; }
         
         h1 { 
             font-family: 'Lora', serif; 
@@ -70,16 +77,16 @@
             font-size: 15px; 
             color: var(--text-muted); 
             margin-bottom: 32px; 
-            line-height: 1.6; /* Aumentado para mejor lectura en celular */
+            line-height: 1.6; 
         }
         
-        /* Inputs y Botones optimizados para "Touch" (Dedos) */
+        /* Inputs y Botones optimizados */
         input[type="password"] {
             width: 100%; padding: 16px; font-size: 16px; border: 1px solid var(--border); 
-            border-radius: 12px; /* Más redondo para look móvil moderno */
+            border-radius: 12px; 
             margin-bottom: 16px; box-sizing: border-box; text-align: center; letter-spacing: 2px;
             background-color: #FAFAFA;
-            -webkit-appearance: none; /* Evita estilos feos por defecto en iOS */
+            -webkit-appearance: none; 
             transition: all 0.2s ease;
         }
         input[type="password"]:focus { 
@@ -97,13 +104,14 @@
             -webkit-appearance: none;
         }
         .btn-primary:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(74,93,35,0.2); }
-        .btn-primary:active { transform: translateY(0); box-shadow: none; } /* Efecto de toque real */
+        .btn-primary:active { transform: translateY(0); box-shadow: none; } 
         
         #errorMsg { color: #D93025; font-size: 14px; display: none; margin-top: 16px; font-weight: 500; }
 
-        /* Ajustes específicos para celulares (Pantallas chicas) */
         @media (max-width: 480px) {
             .card-content { padding: 24px 20px 32px 20px; }
+            .brand-header { font-size: 18px; margin-bottom: 20px; }
+            .brand-muted { font-size: 16px; }
             h1 { font-size: 24px; }
             .card-image { height: 180px; }
             p.subtitle { font-size: 14px; margin-bottom: 24px; }
@@ -116,7 +124,10 @@
         <div class="card-image"></div>
         
         <div class="card-content">
-            <img src="../assets/logo.svg" alt="El Otro Huerto" onerror="this.style.display='none'">
+            <div class="brand-header">
+                <img src="../assets/logo.svg" alt="Icono" onerror="this.style.display='none'">
+                El Otro Huerto <span class="brand-muted">| Refugio</span>
+            </div>
             
             <h1>Tu refugio de fin de semana, sin <span style="text-decoration: line-through; color: var(--text-muted); text-decoration-thickness: 2px; opacity: 0.8;">el cacho de</span> mantenerlo.</h1>
             <p class="subtitle">Estamos armando un grupo limitado de familias afines. Ingresa la clave de tu invitación para conocer los detalles del piloto.</p>
@@ -162,7 +173,6 @@
         document.getElementById("passInput").addEventListener("keypress", function(event) {
             if (event.key === "Enter") { 
                 event.preventDefault(); 
-                // Ocultar el teclado en celulares para que vean el efecto de abrir
                 this.blur(); 
                 checkAccess(); 
             }
