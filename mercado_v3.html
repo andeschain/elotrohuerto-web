@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mercado - El Otro Huerto</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #FDFCFB; }
+        .pill-active { background-color: #4A5D23; color: white; }
+        .product-card { transition: transform 0.2s ease; border-radius: 24px; }
+        .product-card:hover { transform: translateY(-4px); }
+        .grayscale-img { filter: grayscale(100%); opacity: 0.6; }
+        .skeleton { background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 200% 100%; animation: loading 1.5s infinite; }
+        @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <header class="max-w-5xl mx-auto mb-12 text-center">
+        <h1 class="text-4xl font-semibold text-[#1D1D1F] mb-6">Cosecha de la Semana</h1>
+        <div class="relative max-w-md mx-auto mb-8">
+            <input type="text" id="searchInput" placeholder="Buscar papas, zapallos..." 
+                class="w-full px-6 py-4 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#4A5D23] transition-all shadow-sm">
+        </div>
+        
+        <div class="flex flex-wrap justify-center gap-3 mb-8" id="filterContainer">
+            <button onclick="filterProducts('Todos')" class="filter-pill pill-active px-6 py-2 rounded-full border border-gray-200 text-sm font-medium transition-all">Todos</button>
+            <button onclick="filterProducts('Agroecológico')" class="filter-pill px-6 py-2 rounded-full border border-gray-200 text-sm font-medium hover:bg-gray-50 transition-all">🌿 Agroecológico</button>
+            <button onclick="filterProducts('Biodinámico')" class="filter-pill px-6 py-2 rounded-full border border-gray-200 text-sm font-medium hover:bg-gray-50 transition-all">✨ Biodinámico</button>
+            <button onclick="filterProducts('Rural')" class="filter-pill px-6 py-2 rounded-full border border-gray-200 text-sm font-medium hover:bg-gray-50 transition-all">🚜 Rural</button>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" id="productGrid">
+        <div class="skeleton h-64 rounded-3xl"></div>
+        <div class="skeleton h-64 rounded-3xl"></div>
+        <div class="skeleton h-64 rounded-3xl"></div>
+    </main>
+
+    <div id="cartDrawer" class="fixed bottom-8 right-8 bg-[#4A5D23] text-white px-8 py-4 rounded-full shadow-2xl cursor-pointer hidden transition-all hover:scale-105 active:scale-95" onclick="toggleCartModal()">
+        <span id="cartCount" class="font-bold">0</span> productos en tu canasta
+    </div>
+
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby15qhepCO1clOrQJZnEwh-u1PTyrzOFYAqu8SthsIgHNEvSARwHZwGwMoioj_sDAXI/exec; // <--- PEGA AQUÍ LA URL
+        let allProducts = [];
+        let currentFilter = 'Todos';
+
+        async function init() {
+            try {
+                const response = await fetch(SCRIPT_URL);
+                allProducts = await response.json();
+                renderProducts(allProducts);
+            } catch (error) {
+                console.error("Error cargando productos:", error);
+            }
+        }
+
+        function renderProducts(products) {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = '';
+
+            products.forEach(p => {
+                const isAgotado = p.stock <= 0 || p.estado === 'Inactivo';
+                const card = `
+                    <div class="product-card bg-white border border-gray-100 p-4 flex flex-col h-full shadow-sm">
+                        <div class="relative mb-4">
+                            <img src="${p.imagen_url}" class="w-full h-48 object-cover rounded-2xl ${isAgotado ? 'grayscale-img' : ''}">
+                            <span class="absolute top-3 left-3 px-3 py-1 bg-white/90 backdrop-blur rounded-full text-[10px] font-bold uppercase tracking-widest text-gray-600 shadow-sm">${p.segmento}</span>
+                            ${p.stock < 5 && !isAgotado ? `<span class="absolute bottom-3 right-3 bg-orange-100 text-orange-600 px-3 py-1 rounded-lg text-[10px] font-bold italic">¡Últimas ${p.stock}!</span>` : ''}
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">${p.nombre}</h3>
+                        <p class="text-gray-500 text-sm mb-4 flex-grow">${p.descripcion}</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-2xl font-bold text-[#4A5D23]">$${Number(p.precio).toLocaleString('es-CL')}</span>
+                            <a href="${p.andeschain_url}" target="_blank" class="text-[10px] text-gray-400 hover:text-[#4A5D23] underline uppercase tracking-tighter">Origen AndesChain</a>
+                        </div>
+                        <button 
+                            onclick="addToCart('${p.id}', '${p.nombre}', ${p.precio})"
+                            ${isAgotado ? 'disabled' : ''}
+                            class="w-full py-4 rounded-2xl font-semibold transition-all ${isAgotado ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-[#4A5D23] text-white hover:shadow-lg active:scale-95'}">
+                            ${isAgotado ? 'Agotado' : 'Agregar a la canasta'}
+                        </button>
+                    </div>
+                `;
+                grid.innerHTML += card;
+            });
+        }
+
+        // Lógica de Filtros
+        function filterProducts(segmento) {
+            currentFilter = segmento;
+            // Actualizar UI de botones
+            document.querySelectorAll('.filter-pill').forEach(btn => {
+                btn.classList.remove('pill-active');
+                if (btn.innerText.includes(segmento)) btn.classList.add('pill-active');
+            });
+
+            const filtered = segmento === 'Todos' 
+                ? allProducts 
+                : allProducts.filter(p => p.segmento === segmento);
+            renderProducts(filtered);
+        }
+
+        // Buscador "Live Search"
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const filtered = allProducts.filter(p => 
+                p.nombre.toLowerCase().includes(term) || 
+                p.descripcion.toLowerCase().includes(term)
+            );
+            renderProducts(filtered);
+        });
+
+        // (Aquí añadirías el resto de tu lógica de Carrito/Checkout que ya tenías)
+        // Pero recuerda que ahora el detalle del pedido se construye desde el carrito dinámico.
+
+        init();
+    </script>
+</body>
+</html>
