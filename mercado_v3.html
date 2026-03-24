@@ -100,7 +100,7 @@
     </div>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzI9yxKJIXoMK_EdqSC9RVb9cW67GHcJCkcuBbr49TurY7wvmSWOoED_x6Qf1szllUq/exec'; // <--- ACTUALIZA ESTO
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzI9yxKJIXoMK_EdqSC9RVb9cW67GHcJCkcuBbr49TurY7wvmSWOoED_x6Qf1szllUq/exec';
         let allProducts = [];
         let cart = {};
 
@@ -129,7 +129,7 @@
                         <div class="flex justify-between items-center pt-4 border-t">
                             <span class="text-2xl font-bold">$${Number(p.precio).toLocaleString('es-CL')}</span>
                             <button onclick="addToCart('${p.id}', '${p.nombre}', ${p.precio})" ${isOut ? 'disabled' : ''} class="bg-[#1D1D1F] text-white px-6 py-3 rounded-full font-bold text-sm disabled:bg-gray-200">
-                                ${isOut ? 'Agotado' : 'Agregar'}
+                                ${isOut ? 'Agregar' : 'Agregar'}
                             </button>
                         </div>
                     </div>
@@ -185,17 +185,25 @@
 
         async function enviarPedido() {
             const btn = document.getElementById('btnPagar');
+            
+            // Limpieza del total: remover $ y puntos
+            const rawTotal = document.getElementById('cartTotal').innerText;
+            const cleanTotal = parseInt(rawTotal.replace(/[^0-9]/g, ''));
+
             const data = {
-                nombre: document.getElementById('cName').value,
-                email: document.getElementById('cEmail').value,
-                telefono: document.getElementById('cPhone').value,
-                direccion: document.getElementById('cAddress').value,
+                nombre: document.getElementById('cName').value.trim(),
+                email: document.getElementById('cEmail').value.trim(),
+                telefono: document.getElementById('cPhone').value.trim(),
+                direccion: document.getElementById('cAddress').value.trim(),
                 logistica: document.getElementById('cLog').value,
-                total: parseInt(document.getElementById('cartTotal').innerText.replace(/\D/g,'')),
+                total: cleanTotal,
                 detalle: Object.values(cart).map(i => `${i.qty}x ${i.name}`).join(' | ')
             };
 
-            if(!data.nombre || !data.email || !data.direccion) return alert("Por favor completa tus datos de contacto y dirección.");
+            if(!data.nombre || !data.email || !data.direccion) {
+                alert("Por favor completa tus datos de contacto y dirección para continuar.");
+                return;
+            }
             
             btn.innerText = "Preparando Pago Seguro...";
             btn.disabled = true;
@@ -203,13 +211,18 @@
             try {
                 const res = await fetch(SCRIPT_URL, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'text/plain' },
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify(data)
                 });
                 const resData = await res.json();
-                if(resData.paymentUrl) window.location.href = resData.paymentUrl;
+                if(resData.paymentUrl) {
+                    window.location.href = resData.paymentUrl;
+                } else {
+                    throw new Error("No se pudo generar el enlace de pago.");
+                }
             } catch (e) { 
-                alert("Ocurrió un error. Escríbenos por WhatsApp para finalizar tu pedido."); 
+                console.error("Error:", e);
+                alert("Ocurrió un error al conectar con Mercado Pago. Por favor escríbenos por WhatsApp."); 
                 btn.innerText = "Pagar Pedido Seguro"; 
                 btn.disabled = false; 
             }
