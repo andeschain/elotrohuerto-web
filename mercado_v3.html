@@ -3,208 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
-    <title>Mercado Rural en Barrio Las Lilas | El Otro Huerto</title>
-    <meta name="description" content="Cosechas 100% libres de químicos directo de Paine a tu mesa. Asegura tu cosecha. Retiro en Plaza Las Lilas y cafeterías de Providencia.">
-    
-    <meta property="og:title" content="Mercado Rural | Barrio Las Lilas y alrededores 🧺">
-    <meta property="og:description" content="Cosecha agroecológica directa desde Paine. ¡Reserva tu canasta aquí!">
-    <meta property="og:image" content="https://elotrohuerto.cl/assets/papa_astrid.jpg"> 
-    <meta property="og:url" content="https://elotrohuerto.cl/mercado">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600&display=swap" rel="stylesheet">
+    <title>Mercado Local | El Otro Huerto</title>
     <script src="https://cdn.tailwindcss.com"></script>
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:wght@500;600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-page: #FDFCFB; 
-            --accent: #4A5D23; 
-            --text-main: #1D1D1F;
-            --border: #EAEAEA;
-        }
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg-page); color: var(--text-main); }
-        h1, h2, h3 { font-family: 'Lora', serif; }
-        
-        /* Header Estilo V2 */
-        header {
-            position: sticky; top: 0; background: rgba(253, 252, 251, 0.95); backdrop-filter: blur(8px);
-            border-bottom: 1px solid var(--border); z-index: 100; padding: 16px 24px;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .logo-container { display: flex; align-items: center; gap: 12px; font-family: 'Lora', serif; font-weight: 600; font-size: 20px; text-decoration: none; color: var(--text-main); }
-        .logo-muted { font-weight: 400; color: #515154; font-size: 18px; }
-
-        /* Filtros V3 con estilo Figma */
-        .pill-active { background-color: var(--accent) !important; color: white !important; border-color: var(--accent) !important; }
-        .filter-pill { transition: all 0.2s; border: 1px solid var(--border); }
-
-        /* Drawer & Cart Estilo V2 */
-        .drawer { position: fixed; top: 0; right: -100%; width: 100%; max-width: 420px; height: 100vh; background: #fff; z-index: 1000; transition: 0.3s; box-shadow: -10px 0 40px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
+        :root { --accent: #4A5D23; --bg: #FDFCFB; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg); }
+        h1, h2, .font-lora { font-family: 'Lora', serif; }
+        .drawer { position: fixed; top: 0; right: -100%; width: 100%; max-width: 450px; height: 100vh; background: #fff; z-index: 1000; transition: 0.3s; box-shadow: -10px 0 40px rgba(0,0,0,0.1); }
         .drawer.open { right: 0; }
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 999; opacity: 0; visibility: hidden; transition: 0.3s; }
         .overlay.open { opacity: 1; visibility: visible; }
-        
-        .grayscale-img { filter: grayscale(100%); opacity: 0.6; }
-        .skeleton { background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 200% 100%; animation: loading 1.5s infinite; }
-        @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+        .pill-active { background-color: var(--accent) !important; color: white !important; }
     </style>
 </head>
 <body>
 
-    <header>
-        <a href="index.html" class="logo-container">
-            <img src="assets/logo.svg" alt="Icono" class="h-7">
-            El Otro Huerto <span class="logo-muted">| Mercado</span>
-        </a>
-        <button class="flex items-center gap-2 font-bold text-[#4A5D23] relative" onclick="toggleDrawer()">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-            <span id="cartCountBadge" class="absolute -top-2 -right-3 bg-[#4A5D23] text-white text-[10px] px-1.5 py-0.5 rounded-full border-2 border-white hidden">0</span>
+    <header class="sticky top-0 bg-white/90 backdrop-blur-md border-b z-50 px-6 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-3 font-lora text-xl font-bold">
+            <img src="assets/logo.svg" class="h-8" onerror="this.style.display='none'">
+            El Otro Huerto <span class="font-normal text-gray-400">| Mercado</span>
+        </div>
+        <button onclick="toggleDrawer()" class="relative text-[#4A5D23] p-2">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+            <span id="cartBadge" class="absolute -top-1 -right-1 bg-[#4A5D23] text-white text-[10px] px-2 py-0.5 rounded-full border-2 border-white hidden">0</span>
         </button>
     </header>
 
-    <main class="max-w-6xl mx-auto px-6">
-        <section class="py-12 text-center">
+    <main class="max-w-6xl mx-auto px-6 py-12">
+        <section class="text-center mb-16">
             <h1 class="text-4xl md:text-5xl mb-4">Cosecha limpia y honesta.</h1>
-            <p class="text-gray-500 max-w-2xl mx-auto text-lg italic">"Desde nuestra parcela en Paine, rescatamos semillas locales para cultivar de forma agroecológica. Alimentos 100% libres de químicos."</p>
+            <p class="text-gray-500 italic">Directo de Paine a tu mesa en Barrio Las Lilas.</p>
         </section>
 
-        <div class="flex flex-col md:flex-row gap-4 mb-12 items-center justify-between">
-            <input type="text" id="searchInput" placeholder="Buscar productos..." class="w-full md:max-w-xs px-5 py-3 rounded-2xl border border-gray-200 focus:ring-2 focus:ring-[#4A5D23] outline-none">
-            <div class="flex gap-2 overflow-x-auto pb-2 w-full md:w-auto" id="filterContainer">
-                <button onclick="filterProducts('Todos')" class="filter-pill pill-active px-5 py-2 rounded-full text-sm font-medium bg-white">Todos</button>
-                <button onclick="filterProducts('Agroecológico')" class="filter-pill px-5 py-2 rounded-full text-sm font-medium bg-white">🌿 Agro</button>
-                <button onclick="filterProducts('Biodinámico')" class="filter-pill px-5 py-2 rounded-full text-sm font-medium bg-white">✨ Bio</button>
-                <button onclick="filterProducts('Rural')" class="filter-pill px-5 py-2 rounded-full text-sm font-medium bg-white">🚜 Rural</button>
+        <div class="flex flex-col md:flex-row gap-6 justify-between items-center mb-12">
+            <input type="text" id="searchInput" placeholder="¿Qué buscas hoy?" class="w-full md:max-w-sm p-4 rounded-2xl border border-gray-100 shadow-sm focus:ring-2 focus:ring-[#4A5D23] outline-none">
+            <div class="flex gap-2 overflow-x-auto pb-2 w-full md:w-auto">
+                <button onclick="filterItems('Todos')" class="filter-btn pill-active px-6 py-2 rounded-full border border-gray-200 text-sm font-medium">Todos</button>
+                <button onclick="filterItems('Agroecologico')" class="filter-btn px-6 py-2 rounded-full border border-gray-200 text-sm font-medium bg-white">🌿 Agro</button>
+                <button onclick="filterItems('Biodinamico')" class="filter-btn px-6 py-2 rounded-full border border-gray-200 text-sm font-medium bg-white">✨ Bio</button>
+                <button onclick="filterItems('Rural')" class="filter-btn px-6 py-2 rounded-full border border-gray-200 text-sm font-medium bg-white">🚜 Rural</button>
             </div>
         </div>
 
-        <div id="productGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pb-20">
-            <div class="skeleton h-80 rounded-3xl"></div>
-            <div class="skeleton h-80 rounded-3xl"></div>
-            <div class="skeleton h-80 rounded-3xl"></div>
-        </div>
+        <div id="productGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            </div>
     </main>
 
-    <footer class="bg-[#1D1D1F] text-white py-16 text-center mt-20">
-        <h3 class="text-2xl mb-4">El Otro Huerto | Mercado</h3>
-        <p class="text-gray-400 mb-8">Cosechas limitadas de Paine a Providencia.</p>
-        <div class="flex justify-center gap-6 text-sm">
-            <a href="index.html" class="underline">Inicio</a>
-            <a href="https://wa.me/56958799778" class="underline">WhatsApp</a>
-        </div>
-    </footer>
-
     <div class="overlay" id="overlay" onclick="toggleDrawer()"></div>
-    <div class="drawer" id="drawer">
-        <div class="p-6 border-b flex justify-between items-center">
-            <h2 class="text-2xl font-semibold">Tu Cosecha</h2>
-            <button onclick="toggleDrawer()" class="text-3xl">&times;</button>
+    <div class="drawer flex flex-col" id="drawer">
+        <div class="p-6 border-b flex justify-between items-center bg-white">
+            <h2 class="text-2xl font-bold font-lora">Tu Canasta</h2>
+            <button onclick="toggleDrawer()" class="text-3xl text-gray-300 hover:text-black">&times;</button>
         </div>
-        <div class="p-6 overflow-y-auto flex-grow" id="drawerBody">
-            <div id="emptyCartMsg" class="text-center py-10 text-gray-400">Tu canasta está vacía 🌱</div>
-            <div id="cartItemsContainer"></div>
-            
-            <div id="checkoutForm" class="mt-8 hidden">
-                <h3 class="font-bold mb-4">Tus Datos</h3>
-                <input type="text" id="custName" placeholder="Nombre y Apellido" class="w-full p-4 border rounded-xl mb-3 bg-gray-50">
-                <input type="email" id="custEmail" placeholder="Email" class="w-full p-4 border rounded-xl mb-3 bg-gray-50">
-                <input type="text" id="custPhone" placeholder="WhatsApp" class="w-full p-4 border rounded-xl mb-3 bg-gray-50">
+        
+        <div class="p-6 overflow-y-auto flex-grow" id="cartContent">
+            <div id="emptyMsg" class="text-center py-20 text-gray-400">Tu canasta está vacía 🌱</div>
+            <div id="itemsContainer"></div>
+
+            <div id="checkoutForm" class="mt-8 hidden space-y-4">
+                <h3 class="font-bold border-b pb-2">Tus Datos de Entrega</h3>
+                <input type="text" id="cName" placeholder="Nombre completo" class="w-full p-4 border rounded-xl bg-gray-50 outline-none">
+                <input type="email" id="cEmail" placeholder="Correo electrónico" class="w-full p-4 border rounded-xl bg-gray-50 outline-none">
+                <input type="text" id="cPhone" placeholder="WhatsApp +569..." class="w-full p-4 border rounded-xl bg-gray-50 outline-none">
+                <input type="text" id="cAddress" placeholder="Dirección (Calle, número, depto)" class="w-full p-4 border rounded-xl bg-gray-50 outline-none">
                 
-                <h3 class="font-bold mt-6 mb-4">Punto de Retiro</h3>
-                <select id="logisticaFinal" class="w-full p-4 border rounded-xl bg-gray-50">
-                    <option value="Plaza Las Lilas">📍 Plaza Las Lilas (Sábados)</option>
+                <h3 class="font-bold pt-4">Logística</h3>
+                <select id="cLog" class="w-full p-4 border rounded-xl bg-gray-50 outline-none">
+                    <option value="Plaza Las Lilas">📍 Plaza Las Lilas (Sábados 10am)</option>
                     <option value="Dolce & Salato">☕ Dolce & Salato</option>
-                    <option value="The Animal Coffe">☕ The Animal Coffe</option>
-                    <option value="La Popular">☕ La Popular</option>
+                    <option value="La Popular">☕ La Popular (Bilbao)</option>
+                    <option value="Despacho a Domicilio">🚚 Despacho a Domicilio (+3.000)</option>
                 </select>
             </div>
         </div>
-        <div class="p-6 border-t">
-            <div class="flex justify-between text-xl font-bold mb-4">
+
+        <div class="p-6 border-t bg-white shadow-2xl">
+            <div class="flex justify-between text-xl font-bold mb-6">
                 <span>Total:</span>
                 <span id="cartTotal">$0</span>
             </div>
-            <button id="btnPagar" onclick="procesarPedido()" disabled class="w-full bg-[#4A5D23] text-white py-4 rounded-xl font-bold disabled:opacity-50">Completar Pedido</button>
+            <button id="btnPagar" onclick="enviarPedido()" disabled class="w-full bg-[#4A5D23] text-white py-5 rounded-2xl font-bold text-lg hover:shadow-xl transition-all disabled:opacity-30">
+                Pagar Pedido Seguro
+            </button>
         </div>
     </div>
 
-    <div id="passportOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[2000] hidden flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-2xl h-[80vh] rounded-3xl overflow-hidden flex flex-col">
-            <div class="p-4 border-b flex justify-between items-center">
-                <span class="font-bold text-sm uppercase tracking-widest">Pasaporte de Origen</span>
-                <button onclick="closePassport()" class="text-2xl">&times;</button>
+    <div id="andesModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[2000] hidden items-center justify-center p-4">
+        <div class="bg-white w-full max-w-2xl h-[85vh] rounded-[32px] overflow-hidden flex flex-col shadow-2xl">
+            <div class="p-5 border-b flex justify-between items-center">
+                <span class="text-xs font-bold uppercase tracking-widest text-gray-400">Certificado de Origen AndesChain</span>
+                <button onclick="closeAndes()" class="text-3xl">&times;</button>
             </div>
-            <iframe id="passportIframe" class="w-full flex-grow"></iframe>
+            <iframe id="andesIframe" class="w-full flex-grow border-none"></iframe>
         </div>
     </div>
 
     <script>
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyLySpV6d0wz-CPph0Xxo41IEwWT2l7m4HdXFjLwY3sX2601E1IgfTtzGv5L1R5GMs/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzI9yxKJIXoMK_EdqSC9RVb9cW67GHcJCkcuBbr49TurY7wvmSWOoED_x6Qf1szllUq/exec'; // <--- ACTUALIZA ESTO
         let allProducts = [];
         let cart = {};
 
         async function init() {
             try {
-                const res = await fetch(GOOGLE_SCRIPT_URL);
+                const res = await fetch(SCRIPT_URL);
                 allProducts = await res.json();
-                renderProducts(allProducts);
-            } catch (e) { console.error("Error:", e); }
+                render(allProducts);
+            } catch (e) { console.error(e); }
         }
 
-        function renderProducts(products) {
+        function render(prods) {
             const grid = document.getElementById('productGrid');
-            grid.innerHTML = '';
-            products.forEach(p => {
-                if(p.estado !== 'Activo') return;
-                const isAgotado = p.stock <= 0;
-                grid.innerHTML += `
-                    <div class="bg-white border rounded-[32px] overflow-hidden flex flex-col hover:shadow-xl transition-all">
-                        <img src="${p.imagen_url}" class="h-56 w-full object-cover ${isAgotado ? 'grayscale-img' : ''}">
-                        <div class="p-6 flex flex-col flex-grow">
-                            <span class="text-[10px] font-bold text-[#4A5D23] uppercase tracking-widest mb-2">${p.segmento}</span>
-                            <h3 class="text-2xl mb-2">${p.nombre}</h3>
-                            <p class="text-gray-500 text-sm mb-4 flex-grow">${p.descripcion}</p>
-                            <button onclick="openPassport('${p.andeschain_url}')" class="text-xs font-bold text-[#4A5D23] bg-[#F4F6F0] self-start px-3 py-1.5 rounded-full mb-6">Origen Certificado 📍</button>
-                            <div class="flex justify-between items-center pt-4 border-t">
-                                <span class="text-xl font-bold">$${Number(p.precio).toLocaleString('es-CL')}</span>
-                                <button onclick="addToCart('${p.id}', '${p.nombre}', ${p.precio})" ${isAgotado ? 'disabled' : ''} class="bg-[#1D1D1F] text-white px-5 py-2.5 rounded-full text-sm font-bold disabled:bg-gray-200">
-                                    ${isAgotado ? 'Agotado' : 'Agregar'}
-                                </button>
-                            </div>
+            grid.innerHTML = prods.filter(p => p.estado === 'Activo').map(p => {
+                const isOut = p.stock <= 0;
+                return `
+                <div class="bg-white border border-gray-100 rounded-[32px] overflow-hidden flex flex-col hover:shadow-2xl transition-all p-2">
+                    <div class="relative">
+                        <img src="${p.imagen_url}" class="h-64 w-full object-cover rounded-[28px] ${isOut ? 'grayscale opacity-50' : ''}">
+                        <span class="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-[10px] font-bold uppercase text-[#4A5D23]">${p.segmento}</span>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-2xl mb-2 font-lora">${p.nombre}</h3>
+                        <p class="text-gray-400 text-sm mb-6 flex-grow">${p.descripcion}</p>
+                        <button onclick="openAndes('${p.andeschain_url}')" class="text-[11px] font-bold text-[#4A5D23] border border-[#4A5D23]/20 self-start px-4 py-1.5 rounded-full mb-6 hover:bg-[#F4F6F0]">Traza de Origen 📍</button>
+                        <div class="flex justify-between items-center pt-4 border-t">
+                            <span class="text-2xl font-bold">$${Number(p.precio).toLocaleString('es-CL')}</span>
+                            <button onclick="addToCart('${p.id}', '${p.nombre}', ${p.precio})" ${isOut ? 'disabled' : ''} class="bg-[#1D1D1F] text-white px-6 py-3 rounded-full font-bold text-sm disabled:bg-gray-200">
+                                ${isOut ? 'Agotado' : 'Agregar'}
+                            </button>
                         </div>
                     </div>
-                `;
-            });
+                </div>`;
+            }).join('');
         }
 
-        function filterProducts(segmento) {
-            document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('pill-active'));
-            event.target.classList.add('pill-active');
-            const filtered = segmento === 'Todos' ? allProducts : allProducts.filter(p => p.segmento === segmento);
-            renderProducts(filtered);
-        }
-
-        document.getElementById('searchInput').addEventListener('input', (e) => {
-            const term = e.target.value.toLowerCase();
-            renderProducts(allProducts.filter(p => p.nombre.toLowerCase().includes(term)));
-        });
-
-        // Lógica Carrito V2
         function toggleDrawer() {
             document.getElementById('drawer').classList.toggle('open');
             document.getElementById('overlay').classList.toggle('open');
+            document.body.style.overflow = document.getElementById('drawer').classList.contains('open') ? 'hidden' : '';
         }
 
         function addToCart(id, name, price) {
             if(cart[id]) cart[id].qty++;
             else cart[id] = { name, price, qty: 1 };
-            updateCartUI();
+            updateUI();
             if(!document.getElementById('drawer').classList.contains('open')) toggleDrawer();
         }
 
-        function updateCartUI() {
-            const container = document.getElementById('cartItemsContainer');
-            const badge = document.getElementById('cartCountBadge');
+        function updateUI() {
+            const container = document.getElementById('itemsContainer');
+            const badge = document.getElementById('cartBadge');
             container.innerHTML = '';
             let total = 0, count = 0;
             
@@ -213,21 +161,16 @@
                 total += item.price * item.qty;
                 count += item.qty;
                 container.innerHTML += `
-                    <div class="flex justify-between items-center mb-4 pb-4 border-b border-dashed">
-                        <div>
-                            <h4 class="font-bold">${item.name}</h4>
-                            <p class="text-sm text-gray-400">$${item.price.toLocaleString('es-CL')}</p>
-                        </div>
-                        <div class="flex items-center gap-3 bg-gray-100 px-3 py-1 rounded-full">
-                            <button onclick="changeQty('${id}', -1)">-</button>
-                            <span class="font-bold">${item.qty}</span>
-                            <button onclick="changeQty('${id}', 1)">+</button>
-                        </div>
-                    </div>`;
+                <div class="flex justify-between items-center mb-6 pb-6 border-b border-dashed">
+                    <div><h4 class="font-bold">${item.name}</h4><p class="text-sm text-gray-400">$${item.price.toLocaleString('es-CL')}</p></div>
+                    <div class="flex items-center gap-4 bg-gray-50 px-4 py-2 rounded-full font-bold">
+                        <button onclick="changeQty('${id}',-1)">-</button><span>${item.qty}</span><button onclick="changeQty('${id}',1)">+</button>
+                    </div>
+                </div>`;
             });
 
             document.getElementById('cartTotal').innerText = '$' + total.toLocaleString('es-CL');
-            document.getElementById('emptyCartMsg').style.display = count > 0 ? 'none' : 'block';
+            document.getElementById('emptyMsg').style.display = count > 0 ? 'none' : 'block';
             document.getElementById('checkoutForm').style.display = count > 0 ? 'block' : 'none';
             document.getElementById('btnPagar').disabled = count === 0;
             badge.innerText = count;
@@ -237,43 +180,53 @@
         function changeQty(id, delta) {
             cart[id].qty += delta;
             if(cart[id].qty <= 0) delete cart[id];
-            updateCartUI();
+            updateUI();
         }
 
-        async function procesarPedido() {
+        async function enviarPedido() {
             const btn = document.getElementById('btnPagar');
-            const payload = {
-                nombre: document.getElementById('custName').value,
-                email: document.getElementById('custEmail').value,
-                telefono: document.getElementById('custPhone').value,
-                logistica: document.getElementById('logisticaFinal').value,
-                total: document.getElementById('cartTotal').innerText.replace(/\D/g,''),
+            const data = {
+                nombre: document.getElementById('cName').value,
+                email: document.getElementById('cEmail').value,
+                telefono: document.getElementById('cPhone').value,
+                direccion: document.getElementById('cAddress').value,
+                logistica: document.getElementById('cLog').value,
+                total: parseInt(document.getElementById('cartTotal').innerText.replace(/\D/g,'')),
                 detalle: Object.values(cart).map(i => `${i.qty}x ${i.name}`).join(' | ')
             };
 
-            if(!payload.nombre || !payload.email) return alert("Completa tus datos");
+            if(!data.nombre || !data.email || !data.direccion) return alert("Por favor completa tus datos de contacto y dirección.");
             
-            btn.innerText = "Conectando...";
+            btn.innerText = "Preparando Pago Seguro...";
             btn.disabled = true;
 
             try {
-                const res = await fetch(GOOGLE_SCRIPT_URL, {
+                const res = await fetch(SCRIPT_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain' },
-                    body: JSON.stringify(payload)
+                    body: JSON.stringify(data)
                 });
-                const data = await res.json();
-                if(data.paymentUrl) window.location.href = data.paymentUrl;
-            } catch (e) { alert("Error al conectar. Escríbenos por WhatsApp."); btn.innerText = "Completar Pedido"; btn.disabled = false; }
+                const resData = await res.json();
+                if(resData.paymentUrl) window.location.href = resData.paymentUrl;
+            } catch (e) { 
+                alert("Ocurrió un error. Escríbenos por WhatsApp para finalizar tu pedido."); 
+                btn.innerText = "Pagar Pedido Seguro"; 
+                btn.disabled = false; 
+            }
         }
 
-        function openPassport(url) {
-            document.getElementById('passportIframe').src = url;
-            document.getElementById('passportOverlay').classList.remove('hidden');
+        function openAndes(url) {
+            document.getElementById('andesIframe').src = url;
+            document.getElementById('andesModal').classList.replace('hidden', 'flex');
         }
-        function closePassport() {
-            document.getElementById('passportOverlay').classList.add('hidden');
-            document.getElementById('passportIframe').src = '';
+        function closeAndes() {
+            document.getElementById('andesModal').classList.replace('flex', 'hidden');
+            document.getElementById('andesIframe').src = '';
+        }
+        function filterItems(segmento) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('pill-active'));
+            event.target.classList.add('pill-active');
+            render(segmento === 'Todos' ? allProducts : allProducts.filter(p => p.segmento.includes(segmento)));
         }
 
         init();
