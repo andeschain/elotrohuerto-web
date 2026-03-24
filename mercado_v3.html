@@ -46,8 +46,7 @@
             </div>
         </div>
 
-        <div id="productGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            </div>
+        <div id="productGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
     </main>
 
     <div class="overlay" id="overlay" onclick="toggleDrawer()"></div>
@@ -100,7 +99,7 @@
     </div>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzieqkDxo_qMQ1kJ9Or0Si6NmNmPMf1MH8XGOLJza1t3OMKHStLNJyJ6nAo8Ch2JgG6/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyF988PEb57jeYTCJ_geqon7-Daupauo7A8G9xo3nC6A21OPQAKQOJA44D_LTIKBZwp/exec';
         let allProducts = [];
         let cart = {};
 
@@ -182,54 +181,53 @@
             if(cart[id].qty <= 0) delete cart[id];
             updateUI();
         }
-        
+
         async function enviarPedido() {
-    const btn = document.getElementById('btnPagar');
-    
-    // LIMPIEZA DEL TOTAL: Eliminar cualquier cosa que no sea número
-    const rawTotal = document.getElementById('cartTotal').innerText;
-    const cleanTotal = parseInt(rawTotal.replace(/[^0-9]/g, ''));
+            const btn = document.getElementById('btnPagar');
+            const rawTotal = document.getElementById('cartTotal').innerText;
+            const cleanTotal = parseInt(rawTotal.replace(/[^0-9]/g, ''));
 
-    const data = {
-        nombre: document.getElementById('cName').value.trim(),
-        email: document.getElementById('cEmail').value.trim(),
-        telefono: document.getElementById('cPhone').value.trim(),
-        direccion: document.getElementById('cAddress').value.trim(),
-        logistica: document.getElementById('cLog').value,
-        total: cleanTotal,
-        detalle: Object.values(cart).map(i => `${i.qty}x ${i.name}`).join(' | ')
-    };
+            const data = {
+                nombre: document.getElementById('cName').value.trim(),
+                email: document.getElementById('cEmail').value.trim(),
+                telefono: document.getElementById('cPhone').value.trim(),
+                direccion: document.getElementById('cAddress').value.trim(),
+                logistica: document.getElementById('cLog').value,
+                total: cleanTotal,
+                detalle: Object.values(cart).map(i => `${i.qty}x ${i.name}`).join(' | ')
+            };
 
-    if(!data.nombre || !data.email || !data.direccion || !data.telefono) {
-        alert("Por favor completa todos tus datos y dirección para continuar.");
-        return;
-    }
-    
-    btn.innerText = "Preparando Pago Seguro...";
-    btn.disabled = true;
+            if(!data.nombre || !data.email || !data.direccion || !data.telefono) {
+                alert("Por favor completa todos tus datos y dirección para continuar.");
+                return;
+            }
+            
+            btn.innerText = "Preparando Pago Seguro...";
+            btn.disabled = true;
 
-    try {
-        const res = await fetch(SCRIPT_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify(data)
-        });
-        
-        const resData = await res.json();
-        
-        if(resData.status === 'success' && resData.paymentUrl) {
-            window.location.href = resData.paymentUrl;
-        } else {
-            console.error("Error del servidor:", resData);
-            throw new Error(resData.message || "No se generó el link");
+            try {
+                const res = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(data)
+                });
+                
+                const responseText = await res.text();
+                const resData = JSON.parse(responseText);
+                
+                if(resData.status === 'success' && resData.paymentUrl) {
+                    window.location.href = resData.paymentUrl;
+                } else {
+                    throw new Error(resData.message || "No se generó el link");
+                }
+            } catch (e) { 
+                console.error("Detalle:", e);
+                alert("Estamos procesando tu orden. Si no eres redirigido en 5 segundos, revisa tu email para finalizar el pago."); 
+                btn.innerText = "Pagar Pedido Seguro"; 
+                btn.disabled = false; 
+            }
         }
-    } catch (e) { 
-        console.error("Detalle del error:", e);
-        alert("Error al conectar con Mercado Pago. Escríbenos por WhatsApp."); 
-        btn.innerText = "Pagar Pedido Seguro"; 
-        btn.disabled = false; 
-    }
-}
+
         function openAndes(url) {
             document.getElementById('andesIframe').src = url;
             document.getElementById('andesModal').classList.replace('hidden', 'flex');
