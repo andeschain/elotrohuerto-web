@@ -2,25 +2,19 @@
 <html lang="es-CL">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <title>El Otro Huerto | Cultivar lo humano</title>
-    <meta name="description" content="Refugio agrícola en Paine. Tu propia parcela cerca de Santiago, sin e̶l̶ ̶c̶a̶c̶h̶o̶ ̶d̶e̶ mantenerla.">
-    <meta name="author" content="Jorge Munoz - El Otro Huerto">
+    <title>Mercado Local en Barrio Las Lilas y alrededores | El Otro Huerto</title>
+    <meta name="description" content="Cosechas directa de Paine a tu mesa. Retiro en Plaza Las Lilas y cafeterías cercanas.">
+    <meta name="keywords" content="verduras agroecologicas providencia, mercado rural las lilas, verduras a domicilio providencia, papas nativas santiago, zapallo de guarda, comida sana providencia, el otro huerto">
     
-    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-    <link rel="alternate icon" href="assets/favicon.png">
-
-    <meta property="og:title" content="El Otro Huerto | Cultivar lo humano">
-    <meta property="og:description" content="Ecosistema agrícola en Paine. Familias, colegios y producción local.">
-    <meta property="og:image" content="https://elotrohuerto.cl/assets/jardin.jpg">
-    <meta property="og:url" content="https://elotrohuerto.cl/">
-    <meta property="og:type" content="website">
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <meta property="og:title" content="Mercado Rural | Barrio Las Lilas y alrededores 🧺">
+    <meta property="og:description" content="Cosecha agroecológica directa desde Paine. ¡Reserva tu canasta aquí!">
+    <meta property="og:image" content="https://elotrohuerto.cl/assets/papa_astrid.jpg"> 
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600&display=swap" rel="stylesheet">
     
     <style>
-        /* Variables y diseño base */
         :root {
             --bg-page: #FDFCFB; 
             --bg-alt: #F4F6F0; 
@@ -28,218 +22,333 @@
             --text-muted: #515154; 
             --accent: #4A5D23; 
             --border: #EAEAEA;
-            --nav-bg: rgba(253, 252, 251, 0.95);
         }
 
-        body { 
-            font-family: 'Inter', sans-serif; background-color: var(--bg-page); color: var(--text-main); 
-            margin: 0; padding: 0; line-height: 1.6; scroll-behavior: smooth; -webkit-font-smoothing: antialiased;
-        }
-
-        h1, h2, h3 { font-family: 'Lora', serif; color: var(--text-main); margin-top: 0; line-height: 1.25; }
-        a { color: var(--text-main); text-decoration: none; transition: color 0.2s; }
-        a:hover { color: var(--accent); }
-
-        /* Navegación */
-        header.main-nav {
-            position: sticky; top: 0; background: var(--nav-bg); backdrop-filter: blur(8px);
-            border-bottom: 1px solid var(--border); z-index: 100; padding: 16px 24px;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-
-        .logo-container { display: flex; align-items: center; gap: 12px; font-family: 'Lora', serif; font-weight: 600; font-size: 20px; }
-        .logo-container img { height: 28px; width: auto; }
-        .desktop-menu { display: none; align-items: center; gap: 24px; }
-        .nav-link { font-size: 15px; font-weight: 500; color: var(--text-muted); }
-        .nav-link:hover { color: var(--text-main); }
-        .nav-login-btn { 
-            font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; padding: 8px 16px; 
-            border: 1px solid var(--border); border-radius: 20px; background: transparent; cursor: pointer; transition: all 0.2s; 
-        }
-        .nav-login-btn:hover { border-color: var(--text-main); background: var(--text-main); color: #fff; }
-
-        /* Hero Fotográfico */
-        .hero-section {
-            position: relative; background-image: url('assets/jardin.jpg'); background-size: cover;
-            background-position: center bottom; background-repeat: no-repeat; min-height: 75vh; 
-            padding: 80px 24px; display: flex; align-items: center; justify-content: center; color: #FFFFFF;
-        }
-        .hero-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.05) 100%); z-index: 1;
-        }
-        .hero-content { position: relative; z-index: 2; text-align: center; max-width: 800px; transform: translateY(-10%); }
-        .hero-content h1 { color: #FFFFFF; font-size: 56px; margin-bottom: 24px; line-height: 1.1; text-shadow: 0 2px 10px rgba(0,0,0,0.7), 0 0 40px rgba(0,0,0,0.5); }
-        .hero-content p { color: #FDFCFB; font-size: 22px; text-shadow: 0 2px 8px rgba(0,0,0,0.8); font-weight: 500; }
-
-        /* Secciones */
-        section { padding: 80px 24px; }
-        section.alt-bg { background-color: var(--bg-alt); }
-        .container { max-width: 1080px; margin: 0 auto; }
-        .grid-2 { display: grid; grid-template-columns: 1fr; gap: 40px; align-items: center; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-page); color: var(--text-main); margin: 0; padding: 0; -webkit-font-smoothing: antialiased; display: flex; flex-direction: column; min-height: 100vh; }
+        *, *:before, *:after { box-sizing: border-box; }
+        h1, h2, h3 { font-family: 'Lora', serif; margin-top: 0; color: var(--text-main); }
+        main { flex-grow: 1; }
         
-        /* Imagenes Únicas (Microinteracciones conservadas) */
-        .section-img { 
-            width: 100%; height: auto; border-radius: 8px; object-fit: cover; aspect-ratio: 4/3; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: transform 0.4s ease, box-shadow 0.4s ease; 
-        }
-        .section-img:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.1); }
-
-        .tag { font-family: 'Inter', sans-serif; text-transform: uppercase; font-size: 12px; font-weight: 600; color: var(--accent); letter-spacing: 1px; margin-bottom: 12px; display: block; }
-        .section-title { font-size: 36px; margin-bottom: 20px; }
-        .section-text { font-size: 18px; color: var(--text-muted); margin-bottom: 24px; }
-
-        .btn-primary { 
-            display: inline-block; background-color: var(--accent); color: #FFFFFF; padding: 14px 24px; 
-            border-radius: 6px; font-weight: 500; text-align: center; border: none; cursor: pointer; 
-            transition: transform 0.2s ease, background-color 0.2s ease; 
-        }
-        .btn-primary:hover { opacity: 0.9; color: #fff;}
-        .btn-primary:active { transform: scale(0.98); }
-
-        /* Estilos de Login y Vistas (El login ahora solo vive arriba) */
-        .login-box { background: #fff; padding: 24px; border-radius: 8px; border: 1px solid var(--border); margin-top: 24px; }
-        input[type="password"] { width: 100%; padding: 12px 16px; font-size: 16px; border: 1px solid var(--border); border-radius: 6px; margin-bottom: 12px; box-sizing: border-box; }
-        #errorMsg { color: #D93025; font-size: 14px; display: none; margin-top: 8px;}
+        header { position: sticky; top: 0; background: rgba(253, 252, 251, 0.95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); z-index: 100; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
+        .logo-container { display: flex; align-items: center; gap: 12px; font-family: 'Lora', serif; font-weight: 600; font-size: 20px; text-decoration: none; color: var(--text-main); letter-spacing: -0.5px;}
+        .logo-muted { font-weight: 400; color: var(--text-muted); font-size: 18px; }
         
-        /* Modal de Login (Para cuando aprietan el botón superior) */
-        #login-modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5);
-            display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s;
-        }
-        #login-modal.active { opacity: 1; pointer-events: auto; }
-        .modal-content { 
-            background: #fff; padding: 32px; border-radius: 12px; border: 1px solid var(--border); 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1); max-width: 400px; width: 90%; position: relative;
-        }
-        .close-btn { position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text-muted); }
+        .cart-btn { background: none; border: none; cursor: pointer; position: relative; display: flex; align-items: center; gap: 8px; font-family: 'Inter', sans-serif; font-weight: 600; color: var(--accent); padding: 8px; }
+        .cart-badge { background: var(--accent); color: white; font-size: 12px; padding: 2px 6px; border-radius: 12px; position: absolute; top: -2px; right: -8px; display: none; border: 2px solid #fff; font-weight: 700; }
 
-        .hidden { display: none !important; }
-        .fade-in { animation: fadeIn 0.4s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* NUEVOS FILTROS V3 */
+        .filter-container { display: flex; justify-content: center; gap: 10px; padding: 0 24px 30px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .filter-pill { padding: 8px 18px; border-radius: 20px; border: 1px solid var(--border); background: white; font-size: 14px; font-weight: 500; cursor: pointer; transition: 0.2s; white-space: nowrap; }
+        .filter-pill.active { background: var(--accent); color: white; border-color: var(--accent); }
 
-        /* Media Queries Desktop */
-        @media(min-width: 768px) {
-            .desktop-menu { display: flex; }
-            section { padding: 120px 24px; }
-            .hero-section { min-height: 85vh; padding: 120px 24px; }
-            .grid-2 { grid-template-columns: 1fr 1fr; gap: 80px; }
-            .img-right .text-content { order: 1; }
-            .img-right .img-content { order: 2; }
-            .img-left .text-content { order: 2; }
-            .img-left .img-content { order: 1; }
-            .section-title { font-size: 44px; }
-        }
+        .hero { padding: 60px 24px 20px; text-align: center; max-width: 800px; margin: 0 auto; }
+        .hero h1 { font-size: 42px; line-height: 1.1; margin-bottom: 16px; letter-spacing: -1px; }
+        .hero p { font-size: 18px; color: var(--text-muted); line-height: 1.6; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 32px; padding: 0 24px 80px; max-width: 1080px; margin: 0 auto; }
+        .card { background: #fff; border: 1px solid var(--border); border-radius: 20px; overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; }
+        .card.out-of-stock { opacity: 0.7; }
+        .card-img { width: 100%; height: 240px; object-fit: cover; background-color: var(--bg-alt); border-bottom: 1px solid var(--border); }
+        .card-img.grayscale { filter: grayscale(100%); }
+        .card-body { padding: 24px; display: flex; flex-direction: column; flex-grow: 1; }
+        .card-tag { font-size: 12px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+        .card-title { font-size: 24px; margin-bottom: 8px; letter-spacing: -0.5px;}
+        .trace-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--accent); text-decoration: none; font-weight: 600; margin-bottom: 24px; background: var(--bg-alt); padding: 8px 14px; border-radius: 16px; align-self: flex-start; transition: opacity 0.2s; border: 1px solid rgba(74, 93, 35, 0.1); cursor: pointer; }
+        .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 20px; margin-top: auto;}
+        .price { font-size: 20px; font-weight: 600; color: var(--text-main); }
+        .btn-add { background: var(--text-main); color: #fff; border: none; padding: 12px 20px; border-radius: 24px; font-weight: 600; font-size: 14px; cursor: pointer; transition: 0.2s; }
+        .btn-add:disabled { background: #ccc; cursor: not-allowed; }
+
+        /* DRAWER & FORM (Sin cambios de estilo) */
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 999; opacity: 0; visibility: hidden; transition: 0.3s; }
+        .drawer { position: fixed; top: 0; right: -400px; width: 100%; max-width: 420px; height: 100vh; background: #fff; z-index: 1000; box-shadow: -10px 0 40px rgba(0,0,0,0.1); display: flex; flex-direction: column; transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        .drawer.open { right: 0; }
+        .overlay.open { opacity: 1; visibility: visible; }
+        .drawer-header { padding: 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .drawer-body { padding: 24px; overflow-y: auto; flex-grow: 1; }
+        input[type="text"], input[type="email"], select { width: 100%; padding: 16px; border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; font-size: 16px; background: #FAFAFA; font-family: 'Inter', sans-serif; }
+        .radio-card { border: 1px solid var(--border); border-radius: 12px; padding: 16px; cursor: pointer; margin-bottom: 12px; display: block; position: relative; }
+        .radio-card.selected { border-color: var(--accent); background-color: var(--bg-alt); border-width: 2px; }
+        .radio-card input { position: absolute; opacity: 0; }
+        .drawer-footer { padding: 24px; border-top: 1px solid var(--border); background: #fff; }
+        .btn-checkout { width: 100%; background: var(--accent); color: #fff; border: none; padding: 18px; border-radius: 16px; font-size: 16px; font-weight: 600; cursor: pointer; }
+        
+        .passport-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 2000; opacity: 0; visibility: hidden; display: flex; align-items: flex-end; justify-content: center; transition: 0.3s; }
+        .passport-overlay.open { opacity: 1; visibility: visible; }
+        .passport-modal { background: #fff; width: 100%; max-width: 600px; height: 90vh; border-radius: 24px 24px 0 0; overflow: hidden; transform: translateY(100%); transition: 0.4s; }
+        .passport-overlay.open .passport-modal { transform: translateY(0); }
+        .passport-header { padding: 16px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+
+        footer { background-color: var(--text-main); color: #FDFCFB; padding: 48px 24px; text-align: center; }
+        .mobile-cart-float { display: none; position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); width: calc(100% - 48px); max-width: 400px; background: var(--text-main); color: #fff; border: none; padding: 16px 24px; border-radius: 30px; font-size: 16px; font-weight: 600; z-index: 90; box-shadow: 0 12px 24px rgba(0,0,0,0.2); cursor: pointer; align-items: center; justify-content: space-between; }
+        .mobile-cart-float.show { display: flex; }
+
         @media(max-width: 767px) {
-             .hero-content h1 { font-size: 42px; }
-             .hero-content p { font-size: 18px; }
+            .hero h1 { font-size: 36px; }
+            .grid { grid-template-columns: 1fr; padding: 0 20px 100px; }
+            .drawer { width: 100%; right: -100%; }
         }
     </style>
 </head>
 <body>
 
-    <header class="main-nav">
-        <div class="logo-container">
+    <header>
+        <a href="index.html" class="logo-container">
             <img src="assets/logo.svg" alt="Icono" onerror="this.style.display='none'">
-            El Otro Huerto.
-        </div>
-        <nav class="desktop-menu">
-            <a href="#familias" class="nav-link">Membresia Familias</a>
-            <a href="#aula" class="nav-link">Aula Abierta Colegios</a>
-            <a href="#cosecha" class="nav-link">Cosecha Plaza Las Lilas</a>
-            <a href="#historia" class="nav-link">Nuestra Historia</a>
-            <button class="nav-login-btn" onclick="openLogin()">Ingreso Privado</button>
-        </nav>
-        <button class="nav-login-btn" style="display: block;" onclick="openLogin()" id="mobile-login-btn">Menú</button>
+            El Otro Huerto <span class="logo-muted">| Mercado</span>
+        </a>
+        <button class="cart-btn" onclick="toggleDrawer()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+            <span class="cart-badge" id="cartCount">0</span>
+        </button>
     </header>
 
     <main>
-        <div id="public-view" class="fade-in">
+        <section class="hero">
+            <h1>Cosecha limpia y honesta. Directo a tu mesa.</h1>
+            <p>Desde nuestra parcela en Paine, rescatamos semillas locales para cultivar de forma agroecológica. Alimentos 100% libres de químicos.</p>
+        </section>
+
+        <div class="filter-container">
+            <button class="filter-pill active" onclick="filterBy('Todos')">Todos</button>
+            <button class="filter-pill" onclick="filterBy('Agroecológico')">🌿 Agroecológico</button>
+            <button class="filter-pill" onclick="filterBy('Biodinámico')">✨ Biodinámico</button>
+            <button class="filter-pill" onclick="filterBy('Rural')">🚜 Rural</button>
+        </div>
+
+        <section class="grid" id="productGrid">
+            <p style="text-align: center; grid-column: 1/-1;">Cargando cosecha del día...</p>
+        </section>
+    </main>
+
+    <div class="passport-overlay" id="passportOverlay" onclick="closePassport()">
+        <div class="passport-modal" onclick="event.stopPropagation()">
+            <div class="passport-header">
+                <h3>Pasaporte de Origen</h3>
+                <button onclick="closePassport()" style="border:none; background:none; font-size:24px; cursor:pointer;">&times;</button>
+            </div>
+            <iframe id="passportIframe" style="width:100%; height:100%; border:none;" src=""></iframe>
+        </div>
+    </div>
+
+    <button id="mobileCartBtn" class="mobile-cart-float" onclick="toggleDrawer()">
+        <span>🛒 Ver tu cosecha (<span id="mobileItemCount">0</span>)</span>
+        <span id="mobileCartTotal">$0</span>
+    </button>
+
+    <footer>
+        <div style="max-width: 600px; margin: 0 auto;">
+            <h3>El Otro Huerto | Mercado</h3>
+            <p>Cosechas limitadas, agroecológicas y honestas.<br>De Paine a Providencia.</p>
+        </div>
+    </footer>
+
+    <div class="overlay" id="overlay" onclick="toggleDrawer()"></div>
+    <div class="drawer" id="drawer">
+        <div class="drawer-header">
+            <h2>Tu Cosecha</h2>
+            <button onclick="toggleDrawer()" style="border:none; background:none; font-size:24px; cursor:pointer;">&times;</button>
+        </div>
+        <div class="drawer-body">
+            <div class="empty-cart active" id="emptyCart"><p>Tu canasta está vacía. 🌱</p></div>
+            <div id="cartItemsContainer"></div>
+            <div class="form-section" id="checkoutForm" style="display: none;">
+                <h3>Tus Datos</h3>
+                <input type="text" id="custName" placeholder="Nombre y Apellido">
+                <input type="email" id="custEmail" placeholder="Correo electrónico">
+                <input type="text" id="custPhone" placeholder="WhatsApp (Ej: +569...)">
+                <input type="text" id="custAddress" placeholder="Dirección y Depto">
+                <h3>¿Cómo quieres recibirlo?</h3>
+                <div class="radio-group">
+                    <label class="radio-card selected" onclick="selectDelivery('plaza', this)">
+                        <input type="radio" name="delivery" value="plaza" checked>
+                        <span class="radio-title">📍 Plaza Las Lilas (Sábado)</span>
+                    </label>
+                    <label class="radio-card" onclick="selectDelivery('cafe', this)">
+                        <input type="radio" name="delivery" value="cafe">
+                        <span class="radio-title">☕ Retiro en cafetería aliada</span>
+                    </label>
+                    <div id="cafeOptions" style="display:none; margin-top:-10px; margin-bottom:15px;">
+                        <select id="selectedCafe">
+                            <option value="">-- Selecciona --</option>
+                            <option value="Dolce & Salato">Dolce & Salato</option>
+                            <option value="La Popular">La Popular</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="drawer-footer">
+            <div class="total-row"><span>Total:</span> <span id="cartTotal">$0</span></div>
+            <button class="btn-checkout" id="btnPagar" disabled onclick="procesarPedido()">Completar Pedido</button>
+        </div>
+    </div>
+
+    <script>
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzC1bBK8nOUvWXf226Gw1_yEzitIlofP4HFLDzS0k-ZZ-a8dHTufEBNVJlnEOoWqAcW/exec';
+        let allProducts = [];
+        let cart = {};
+
+        // CARGA DE PRODUCTOS DESDE GOOGLE SHEETS
+        async function fetchProducts() {
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL);
+                allProducts = await response.json();
+                renderGrid(allProducts);
+            } catch (e) {
+                document.getElementById('productGrid').innerHTML = "<p>Error al cargar productos. Por favor intenta más tarde.</p>";
+            }
+        }
+
+        function renderGrid(products) {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = '';
             
-            <section class="hero-section">
-                <div class="hero-overlay"></div>
-                <div class="container hero-content">
-                    <h1>
-                        <span style="display: block; font-size: 18px; font-family: 'Inter', sans-serif; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: #EAEAEA; margin-bottom: 12px; text-shadow: none;">Refugio Agrícola en Paine</span>
-                        Cultivar lo humano.
-                    </h1>
-                    <p class="section-text">Somos un ecosistema donde las familias respiran, los colegios aprenden y la tierra nos alimenta.</p>
-                </div>
-            </section>
+            products.forEach(p => {
+                const isAgotado = p.stock <= 0 || p.estado !== 'Activo';
+                grid.innerHTML += `
+                    <div class="card ${isAgotado ? 'out-of-stock' : ''}">
+                        <img src="${p.imagen_url}" class="card-img ${isAgotado ? 'grayscale' : ''}" onerror="this.src='https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400'">
+                        <div class="card-body">
+                            <span class="card-tag">${p.segmento}</span>
+                            <h2 class="card-title">${p.nombre}</h2>
+                            <p class="card-desc">${p.descripcion}</p>
+                            <button onclick="openPassport('${p.andeschain_url}')" class="trace-link">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                Origen certificado
+                            </button>
+                            <div class="card-footer">
+                                <span class="price">$${Number(p.precio).toLocaleString('es-CL')}</span>
+                                <button class="btn-add" ${isAgotado ? 'disabled' : ''} 
+                                    onclick="addToCart('${p.id}', '${p.nombre}', ${p.precio})">
+                                    ${isAgotado ? 'Agotado' : 'Agregar'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
 
-            <section id="familias" class="alt-bg img-right">
-                <div class="container grid-2">
-                    <div class="text-content">
-                        <span class="tag">Membresía para Familias</span>
-                        <h2 class="section-title">Tu refugio de fin de semana, sin <span style="text-decoration: line-through; text-decoration-color: var(--text-muted); text-decoration-thickness: 2px; opacity: 0.8;">el cacho de</span> mantenerlo.</h2>
-                        <p class="section-text">La ciudad agota y mantener una parcela requiere tiempo, energía, y no poca plata. Por eso decidimos abrir nuestra parcela a un número limitado de familias afines. El trato es simple:</p>
-                        
-                        <ul class="section-text" style="padding-left: 20px; list-style-type: disc;">
-                            <li style="margin-bottom: 8px;"><strong>Nosotros mantenemos:</strong> El huerto, podamos los frutales, cortamos el pasto, mantenemos la cocina, el quincho y la piscina impecables.</li>
-                            <li style="margin-bottom: 8px;"><strong>Tú llegas y descansas:</strong> Usas toda la infraestructura, cosechas lo que da la tierra, y compartes.</li>
-                        </ul>
-                        
-                        <div style="margin-top: 32px;">
-                            <a href="URL_DE_TU_FORMULARIO" class="btn-primary" target="_blank">Quiero postular a la membresía</a>
-                        </div>
-                        </div>
-                    
-                    <div class="img-content">
-                        <img src="assets/familias.jpg" alt="Familias compartiendo en El Otro Huerto" class="section-img">
-                    </div>
-                </div>
-            </section>
+        function filterBy(seg) {
+            // Actualizar pills
+            document.querySelectorAll('.filter-pill').forEach(btn => {
+                btn.classList.remove('active');
+                if(btn.innerText.includes(seg)) btn.classList.add('active');
+            });
+            
+            if(seg === 'Todos') renderGrid(allProducts);
+            else renderGrid(allProducts.filter(p => p.segmento === seg));
+        }
 
-            <section id="aula" class="img-left">
-                <div class="container grid-2">
-                    <div class="img-content">
-                        <img src="assets/colegio_escucha.jpg" alt="Niños escuchando indicaciones del huerto" class="section-img">
-                    </div>
-                    <div class="text-content">
-                        <span class="tag">Colegios & Educación</span>
-                        <h2 class="section-title">La sala de clases con el techo más alto del mundo.</h2>
-                        <p class="section-text">El Otro Huerto está a disposición de proyectos educativos que comprenden que hay cosas que no se aprenden en una pizarra, y que los ritmos naturales son importantes.</p>
-                        <ul class="section-text" style="padding-left: 20px;">
-                            <li style="margin-bottom: 12px;"><strong>El Ciclo del Trigo (Waldorf):</strong> Desde arar la tierra y sembrar, hasta cosechar y hacer el pan en tu colegio o en nuestro horno de barro.</li>
-                            <li><strong>Convivencia Escolar:</strong> Jornadas diseñadas para sanar dinámicas de grupo y cultivar la empatía ensuciándose las manos.</li>
-                        </ul>
-                        <div style="margin-top: 32px;">
-                            <a href="https://wa.me/56958799778?text=Hola%20Jorge,%20me%20interesa%20conversar%20sobre%20el%20Aula%20Abierta%20para%20colegios" class="btn-primary" target="_blank">Agendar una reunión</a>
-                        </div>
-                    </div>
-                </div>
-            </section>
+        // LÓGICA CARRITO
+        function toggleDrawer() {
+            document.getElementById('drawer').classList.toggle('open');
+            document.getElementById('overlay').classList.toggle('open');
+        }
 
-           <section id="cosecha" class="alt-bg img-right">
-                <div class="container grid-2">
-                    <div class="text-content">
-                        <span class="tag">Producción Local</span>
-                        <h2 class="section-title">Lo que nos da la tierra, directo a la Plaza Las Lilas.</h2>
-                        <p class="section-text">No somos un supermercado. Respetamos los tiempos de la tierra, por lo que nuestras cosechas son por temporada, limitadas, agroecológicas y honestas.</p>
-                        <p class="section-text">Actualmente estamos cosechando <strong>papa Astrid y zapallos Guarda de Paine y Tromboncinos</strong>, de semillas antiguas y libres de químicos. Los almácigos son producidos con dedicación por Luis Miranda, aquí en Paine.</p>
-                        <p class="section-text">Vendemos directo a vecinos y tienditas de especialidad en Providencia (Barrio Las Lilas), sin intermediarios.</p>
-                        
-                        <div style="margin-top: 32px;">
-                            <a href="https://wa.me/56958799778?text=Hola%20Jorge,%20me%20gustaría%20coordinar%20una%20compra%20de%20cosecha%20esta%20semana" class="btn-primary" target="_blank">Consultar stock por WhatsApp</a>
-                        </div>
-                    </div>
-                    
-                    <div class="img-content">
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-                            <img src="assets/papa_astrid.jpg" alt="Papa Astrid" class="section-img" style="grid-column: span 2; height: 300px; margin-bottom: 0;">
-                            <img src="assets/zapallo_guarda.jpg" alt="Zapallo Guarda" class="section-img" style="height: 220px; margin-bottom: 0;">
-                            <img src="assets/zapallo_tromboncino.jpg" alt="Zapallo Tromboncino" class="section-img" style="height: 220px; margin-bottom: 0;">
-                        </div>
-                    </div>
-                </div>
-            </section>
+        function addToCart(id, name, price) {
+            if(cart[id]) cart[id].qty++;
+            else cart[id] = { name, price, qty: 1 };
+            updateCartUI();
+            if(window.innerWidth >= 768) toggleDrawer();
+        }
 
-            <section id="historia" class="img-left">
-                <div class="container grid-2">
-                    <div class="img-content">
-                        <img src="assets/historia.jpg" alt="Historia de Jorge en el huerto" class="section-img">
-                    </div>
-                    <div class="text-content">
-                        <span class="tag">Nuestra Historia</span>
-                        <h2 class="section-title">De la tecnología a la tierra.</h2>
-                        <p class="section-text">Soy Jorge. Trabajé desde los 22 hasta los 30 años en el mundo corporativo (IBM y Oracle). Siempre supe que me tomaría un año para viajar, pero jamás pensé que sería para emprender
+        function updateQty(id, delta) {
+            cart[id].qty += delta;
+            if(cart[id].qty <= 0) delete cart[id];
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cartItemsContainer');
+            const empty = document.getElementById('emptyCart');
+            const form = document.getElementById('checkoutForm');
+            const btn = document.getElementById('btnPagar');
+            const badge = document.getElementById('cartCount');
+            const float = document.getElementById('mobileCartBtn');
+            
+            container.innerHTML = '';
+            let total = 0, count = 0;
+
+            Object.keys(cart).forEach(id => {
+                const item = cart[id];
+                total += item.price * item.qty;
+                count += item.qty;
+                container.innerHTML += `
+                    <div class="cart-item">
+                        <div class="item-info"><h4>${item.name}</h4><p>$${item.price.toLocaleString('es-CL')}</p></div>
+                        <div class="item-controls">
+                            <button class="btn-qty" onclick="updateQty('${id}',-1)">-</button>
+                            <span>${item.qty}</span>
+                            <button class="btn-qty" onclick="updateQty('${id}',1)">+</button>
+                        </div>
+                    </div>`;
+            });
+
+            const txtTotal = '$' + total.toLocaleString('es-CL');
+            document.getElementById('cartTotal').innerText = txtTotal;
+            document.getElementById('mobileCartTotal').innerText = txtTotal;
+            document.getElementById('mobileItemCount').innerText = count;
+            badge.innerText = count;
+            badge.style.display = count > 0 ? 'block' : 'none';
+            empty.style.display = count > 0 ? 'none' : 'block';
+            form.style.display = count > 0 ? 'block' : 'none';
+            btn.disabled = count === 0;
+            if(count > 0 && !document.getElementById('drawer').classList.contains('open')) float.classList.add('show');
+            else float.classList.remove('show');
+        }
+
+        function selectDelivery(type, el) {
+            document.querySelectorAll('.radio-card').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+            el.querySelector('input').checked = true;
+            document.getElementById('cafeOptions').style.display = type === 'cafe' ? 'block' : 'none';
+        }
+
+        async function procesarPedido() {
+            const btn = document.getElementById('btnPagar');
+            const payload = {
+                nombre: document.getElementById('custName').value,
+                email: document.getElementById('custEmail').value,
+                telefono: document.getElementById('custPhone').value,
+                direccion: document.getElementById('custAddress').value,
+                logistica: document.querySelector('input[name="delivery"]:checked').value === 'cafe' ? 
+                           "Café: " + document.getElementById('selectedCafe').value : "Plaza Las Lilas",
+                total: parseInt(document.getElementById('cartTotal').innerText.replace(/\D/g,'')),
+                detalle: Object.values(cart).map(i => `${i.qty}x ${i.name}`).join(' | ')
+            };
+
+            if(!payload.nombre || !payload.email) return alert("Completa tus datos.");
+            
+            btn.disabled = true;
+            btn.innerText = "Conectando...";
+
+            try {
+                const res = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'text/plain'},
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if(data.paymentUrl) window.location.href = data.paymentUrl;
+            } catch (e) {
+                alert("Error al procesar. Escríbenos por WhatsApp.");
+                btn.disabled = false;
+                btn.innerText = "Completar Pedido";
+            }
+        }
+
+        function openPassport(url) {
+            document.getElementById('passportIframe').src = url;
+            document.getElementById('passportOverlay').classList.add('open');
+        }
+        function closePassport() {
+            document.getElementById('passportOverlay').classList.remove('open');
+            document.getElementById('passportIframe').src = "";
+        }
+
+        fetchProducts();
+    </script>
+</body>
+</html>
