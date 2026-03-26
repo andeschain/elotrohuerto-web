@@ -185,8 +185,8 @@
     </div>
 
     <script>
-        // LA MISMA URL DE TU SCRIPT DE PRODUCCIÓN
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzr4xUDOZtACKNZgdHoUbvd3VMwuY7Reuj8KL2bRMEgtSoEwBrzuhqElqC-sWObuhVg/exec';
+        // ¡RECUERDA PEGAR AQUÍ TU URL DE IMPLEMENTACIÓN DE APPS SCRIPT!
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwZKwHuqQ_i32zfRo5tteXCbRRGEjoUbORypE0zm_Jv5l2XFbVPbddmdgu_yLlFmupt/exec';
         
         let allOrders = [];
         let allProducts = [];
@@ -201,7 +201,7 @@
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('app-dashboard').style.display = 'block';
                 document.getElementById('login-error').style.display = 'none';
-                loadData(); // Cargar datos al entrar
+                loadData(); // Cargar datos reales al entrar
             } else {
                 document.getElementById('login-error').style.display = 'block';
             }
@@ -226,43 +226,29 @@
             document.getElementById('view-' + tabId).classList.add('active');
         }
 
-        // --- CONEXIÓN CON GOOGLE SHEETS ---
+        // --- CONEXIÓN CON GOOGLE SHEETS (AHORA REAL) ---
         async function loadData() {
             document.getElementById('loader').style.display = 'block';
             document.getElementById('view-pedidos').style.display = 'none';
             document.getElementById('view-metricas').style.display = 'none';
 
             try {
-                // AVISO: Hasta que no actualicemos el script, esto leerá los productos.
-                // En el siguiente paso le enseñaremos al script a devolver `{pedidos: [], productos: []}`
-                // Por ahora, dejaremos la estructura preparada.
-                
-                /* COMENTADO HASTA ACTUALIZAR EL SCRIPT
+                // Le pasamos la action=getAdminData para que el script traiga todo (productos y pedidos)
                 const res = await fetch(GOOGLE_SCRIPT_URL + "?action=getAdminData");
                 const data = await res.json();
+                
                 allOrders = data.pedidos;
                 allProducts = data.productos;
-                */
-
-                // MOCK DATA PARA VER CÓMO QUEDA EL DISEÑO AHORA MISMO
-                allOrders = [
-                    { id: 'ORD-123456', fecha: '25 Mar 2026', nombre: 'Juan Pérez', email: 'juan@test.com', telefono: '+56912345678', logistica: 'Retiro en: Dolce & Salato', total: 6000, detalle: '2x Papas Astrid | 1x Zapallo Guarda', estado_pago: 'PAGADO', estado_logistico: 'Por Cosechar' },
-                    { id: 'ORD-789012', fecha: '25 Mar 2026', nombre: 'María Silva', email: 'maria@test.com', telefono: '+56987654321', logistica: 'Plaza Las Lilas', total: 5000, detalle: '1x Zapallo Tromboncino', estado_pago: 'PAGADO', estado_logistico: 'Listo para Despacho' }
-                ];
-                allProducts = [
-                    { nombre: 'Papas Astrid', stock: 2, precio: 3000, costo: 1500 },
-                    { nombre: 'Zapallo Guarda', stock: 15, precio: 2000, costo: 800 }
-                ];
 
                 renderOrders();
                 renderMetrics();
 
             } catch (e) {
                 console.error(e);
-                alert("Error conectando con la parcela.");
+                alert("Error conectando con la base de datos.");
             } finally {
                 document.getElementById('loader').style.display = 'none';
-                document.getElementById('view-pedidos').style.display = 'block'; // Volver a mostrar tab activa
+                document.getElementById('view-pedidos').style.display = 'block'; 
             }
         }
 
@@ -271,7 +257,7 @@
             const container = document.getElementById('orders-container');
             container.innerHTML = '';
             
-            // Filtramos solo los pagados que no estén entregados
+            // Filtramos los que están PAGADOS pero que no han sido entregados
             const activeOrders = allOrders.filter(o => o.estado_pago === 'PAGADO' && o.estado_logistico !== 'Entregado');
 
             if(activeOrders.length === 0) {
@@ -286,8 +272,8 @@
                     <div class="order-card">
                         <div class="order-header">
                             <div>
-                                <div class="order-id">#${order.id}</div>
-                                <div class="order-date">${order.fecha}</div>
+                                <div class="order-id">#${order.id_pedido}</div>
+                                <div class="order-date">${order.fecha || 'Reciente'}</div>
                             </div>
                             <div class="badge ${isPrep ? 'badge-despacho' : 'badge-pagado'}">
                                 ${isPrep ? 'En Despacho' : 'Nuevo'}
@@ -299,11 +285,11 @@
                             <strong>Canasta:</strong><br>${order.detalle}
                         </div>
                         <div class="order-actions">
-                            <button class="btn-action btn-prep" onclick="updateStatus('${order.id}', 'prep')" ${isPrep ? 'disabled' : ''}>
-                                ${isPrep ? '✓ Empacado' : 'Marcar Empacado'}
+                            <button class="btn-action btn-prep" onclick="updateStatus('${order.id_pedido}', 'prep', this)" ${isPrep ? 'disabled' : ''}>
+                                ${isPrep ? '✓ Notificado' : 'Marcar Listo (Envia Correo)'}
                             </button>
-                            <button class="btn-action btn-done" onclick="updateStatus('${order.id}', 'done')" ${!isPrep ? 'disabled' : ''}>
-                                Entregar Pedido
+                            <button class="btn-action btn-done" onclick="updateStatus('${order.id_pedido}', 'done', this)" ${!isPrep ? 'disabled' : ''}>
+                                Finalizar Entrega
                             </button>
                         </div>
                     </div>
@@ -313,26 +299,35 @@
 
         function renderMetrics() {
             let totalVentas = 0;
-            let totalCostos = 0;
-            let countPedidos = 0;
+            let totalCostosYComisiones = 0;
+            let countPedidosEntregados = 0;
 
             allOrders.forEach(o => {
                 if(o.estado_pago === 'PAGADO') {
-                    totalVentas += Number(o.total);
-                    countPedidos++;
-                    // Para un cálculo real exacto de costo, el script en el futuro 
-                    // debe guardar el "Costo Total" en la fila del pedido.
-                    // Por ahora haremos una simulación genérica basada en un 40% de costo estimado 
-                    // + la comisión real de MP (4.15%).
-                    totalCostos += (Number(o.total) * 0.40) + (Number(o.total) * 0.0415);
+                    const venta = Number(o.total);
+                    totalVentas += venta;
+                    
+                    // Sumamos la comisión real de Mercado Pago (columna 12 de tu Sheets)
+                    const comision = Number(o.comision_mp) || (venta * 0.041531); 
+                    
+                    // Como tu carrito por ahora no calcula el costo por cada orden en tiempo real, 
+                    // usamos una estimación estándar del 40% de costo para la métrica visual, 
+                    // o podrías agregar esa lógica matemática más adelante.
+                    const costoEstimado = venta * 0.40;
+                    
+                    totalCostosYComisiones += (costoEstimado + comision);
+
+                    if (o.estado_logistico === 'Entregado') {
+                        countPedidosEntregados++;
+                    }
                 }
             });
 
-            const margenBruto = totalVentas - totalCostos;
+            const margenBruto = totalVentas - totalCostosYComisiones;
 
             document.getElementById('val-ventas').innerText = '$' + totalVentas.toLocaleString('es-CL');
-            document.getElementById('val-margen').innerText = '$' + margenBruto.toLocaleString('es-CL');
-            document.getElementById('val-pedidos').innerText = countPedidos;
+            document.getElementById('val-margen').innerText = '$' + Math.round(margenBruto).toLocaleString('es-CL');
+            document.getElementById('val-pedidos').innerText = countPedidosEntregados;
 
             // Stock
             const stockContainer = document.getElementById('stock-container');
@@ -340,7 +335,7 @@
             let hasLowStock = false;
 
             allProducts.forEach(p => {
-                if(p.stock <= 5) {
+                if(p.estado === 'Activo' && p.stock <= 5) {
                     hasLowStock = true;
                     stockContainer.innerHTML += `
                         <div class="stock-item">
@@ -354,32 +349,42 @@
             if(!hasLowStock) stockContainer.innerHTML = '<div style="padding: 16px 24px; color: var(--text-muted);">Stock saludable.</div>';
         }
 
-        // --- ACTUALIZAR ESTADO (Preparación para el Script) ---
-        async function updateStatus(orderId, type) {
-            // Animación visual inmediata
-            event.target.innerText = "Actualizando...";
-            event.target.disabled = true;
+        // --- ACTUALIZAR ESTADO ---
+        async function updateStatus(orderId, type, btnElement) {
+            btnElement.innerText = "Guardando...";
+            btnElement.disabled = true;
 
             const nuevoEstado = type === 'prep' ? 'Listo para Despacho' : 'Entregado';
             
-            /* ESTO SE CONECTARÁ AL SCRIPT EN EL SIGUIENTE PASO
             const payload = { action: "updateOrder", id: orderId, status: nuevoEstado };
-            await fetch(GOOGLE_SCRIPT_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify(payload)
-            });
-            */
-
-            // Simulación de éxito por 1 segundo
-            setTimeout(() => {
-                // Actualizar array local
-                const orderIndex = allOrders.findIndex(o => o.id === orderId);
-                if(orderIndex > -1) allOrders[orderIndex].estado_logistico = nuevoEstado;
+            
+            try {
+                const res = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload)
+                });
                 
-                renderOrders(); // Recargar vista
-                if(type === 'done') alert("Pedido entregado y archivado.");
-            }, 1000);
+                const responseText = await res.text();
+                const data = JSON.parse(responseText);
+
+                if(data.status === 'success') {
+                    // Actualizar el estado localmente para no hacer una recarga completa
+                    const orderIndex = allOrders.findIndex(o => o.id_pedido === orderId);
+                    if(orderIndex > -1) {
+                        allOrders[orderIndex].estado_logistico = nuevoEstado;
+                    }
+                    renderOrders();
+                    if(type === 'done') alert("Pedido archivado como Entregado.");
+                } else {
+                    throw new Error("Error en script");
+                }
+            } catch (e) {
+                console.error(e);
+                alert("Error al actualizar. Intenta nuevamente.");
+                btnElement.innerText = "Reintentar";
+                btnElement.disabled = false;
+            }
         }
     </script>
 </body>
