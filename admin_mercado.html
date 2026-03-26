@@ -192,7 +192,7 @@
         let allProducts = [];
 
         // --- SISTEMA DE LOGIN BÁSICO ---
-        const SECRET_HASH = "666972746f363738"; // Hash simple para "admin123"
+        const SECRET_HASH = "6669726e73363738"; // Hash simple para "admin123"
         function hashInput(str) { return Array.from(str).map(char => (char.charCodeAt(0) + 5).toString(16)).join(''); }
 
         function checkAdminLogin() {
