@@ -1,0 +1,157 @@
+const SS = SpreadsheetApp.getActiveSpreadsheet();
+const SHEET_PEDIDOS = 'Pedidos';
+const SHEET_PRODUCTOS = 'Productos';
+const MP_TOKEN = 'APP_USR-2745532401529354-032011-4c793136b6ef694643cb72a659a4908c-574983039';
+const RESEND_KEY = 're_C8HfuVzr_EkPHwv4uhfURC4K58294fqYb';
+
+// --- 1. LECTURA DE PRODUCTOS (Dinámica, soporta la columna Costo) ---
+function doGet() {
+  const sheet = SS.getSheetByName(SHEET_PRODUCTOS);
+  const data = sheet.getDataRange().getValues();
+  const headers = data.shift().map(h => h.toString().toLowerCase().trim().replace(/[^a-z0-9_]/gi, ''));
+  const productos = data.map(row => {
+    let obj = {};
+    headers.forEach((header, i) => obj[header] = row[i]);
+    return obj;
+  });
+  return ContentService.createTextOutput(JSON.stringify(productos)).setMimeType(ContentService.MimeType.JSON);
+}
+
+// --- 2. PROCESAMIENTO DE PEDIDOS Y PAGOS ---
+function doPost(e) {
+  const sheet = SS.getSheetByName(SHEET_PEDIDOS);
+  let postData;
+
+  try {
+    postData = JSON.parse(e.postData.contents);
+  } catch (err) {
+    postData = e.parameter;
+  }
+
+  // Escenario A: Webhook de Mercado Pago
+  if (postData.action || (postData.data && postData.data.id)) {
+    return procesarPago(postData, sheet);
+  }
+
+  // Escenario B: Nuevo Pedido desde la Web
+  if (postData.nombre) {
+    const id = "ORD-" + Math.floor(Math.random() * 1000000);
+    const total = Number(postData.total);
+    const comision = total * 0.041531; // Cálculo de la columna 12
+
+    // INSERCIÓN EXACTA DE 12 COLUMNAS
+    sheet.appendRow([new Date(), id, postData.nombre, postData.email, postData.telefono, postData.direccion, postData.logistica, total, postData.detalle, "Pendiente", "Por Cosechar", comision]);
+
+    const mpPayload = {
+      items: [{ title: "Cosecha El Otro Huerto", quantity: 1, currency_id: "CLP", unit_price: total }],
+      external_reference: id,
+      back_urls: { success: "https://elotrohuerto.cl/mercado", failure: "https://elotrohuerto.cl/mercado" },
+      auto_return: "approved"
+    };
+
+    try {
+      const res = UrlFetchApp.fetch("https://api.mercadopago.com/checkout/preferences", {
+        method: "post",
+        headers: { "Authorization": "Bearer " + MP_TOKEN, "Content-Type": "application/json" },
+        payload: JSON.stringify(mpPayload),
+        muteHttpExceptions: true
+      });
+      
+      const mpLink = JSON.parse(res.getContentText()).init_point;
+
+      // Intentamos enviar el correo 1 (Recibido / Por Pagar), si falla no bloqueamos el pago
+      try {
+        const htmlOrdenRecibida = `
+        <div style="font-family: 'Inter', Helvetica, sans-serif; max-width: 500px; margin: auto; border: 1px solid #EAEAEA; border-radius: 16px; padding: 40px; background-color: #FDFCFB;">
+          <p style="text-transform: uppercase; font-size: 11px; font-weight: bold; color: #4A5D23; letter-spacing: 1px; margin-bottom: 8px;">Paso 1 de 3</p>
+          <h2 style="color: #1D1D1F; margin-top: 0; font-size: 24px;">Tu cosecha está reservada 🌱</h2>
+          <p style="color: #515154; font-size: 15px; line-height: 1.6;">Hola <strong>${postData.nombre}</strong>,</p>
+          <p style="color: #515154; font-size: 15px; line-height: 1.6;">Hemos recibido tu orden <strong>#${id}</strong>. Ya separamos tus productos del resto de la cosecha.</p>
+          <p style="color: #515154; font-size: 15px; line-height: 1.6;">Para confirmar tu canasta y comenzar a prepararla, solo falta completar el pago seguro a través de Mercado Pago:</p>
+          
+          <div style="text-align: center; margin: 32px 0;">
+            <a href="${mpLink}" style="background-color: #4A5D23; color: white; padding: 16px 32px; text-decoration: none; border-radius: 12px; font-weight: 600; display: inline-block; font-size: 16px;">Ir a Pagar mi Cosecha</a>
+          </div>
+          
+          <hr style="border: none; border-top: 1px solid #EAEAEA; margin: 32px 0;">
+          <p style="font-size: 12px; color: #A0A0A0; line-height: 1.5; text-align: center;">Si ya completaste el pago y la pantalla se cerró rápido, no te preocupes, pronto recibirás el correo de confirmación. <br><br>Un abrazo,<br>Jorge de El Otro Huerto.</p>
+        </div>
+        `;
+        enviarResend(postData.email, `🧺 Orden #${id} recibida | Mercado Rural`, htmlOrdenRecibida);
+      } catch(errMail) {
+          console.error("Error enviando correo de reserva:", errMail);
+      }
+
+      // RESPONDEMOS COMO TEXTO PARA EVITAR BLOQUEO CORS EN LA WEB
+      return ContentService.createTextOutput(JSON.stringify({ status: 'success', paymentUrl: mpLink })).setMimeType(ContentService.MimeType.TEXT);
+      
+    } catch (errMP) {
+      return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: errMP.toString() })).setMimeType(ContentService.MimeType.TEXT);
+    }
+  }
+}
+
+// --- 3. ACTUALIZACIÓN DE ESTADOS (Webhook) ---
+function procesarPago(postData, sheet) {
+  try {
+    const paymentId = postData.data ? postData.data.id : null;
+    if (!paymentId) return ContentService.createTextOutput("OK");
+    
+    const res = UrlFetchApp.fetch("https://api.mercadopago.com/v1/payments/" + paymentId, { 
+      headers: { "Authorization": "Bearer " + MP_TOKEN } 
+    });
+    const payment = JSON.parse(res.getContentText());
+    
+    if (payment.status === "approved") {
+      const orderId = payment.external_reference;
+      const data = sheet.getDataRange().getValues();
+      
+      for (let i = 1; i < data.length; i++) {
+        // data[i][1] es el ID_Pedido. data[i][9] es el Estado_Pago (Columna J, índice 9)
+        if (data[i][1] == orderId && data[i][9] !== "PAGADO") {
+          sheet.getRange(i + 1, 10).setValue("PAGADO");               // Actualiza columna J
+          sheet.getRange(i + 1, 11).setValue("Listo para Despacho");  // Actualiza columna K
+          
+          const emailCliente = data[i][3];
+          const nombreCliente = data[i][2];
+          const detalleCompra = data[i][8]; // Columna I
+          const totalCompra = data[i][7];   // Columna H
+
+          try {
+             const htmlPagoConfirmado = `
+                <div style="font-family: 'Inter', Helvetica, sans-serif; max-width: 500px; margin: auto; border: 2px solid #4A5D23; border-radius: 16px; padding: 40px; background-color: #FDFCFB;">
+                  <p style="text-transform: uppercase; font-size: 11px; font-weight: bold; color: #4A5D23; letter-spacing: 1px; margin-bottom: 8px;">Paso 2 de 3</p>
+                  <h2 style="color: #1D1D1F; margin-top: 0; font-size: 24px;">¡Pago confirmado! ✨</h2>
+                  <p style="color: #515154; font-size: 15px; line-height: 1.6;">Hola <strong>${nombreCliente}</strong>, hemos recibido tu pago por la orden <strong>#${orderId}</strong>.</p>
+                  <p style="color: #515154; font-size: 15px; line-height: 1.6;"><strong>¿Qué pasa ahora?</strong> Ya le avisamos a la parcela en Paine. Estamos preparando todo para que llegue fresco a Providencia.</p>
+                  
+                  <div style="background-color: #F4F6F0; padding: 20px; border-radius: 12px; margin: 24px 0; border: 1px solid rgba(74, 93, 35, 0.1);">
+                    <p style="margin: 0 0 12px 0; font-size: 13px; color: #4A5D23; font-weight: bold; text-transform: uppercase;">Resumen de tu canasta</p>
+                    <p style="margin: 0; font-size: 14px; color: #515154; line-height: 1.6;">${detalleCompra}</p>
+                    <hr style="border: none; border-top: 1px dashed #ccc; margin: 16px 0;">
+                    <p style="margin: 0; font-size: 15px; color: #1D1D1F;"><strong>Monto pagado:</strong> $${Number(totalCompra).toLocaleString('es-CL')}</p>
+                  </div>
+                  
+                  <p style="font-size: 14px; color: #515154; margin-top: 32px;">Te enviaremos un último correo cuando tu pedido esté listo para ser retirado.<br><br>Gracias por apoyar la agricultura rural, limpia y honesta.</p>
+                </div>
+                `;
+            enviarResend(emailCliente, `✅ Pago Aprobado - Orden ${orderId} | Mercado Rural`, htmlPagoConfirmado);
+          } catch(errMail) {
+              console.error("Error enviando correo de confirmación:", errMail);
+          }
+          break;
+        }
+      }
+    }
+  } catch(e) {}
+  return ContentService.createTextOutput("OK");
+}
+
+function enviarResend(to, subject, html) {
+  UrlFetchApp.fetch("https://api.resend.com/emails", {
+    method: "post",
+    headers: { "Authorization": "Bearer " + RESEND_KEY, "Content-Type": "application/json" },
+    payload: JSON.stringify({ "from": "El Otro Huerto <mercadorural@elotrohuerto.cl>", "to": [to], "subject": subject, "html": html }),
+    muteHttpExceptions: true
+  });
+}
