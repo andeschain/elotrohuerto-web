@@ -137,8 +137,8 @@
         </header>
 
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('pedidos')">📦 Logística & Pedidos</button>
-            <button class="tab-btn" onclick="switchTab('metricas')">📊 Métricas & Negocio</button>
+            <button class="tab-btn active" onclick="switchTab('pedidos', this)">📦 Logística & Pedidos</button>
+            <button class="tab-btn" onclick="switchTab('metricas', this)">📊 Métricas & Negocio</button>
         </div>
 
         <div class="container">
@@ -185,7 +185,6 @@
     </div>
 
     <script>
-        // ¡RECUERDA PEGAR AQUÍ TU URL DE IMPLEMENTACIÓN DE APPS SCRIPT!
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwZKwHuqQ_i32zfRo5tteXCbRRGEjoUbORypE0zm_Jv5l2XFbVPbddmdgu_yLlFmupt/exec';
         
         let allOrders = [];
@@ -217,20 +216,23 @@
             if (e.key === 'Enter') checkAdminLogin();
         });
 
-        // --- NAVEGACIÓN TABS ---
-        function switchTab(tabId) {
+        // --- NAVEGACIÓN TABS (A prueba de balas) ---
+        function switchTab(tabId, element) {
+            // Quitamos la clase activa de todos los botones y vistas
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.view-section').forEach(view => view.classList.remove('active'));
             
-            event.target.classList.add('active');
+            // Se la ponemos solo al que hicimos clic
+            element.classList.add('active');
             document.getElementById('view-' + tabId).classList.add('active');
         }
 
-        // --- CONEXIÓN CON GOOGLE SHEETS (AHORA REAL) ---
+        // --- CONEXIÓN CON GOOGLE SHEETS ---
         async function loadData() {
             document.getElementById('loader').style.display = 'block';
-            document.getElementById('view-pedidos').style.display = 'none';
-            document.getElementById('view-metricas').style.display = 'none';
+            
+            // Ocultamos forzosamente para que no molesten mientras carga
+            document.querySelectorAll('.view-section').forEach(v => v.style.display = 'none');
 
             try {
                 // Le pasamos la action=getAdminData para que el script traiga todo (productos y pedidos)
@@ -248,7 +250,10 @@
                 alert("Error conectando con la base de datos.");
             } finally {
                 document.getElementById('loader').style.display = 'none';
-                document.getElementById('view-pedidos').style.display = 'block'; 
+                // ¡LA CORRECCIÓN!: Limpiamos el ocultamiento forzado para que el clic en las pestañas vuelva a funcionar
+                document.querySelectorAll('.view-section').forEach(v => v.style.display = '');
+                // Y nos aseguramos de que la primera pestaña quede visible por defecto
+                document.getElementById('view-pedidos').classList.add('active');
             }
         }
 
