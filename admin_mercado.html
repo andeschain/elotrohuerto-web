@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Command Center | El Otro Huerto</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-page: #F4F6F0; 
+            --white: #FFFFFF;
+            --text-main: #1D1D1F; 
+            --text-muted: #515154; 
+            --accent: #4A5D23; 
+            --accent-hover: #3A4A1C;
+            --border: #EAEAEA;
+            --danger: #D93025;
+            --warning: #F29900;
+            --success: #188038;
+        }
+
+        body { 
+            font-family: 'Inter', sans-serif; background-color: var(--bg-page); color: var(--text-main); 
+            margin: 0; padding: 0; -webkit-font-smoothing: antialiased;
+        }
+        * { box-sizing: border-box; }
+
+        /* LOGIN SCREEN */
+        #login-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background: var(--bg-page); display: flex; align-items: center; justify-content: center; z-index: 2000;
+        }
+        .login-card {
+            background: var(--white); padding: 40px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            width: 100%; max-width: 360px; text-align: center; border: 1px solid var(--border);
+        }
+        .login-card h2 { margin: 0 0 8px 0; font-size: 24px; color: var(--accent); }
+        .login-card p { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; }
+        .login-card input {
+            width: 100%; padding: 16px; font-size: 16px; border: 1px solid var(--border); border-radius: 12px;
+            margin-bottom: 16px; text-align: center; letter-spacing: 2px; background: #FAFAFA;
+        }
+        .login-card input:focus { outline: none; border-color: var(--accent); background: #fff; }
+        .btn-primary {
+            width: 100%; background: var(--accent); color: var(--white); border: none; padding: 16px;
+            border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.2s;
+        }
+        .btn-primary:hover { background: var(--accent-hover); }
+        #login-error { color: var(--danger); font-size: 13px; margin-top: 12px; display: none; font-weight: 500; }
+
+        /* DASHBOARD LAYOUT */
+        #app-dashboard { display: none; padding-bottom: 80px; }
+        
+        header {
+            background: var(--white); padding: 16px 24px; border-bottom: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100;
+        }
+        .brand { font-weight: 700; font-size: 18px; color: var(--accent); display: flex; align-items: center; gap: 8px;}
+        .logout-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 14px; font-weight: 500; }
+
+        .tabs { display: flex; background: var(--white); border-bottom: 1px solid var(--border); overflow-x: auto;}
+        .tab-btn {
+            flex: 1; padding: 16px; text-align: center; background: none; border: none; font-size: 15px;
+            font-weight: 600; color: var(--text-muted); cursor: pointer; border-bottom: 3px solid transparent;
+        }
+        .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+        .container { max-width: 1000px; margin: 0 auto; padding: 24px; }
+        .view-section { display: none; animation: fadeIn 0.3s; }
+        .view-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* METRIC CARDS */
+        .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-bottom: 32px; }
+        .metric-card { background: var(--white); padding: 24px; border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
+        .metric-title { font-size: 13px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 8px; }
+        .metric-value { font-size: 32px; font-weight: 700; color: var(--text-main); margin: 0; }
+        .metric-sub { font-size: 13px; color: var(--success); font-weight: 500; margin-top: 8px; }
+
+        /* LISTS & TABLES */
+        .card-panel { background: var(--white); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; margin-bottom: 24px; }
+        .panel-header { padding: 16px 24px; border-bottom: 1px solid var(--border); background: #FAFAFA; font-weight: 600; }
+        
+        .order-card { padding: 20px 24px; border-bottom: 1px solid var(--border); }
+        .order-card:last-child { border-bottom: none; }
+        .order-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+        .order-id { font-weight: 700; font-size: 16px; }
+        .order-date { font-size: 13px; color: var(--text-muted); }
+        .badge { padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+        .badge-pagado { background: #E6F4EA; color: var(--success); }
+        .badge-despacho { background: #FEF7E0; color: var(--warning); }
+        
+        .order-customer { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+        .order-contact { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; }
+        .order-details { background: var(--bg-page); padding: 12px; border-radius: 8px; font-size: 14px; margin-bottom: 16px; border: 1px dashed #ccc;}
+        
+        .order-actions { display: flex; gap: 12px; }
+        .btn-action { flex: 1; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: 0.2s; }
+        .btn-prep { background: var(--accent); color: var(--white); }
+        .btn-done { background: var(--text-main); color: var(--white); }
+        .btn-action:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .stock-item { display: flex; justify-content: space-between; padding: 12px 24px; border-bottom: 1px solid var(--border); font-size: 14px; }
+        .stock-low { color: var(--danger); font-weight: 600; }
+
+        /* LOADER */
+        .loader { text-align: center; padding: 40px; color: var(--text-muted); font-weight: 500; }
+        .spinner { display: inline-block; width: 24px; height: 24px; border: 3px solid rgba(74,93,35,0.2); border-radius: 50%; border-top-color: var(--accent); animation: spin 1s ease-in-out infinite; margin-bottom: 12px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        @media(max-width: 768px) {
+            .container { padding: 16px; }
+            .metrics-grid { grid-template-columns: 1fr 1fr; }
+            .order-actions { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="login-screen">
+        <div class="login-card">
+            <h2>Command Center</h2>
+            <p>Acceso exclusivo administración</p>
+            <input type="password" id="adminPass" placeholder="Contraseña">
+            <button class="btn-primary" onclick="checkAdminLogin()">Ingresar</button>
+            <p id="login-error">Clave incorrecta.</p>
+        </div>
+    </div>
+
+    <div id="app-dashboard">
+        <header>
+            <div class="brand">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                Admin Huerto
+            </div>
+            <button class="logout-btn" onclick="logout()">Cerrar sesión</button>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('pedidos')">📦 Logística & Pedidos</button>
+            <button class="tab-btn" onclick="switchTab('metricas')">📊 Métricas & Negocio</button>
+        </div>
+
+        <div class="container">
+            
+            <div id="loader" class="loader">
+                <div class="spinner"></div><br>
+                Sincronizando con Paine...
+            </div>
+
+            <div id="view-pedidos" class="view-section active">
+                <div class="card-panel">
+                    <div class="panel-header">Pedidos Activos (Por Entregar)</div>
+                    <div id="orders-container">
+                        </div>
+                </div>
+            </div>
+
+            <div id="view-metricas" class="view-section">
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-title">Ventas Totales</div>
+                        <div class="metric-value" id="val-ventas">$0</div>
+                        <div class="metric-sub">Bruto procesado</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-title">Rentabilidad Bruta</div>
+                        <div class="metric-value" id="val-margen">$0</div>
+                        <div class="metric-sub">Descontando costos y comisión MP</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-title">Pedidos Completados</div>
+                        <div class="metric-value" id="val-pedidos">0</div>
+                    </div>
+                </div>
+
+                <div class="card-panel">
+                    <div class="panel-header">Alerta de Stock Crítico (< 5 unid.)</div>
+                    <div id="stock-container">
+                        </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // LA MISMA URL DE TU SCRIPT DE PRODUCCIÓN
+        const GOOGLE_SCRIPT_URL = 'AQUI_TU_NUEVA_URL_DEL_SCRIPT';
+        
+        let allOrders = [];
+        let allProducts = [];
+
+        // --- SISTEMA DE LOGIN BÁSICO ---
+        const SECRET_HASH = "666972746f363738"; // Hash simple para "admin123"
+        function hashInput(str) { return Array.from(str).map(char => (char.charCodeAt(0) + 5).toString(16)).join(''); }
+
+        function checkAdminLogin() {
+            const pass = document.getElementById('adminPass').value.trim();
+            if(hashInput(pass) === SECRET_HASH) {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('app-dashboard').style.display = 'block';
+                document.getElementById('login-error').style.display = 'none';
+                loadData(); // Cargar datos al entrar
+            } else {
+                document.getElementById('login-error').style.display = 'block';
+            }
+        }
+
+        function logout() {
+            document.getElementById('app-dashboard').style.display = 'none';
+            document.getElementById('login-screen').style.display = 'flex';
+            document.getElementById('adminPass').value = '';
+        }
+
+        document.getElementById('adminPass').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') checkAdminLogin();
+        });
+
+        // --- NAVEGACIÓN TABS ---
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.view-section').forEach(view => view.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById('view-' + tabId).classList.add('active');
+        }
+
+        // --- CONEXIÓN CON GOOGLE SHEETS ---
+        async function loadData() {
+            document.getElementById('loader').style.display = 'block';
+            document.getElementById('view-pedidos').style.display = 'none';
+            document.getElementById('view-metricas').style.display = 'none';
+
+            try {
+                // AVISO: Hasta que no actualicemos el script, esto leerá los productos.
+                // En el siguiente paso le enseñaremos al script a devolver `{pedidos: [], productos: []}`
+                // Por ahora, dejaremos la estructura preparada.
+                
+                /* COMENTADO HASTA ACTUALIZAR EL SCRIPT
+                const res = await fetch(GOOGLE_SCRIPT_URL + "?action=getAdminData");
+                const data = await res.json();
+                allOrders = data.pedidos;
+                allProducts = data.productos;
+                */
+
+                // MOCK DATA PARA VER CÓMO QUEDA EL DISEÑO AHORA MISMO
+                allOrders = [
+                    { id: 'ORD-123456', fecha: '25 Mar 2026', nombre: 'Juan Pérez', email: 'juan@test.com', telefono: '+56912345678', logistica: 'Retiro en: Dolce & Salato', total: 6000, detalle: '2x Papas Astrid | 1x Zapallo Guarda', estado_pago: 'PAGADO', estado_logistico: 'Por Cosechar' },
+                    { id: 'ORD-789012', fecha: '25 Mar 2026', nombre: 'María Silva', email: 'maria@test.com', telefono: '+56987654321', logistica: 'Plaza Las Lilas', total: 5000, detalle: '1x Zapallo Tromboncino', estado_pago: 'PAGADO', estado_logistico: 'Listo para Despacho' }
+                ];
+                allProducts = [
+                    { nombre: 'Papas Astrid', stock: 2, precio: 3000, costo: 1500 },
+                    { nombre: 'Zapallo Guarda', stock: 15, precio: 2000, costo: 800 }
+                ];
+
+                renderOrders();
+                renderMetrics();
+
+            } catch (e) {
+                console.error(e);
+                alert("Error conectando con la parcela.");
+            } finally {
+                document.getElementById('loader').style.display = 'none';
+                document.getElementById('view-pedidos').style.display = 'block'; // Volver a mostrar tab activa
+            }
+        }
+
+        // --- RENDERIZADO DE VISTAS ---
+        function renderOrders() {
+            const container = document.getElementById('orders-container');
+            container.innerHTML = '';
+            
+            // Filtramos solo los pagados que no estén entregados
+            const activeOrders = allOrders.filter(o => o.estado_pago === 'PAGADO' && o.estado_logistico !== 'Entregado');
+
+            if(activeOrders.length === 0) {
+                container.innerHTML = '<div style="padding: 24px; text-align: center; color: #515154;">No hay pedidos pendientes. ¡A descansar!</div>';
+                return;
+            }
+
+            activeOrders.forEach(order => {
+                const isPrep = order.estado_logistico === 'Listo para Despacho';
+                
+                container.innerHTML += `
+                    <div class="order-card">
+                        <div class="order-header">
+                            <div>
+                                <div class="order-id">#${order.id}</div>
+                                <div class="order-date">${order.fecha}</div>
+                            </div>
+                            <div class="badge ${isPrep ? 'badge-despacho' : 'badge-pagado'}">
+                                ${isPrep ? 'En Despacho' : 'Nuevo'}
+                            </div>
+                        </div>
+                        <div class="order-customer">${order.nombre}</div>
+                        <div class="order-contact">📍 ${order.logistica} <br>📞 ${order.telefono}</div>
+                        <div class="order-details">
+                            <strong>Canasta:</strong><br>${order.detalle}
+                        </div>
+                        <div class="order-actions">
+                            <button class="btn-action btn-prep" onclick="updateStatus('${order.id}', 'prep')" ${isPrep ? 'disabled' : ''}>
+                                ${isPrep ? '✓ Empacado' : 'Marcar Empacado'}
+                            </button>
+                            <button class="btn-action btn-done" onclick="updateStatus('${order.id}', 'done')" ${!isPrep ? 'disabled' : ''}>
+                                Entregar Pedido
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function renderMetrics() {
+            let totalVentas = 0;
+            let totalCostos = 0;
+            let countPedidos = 0;
+
+            allOrders.forEach(o => {
+                if(o.estado_pago === 'PAGADO') {
+                    totalVentas += Number(o.total);
+                    countPedidos++;
+                    // Para un cálculo real exacto de costo, el script en el futuro 
+                    // debe guardar el "Costo Total" en la fila del pedido.
+                    // Por ahora haremos una simulación genérica basada en un 40% de costo estimado 
+                    // + la comisión real de MP (4.15%).
+                    totalCostos += (Number(o.total) * 0.40) + (Number(o.total) * 0.0415);
+                }
+            });
+
+            const margenBruto = totalVentas - totalCostos;
+
+            document.getElementById('val-ventas').innerText = '$' + totalVentas.toLocaleString('es-CL');
+            document.getElementById('val-margen').innerText = '$' + margenBruto.toLocaleString('es-CL');
+            document.getElementById('val-pedidos').innerText = countPedidos;
+
+            // Stock
+            const stockContainer = document.getElementById('stock-container');
+            stockContainer.innerHTML = '';
+            let hasLowStock = false;
+
+            allProducts.forEach(p => {
+                if(p.stock <= 5) {
+                    hasLowStock = true;
+                    stockContainer.innerHTML += `
+                        <div class="stock-item">
+                            <span>${p.nombre}</span>
+                            <span class="stock-low">${p.stock} unid.</span>
+                        </div>
+                    `;
+                }
+            });
+
+            if(!hasLowStock) stockContainer.innerHTML = '<div style="padding: 16px 24px; color: var(--text-muted);">Stock saludable.</div>';
+        }
+
+        // --- ACTUALIZAR ESTADO (Preparación para el Script) ---
+        async function updateStatus(orderId, type) {
+            // Animación visual inmediata
+            event.target.innerText = "Actualizando...";
+            event.target.disabled = true;
+
+            const nuevoEstado = type === 'prep' ? 'Listo para Despacho' : 'Entregado';
+            
+            /* ESTO SE CONECTARÁ AL SCRIPT EN EL SIGUIENTE PASO
+            const payload = { action: "updateOrder", id: orderId, status: nuevoEstado };
+            await fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(payload)
+            });
+            */
+
+            // Simulación de éxito por 1 segundo
+            setTimeout(() => {
+                // Actualizar array local
+                const orderIndex = allOrders.findIndex(o => o.id === orderId);
+                if(orderIndex > -1) allOrders[orderIndex].estado_logistico = nuevoEstado;
+                
+                renderOrders(); // Recargar vista
+                if(type === 'done') alert("Pedido entregado y archivado.");
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
