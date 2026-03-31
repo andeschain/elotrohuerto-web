@@ -134,6 +134,13 @@
         }
         .btn-primary:hover { opacity: 0.9; color: #fff; transform: translateY(-2px); box-shadow: 0 8px 16px rgba(74,93,35,0.15);}
         .btn-primary:active { transform: translateY(0); box-shadow: none; }
+        
+        .btn-secondary {
+            display: inline-block; background-color: transparent; color: var(--text-main); padding: 16px 28px; 
+            border-radius: 12px; font-weight: 600; text-align: center; border: 1px solid var(--border); cursor: pointer; 
+            transition: all 0.2s ease; font-size: 16px; -webkit-appearance: none; letter-spacing: 0.5px;
+        }
+        .btn-secondary:hover { border-color: var(--text-main); background: #f9f9f9; }
 
         /* Modal Login (Oculto) */
         #login-modal {
@@ -194,12 +201,32 @@
             .section-text { font-size: 16px; margin-bottom: 20px; }
             
             /* Botones Touch Targets (100% ancho) */
-            .btn-primary { width: 100%; padding: 16px 20px; }
+            .btn-primary, .btn-secondary { width: 100%; padding: 16px 20px; }
         }
     </style>
 </head>
 <body>
 
+    <div id="coming-soon-overlay" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(253, 252, 251, 0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 24px;">
+        <div style="background: #fff; max-width: 440px; width: 100%; padding: 48px 32px; border-radius: 24px; box-shadow: 0 24px 48px rgba(0,0,0,0.08); border: 1px solid var(--border); text-align: center; animation: fadeIn 0.5s ease-out; position: relative;">
+            
+            <button onclick="document.getElementById('coming-soon-overlay').classList.add('hidden')" style="position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text-muted);">×</button>
+
+            <span style="font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px; display: block;">Mercado Rural</span>
+            
+            <h2 style="font-family: 'Lora', serif; font-size: 32px; color: var(--text-main); margin-top: 0; margin-bottom: 16px; line-height: 1.2;">
+                La tierra se está preparando 🌱
+            </h2>
+            
+            <p style="font-family: 'Inter', sans-serif; font-size: 16px; color: var(--text-muted); line-height: 1.6; margin-bottom: 32px;">
+                Estamos ajustando los últimos detalles para abrir nuestra primera cosecha la <strong>primera semana de Abril</strong>. Las canastas serán limitadas.
+            </p>
+            
+            <a href="https://wa.me/56958799778?text=Hola%20Jorge,%20%C2%A1quiero%20que%20me%20avisen%20apenas%20abra%20el%20Mercado%20Rural!" target="_blank" style="display: block; width: 100%; background: var(--accent); color: #fff; text-decoration: none; padding: 16px; border-radius: 12px; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 16px; transition: opacity 0.2s;">
+                Avísame cuando abran
+            </a>
+        </div>
+    </div>
     <header class="main-nav">
         <a href="#" class="logo-container" onclick="window.scrollTo(0,0); return false;">
             <img src="assets/logo.svg" alt="Icono" onerror="this.style.display='none'">
@@ -210,9 +237,9 @@
             <a href="#aula" class="nav-link">Aula Viva Colegios</a>
             <a href="#familias" class="nav-link">Refugio Familiar</a>
             <a href="#historia" class="nav-link">Historia</a>
-            <a href="mercado.html" class="nav-cta-btn">Ir al Mercado Rural</a>
+            <a href="#" onclick="document.getElementById('coming-soon-overlay').classList.remove('hidden'); return false;" class="nav-cta-btn">Ir al Mercado Rural</a>
         </nav>
-        <a href="mercado.html" class="nav-cta-btn" style="display: block;" id="mobile-login-btn">Compra Local</a>
+        <a href="#" onclick="document.getElementById('coming-soon-overlay').classList.remove('hidden'); return false;" class="nav-cta-btn" style="display: block;" id="mobile-login-btn">Mercado Rural</a>
     </header>
 
     <main>
@@ -225,7 +252,7 @@
                         <span style="display: block; font-size: 16px; font-family: 'Inter', sans-serif; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: #EAEAEA; margin-bottom: 16px; text-shadow: none;">Refugio Agrícola en Paine</span>
                         Cultivar lo humano.
                     </h1>
-                    <p class="section-text" style="color:#FDFCFB;">Un espacio que conecta a las personas con la tierra a través de un mercado rural agroecológico (y próximamente biodinámico), una Aula Viva para colegios y un Refugio de Campo con membresías para familias.</p>
+                    <p class="section-text" style="color:#FDFCFB;">Un ecosistema que conecta a las personas con la tierra a través de un Mercado Rural con cosechas limpias, programas inmersivos para colegios afines y un espacio natural exclusivo para familias.</p>
                 </div>
             </section>
 
@@ -233,13 +260,13 @@
                 <div class="container grid-2">
                     <div class="text-content">
                         <span class="tag">Mercado Rural</span>
-                        <h2 class="section-title">Lo que nos da la tierra, directo a la Plaza Las Lilas y alrededores.</h2>
-                        <p class="section-text">No somos un supermercado. Respetamos los tiempos de la tierra, por lo que nuestras cosechas son por temporada, limitadas, 100% libres de químicos y honestas.</p>
-                        <p class="section-text">Actualmente tenemos <strong>papa astrid y zapallos guarda de Paine y tromboncinos</strong>, de semillas antiguas y libres de químicos cosechados en El Otro Huerto, y almácigos producidos por Luis Miranda en Paine.</p>
-                        <p class="section-text">Vendemos directo a vecinos y tiendas de especialidad en Providencia (Barrio Las Lilas).</p>
+                        <h2 class="section-title">Lo que nos da la tierra, directo a la Plaza Las Lilas.</h2>
+                        <p class="section-text">No somos un supermercado. Respetamos los tiempos del campo, por lo que nuestras cosechas son limitadas, por temporada y 100% libres de químicos.</p>
+                        <p class="section-text">Actualmente preparamos <strong>papas nativas y zapallos de guarda</strong>, cultivados a partir de semillas antiguas en Paine, con trazabilidad desde la siembra hasta tus manos.</p>
+                        <p class="section-text">Entregamos personalmente en Providencia (Barrio Las Lilas) a vecinos y tiendas aliadas.</p>
                         
                         <div style="margin-top: 32px;">
-                            <a href="mercado.html" class="btn-primary">Ver productos de temporada</a>
+                            <a href="#" onclick="document.getElementById('coming-soon-overlay').classList.remove('hidden'); return false;" class="btn-primary">Ver la cosecha de temporada</a>
                         </div>
                     </div>
                     
@@ -261,13 +288,10 @@
                     <div class="text-content">
                         <span class="tag">Colegios & Educación</span>
                         <h2 class="section-title">La sala de clases con el techo más alto del mundo.</h2>
-                        <p class="section-text">El Otro Huerto está a disposición de proyectos educativos que comprenden que hay cosas que no se aprenden en una pizarra, y que los ritmos naturales son importantes para el aprendizaje.</p>
-                        <ul class="section-text" style="padding-left: 20px;">
-                            <li style="margin-bottom: 12px;"><strong>Épocas Colegios Waldorf:</strong> Cómo la de Agricultura, en donde desarrollamos desde la preparación, siembre, cuidados hasta el que los estudiantes hagan su propio pan en nuestro horno de barro.</li>
-                            <li><strong>Intervenciones Convivencia Escolar:</strong> Jornadas diseñadas para sanar dinámicas de grupo y cultivar la empatía ensuciándose las manos en la tierra. Orientado a Multiniveles I y II.</li>
-                        </ul>
+                        <p class="section-text">Abrimos nuestras puertas a proyectos educativos que comprenden que hay procesos vitales que no se pueden aprender en una pizarra.</p>
+                        <p class="section-text">Diseñamos experiencias inmersivas, desde acompañar épocas curriculares (como el ciclo del trigo Waldorf), hasta intervenciones de convivencia escolar basadas en ritmos naturales y trabajo con la tierra.</p>
                         <div style="margin-top: 32px;">
-                            <a href="https://calendar.app.google/c2ZjvUoPj2PMCdky7" class="btn-primary" target="_blank">Agendar reunión (Google Calendar)</a>
+                            <a href="https://calendar.app.google/c2ZjvUoPj2PMCdky7" class="btn-secondary" target="_blank">Conversar sobre un proyecto</a>
                         </div>
                     </div>
                 </div>
@@ -276,17 +300,13 @@
             <section id="familias" class="alt-bg img-right">
                 <div class="container grid-2">
                     <div class="text-content">
-                        <span class="tag">Membresía Familias (Cupos Limitados)</span>
-                        <h2 class="section-title">Tu refugio de fin de semana, sin <span style="text-decoration: line-through; text-decoration-color: var(--text-muted); text-decoration-thickness: 2px; opacity: 0.8;">el cacho de</span> mantenerlo.</h2>
-                        <p class="section-text">La ciudad agota y mantener una parcela requiere tiempo, energía, y plata. Por eso decidimos abrir nuestra parcela a un número limitado de familias afines. El trato es simple:</p>
-                        
-                        <ul class="section-text" style="padding-left: 20px; list-style-type: disc;">
-                            <li style="margin-bottom: 8px;"><strong>Nosotros mantenemos:</strong> El huerto, podamos los frutales, cortamos el pasto, mantenemos la cocina, el quincho y la piscina impecables.</li>
-                            <li style="margin-bottom: 8px;"><strong>Tú llegas y descansas:</strong> Usas toda la infraestructura, cosechas lo que da la tierra, y compartes.</li>
-                        </ul>
+                        <span class="tag">Membresía Refugio (Invitación Privada)</span>
+                        <h2 class="section-title">Un espacio seguro para tu familia en el campo.</h2>
+                        <p class="section-text">Sabemos que mantener una parcela requiere una inversión enorme de tiempo y energía. Por eso, compartimos nuestra infraestructura en Paine con un grupo muy reducido de familias afines a nuestra filosofía.</p>
+                        <p class="section-text">Nosotros nos encargamos de que el huerto, la piscina y los jardines estén impecables. Tú llegas a desconectar, compartir con otras familias y cosechar lo que da la tierra.</p>
                         
                         <div style="margin-top: 32px;">
-                            <a href="https://wa.me/56958799778?text=Hola%20Jorge,%20estaba%20viendo%20la%20web%20de%20El%20Otro%20Huerto%20y%20me%20encant%C3%B3%20la%20idea%20de%20la%20membres%C3%ADa%20para%20familias.%20%C2%BFMe%20podr%C3%ADas%20contar%20si%20les%20quedan%20cupos%20para%20el%20piloto?" class="btn-primary" target="_blank">Solicitar Invitación (WhatsApp)</a>
+                            <a href="https://wa.me/56958799778?text=Hola%20Jorge,%20le%C3%AD%20sobre%20el%20Refugio%20Familiar%20y%20me%20gustar%C3%ADa%20saber%20c%C3%B3mo%20funciona." class="btn-secondary" target="_blank">Solicitar información de cupos</a>
                         </div>
                     </div>
                     
@@ -304,9 +324,9 @@
                     <div class="text-content">
                         <span class="tag">Nuestra Historia</span>
                         <h2 class="section-title">De la tecnología a la tierra.</h2>
-                        <p class="section-text">Soy Jorge. Trabajé desde los 22 hasta los 30 años en el mundo corporativo (IBM y Oracle). Siempre supe que me tomaría un año para viajar, pero jamás pensé que sería para emprender.</p>
-                        <p class="section-text">El 2013 dejé ese mundo, armé la mochila y, tras varios viajes, me fui a vivir a una parcela en El Vínculo, Paine. Ahí nació Quillagua. Durante 11 años construí un puente entre pequeños productores locales y corporaciones, llevando el campo a las personas en sus lugares de trabajo. Fue ahí donde aprendí de las personas, del campo y comprendí el valor de la historia detrás de los alimentos que consumimos.</p>
-                        <p class="section-text">Hace poco volvimos a la ciudad como familia, buscando la educación Waldorf para nuestros hijos. Al llegar, descubrimos que esa necesidad vital de ensuciarse las manos, ver crecer una semilla y bajar los ritmos no era solo nuestra; es una urgencia compartida en Santiago. Así nace El Otro Huerto.</p>
+                        <p class="section-text">Soy Jorge. Tras varios años en el mundo corporativo, en 2013 dejé la ciudad para irme a vivir a una parcela en El Vínculo, Paine. Ahí aprendí de los ritmos del campo y construí puentes entre pequeños agricultores y personas en la ciudad.</p>
+                        <p class="section-text">Buscando un espacio educativo y natural más profundo para nuestros hijos, nos dimos cuenta de que la urgencia de ensuciarse las manos y reconectar con la comida real no era solo nuestra, sino de muchos en Santiago.</p>
+                        <p class="section-text">Así nace El Otro Huerto. Un intento honesto por devolverle el alma a la forma en que consumimos, aprendemos y descansamos.</p>
                     </div>
                 </div>
             </section>
@@ -316,9 +336,9 @@
         <div id="login-modal">
             <div class="login-box">
                 <button class="close-btn" onclick="closeLogin()">×</button>
-                <h3 style="font-family: 'Inter', sans-serif; font-size: 20px; margin-bottom: 8px;">Portal Familias</h3>
-                <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px;">Ingresa tu clave de membresía para acceder a la logística y reservas.</p>
-                <input type="password" id="passInput" placeholder="Tu clave">
+                <h3 style="font-family: 'Inter', sans-serif; font-size: 20px; margin-bottom: 8px;">Portal Privado</h3>
+                <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px;">Ingresa tu clave para acceder a la logística y reservas del refugio.</p>
+                <input type="password" id="passInput" placeholder="Tu clave secreta">
                 <button class="btn-primary" style="width: 100%;" onclick="checkPassword()">Entrar</button>
                 <p id="errorMsg">Clave incorrecta. Vuelve a intentarlo.</p>
             </div>
@@ -328,33 +348,24 @@
              <div style="max-width: 800px; margin: 0 auto; padding: 0 24px;">
                 <button onclick="logout()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:14px; margin-bottom:20px; text-decoration:underline;">← Volver al sitio público</button>
                 
-                <span class="tag">Dashboard Familias</span>
-                <h1 style="font-size: 42px; margin-bottom: 16px; letter-spacing: -1px;">Qué bueno verte por aquí.</h1>
-                <p style="font-size: 18px; color: var(--text-muted);">Bienvenido al espacio exclusivo para la tribu. Aquí está la logística y cómo funciona esto por dentro.</p>
+                <span class="tag">Área Exclusiva</span>
+                <h1 style="font-size: 42px; margin-bottom: 16px; letter-spacing: -1px;">Bienvenido al refugio.</h1>
+                <p style="font-size: 18px; color: var(--text-muted);">Acá encontrarás la información logística y las reservas para tu familia.</p>
                 
                 <hr style="margin: 40px 0; border: none; border-top: 1px solid var(--border);">
                 
-                <h3 style="font-size: 24px; margin-bottom: 16px;">Nuestra Infraestructura</h3>
-                <p style="color: var(--text-muted); margin-bottom: 16px;">El Vínculo, Paine. A menos de 60 minutos de Santiago.</p>
+                <h3 style="font-size: 24px; margin-bottom: 16px;">Instalaciones en El Vínculo, Paine</h3>
                 <ul style="color: var(--text-muted); padding-left: 20px; font-size: 16px; line-height: 1.6;">
-                    <li style="margin-bottom: 8px;"><strong>Parque y Piscina:</strong> Piscina de 15x5 mts, uso libre.</li>
-                    <li style="margin-bottom: 8px;"><strong>Quincho y Fuego:</strong> Quincho full equipado con horno de barro.</li>
-                    <li><strong>Alojamiento:</strong> Opción de alojar un finde cada tres meses en sala acondicionada.</li>
+                    <li style="margin-bottom: 8px;"><strong>Parque y Piscina:</strong> Piscina de 15x5 mts disponible para la temporada de calor.</li>
+                    <li style="margin-bottom: 8px;"><strong>Quincho:</strong> Equipado completamente y con horno de barro tradicional.</li>
+                    <li><strong>Alojamiento:</strong> Posibilidad de agendar estadías cortas en nuestra sala acondicionada.</li>
                 </ul>
                 
                 <figure style="margin: 40px 0;">
                     <img src="assets/quincho.jpg" alt="Quincho en El Vínculo" style="width:100%; border-radius:16px; box-shadow: 0 12px 24px rgba(0,0,0,0.06);">
                 </figure>
                 
-                <h3 style="font-size: 24px; margin-bottom: 16px;">Modelo de suscripción</h3>
-                <div style="background: #F4F4F4; padding: 24px; border-radius: 16px; margin-bottom: 40px;">
-                    <ul style="color: var(--text-muted); margin-bottom: 0; padding-left: 20px; font-size: 16px; line-height: 1.6;">
-                        <li style="margin-bottom: 8px;"><strong>Aporte Mensual:</strong> 4 UF por familia (acceso ilimitado fines de semana).</li>
-                        <li><strong>Incorporación:</strong> $0 para las primeras 7 familias.</li>
-                    </ul>
-                </div>
-                
-                <a href="https://wa.me/56958799778?text=Hola%20Jorge.%20Quiero%20avisar%20que%20iremos%20al%20huerto%20este%20fin%20de%20semana" class="btn-primary" style="display: block; width: 100%; text-align: center;" target="_blank">Avisar que vamos (WhatsApp)</a>
+                <a href="https://wa.me/56958799778?text=Hola%20Jorge.%20Iremos%20al%20huerto%20este%20fin%20de%20semana" class="btn-primary" style="display: block; width: 100%; text-align: center;" target="_blank">Avisar visita (WhatsApp)</a>
             </div>
         </div>
     </main>
@@ -364,28 +375,26 @@
             <h3 style="color: #FFFFFF; margin-bottom: 16px; font-size: 24px;">El Otro Huerto.</h3>
             <p style="color: #A0A0A0; font-size: 15px; margin-bottom: 32px; line-height: 1.6;">
                 Un proyecto creado por Jorge Munoz.<br>
-                Cosechando y creando canales de comercialización éticos desde 2014 (anteriormente con Quillagua).<br>
+                Cosechando relaciones éticas con la tierra desde 2014.<br>
                 El Vínculo, Paine. Región Metropolitana.
             </p>
             
             <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-bottom: 40px; font-size: 14px;">
                 <a href="https://andeschain.io" target="_blank" style="color: #A0A0A0; text-decoration: underline; transition: color 0.2s;">Tecnología AndesChain</a>
                 <a href="https://linkedin.com/in/jorgemunozar" target="_blank" style="color: #A0A0A0; text-decoration: underline; transition: color 0.2s;">LinkedIn</a>
-                <a href="#" onclick="event.preventDefault(); openLogin();" style="color: #A0A0A0; text-decoration: underline; transition: color 0.2s;">Portal Familias</a>
+                <a href="#" onclick="event.preventDefault(); openLogin();" style="color: #A0A0A0; text-decoration: underline; transition: color 0.2s;">Acceso Familias</a>
             </div>
 
             <p style="color: #515154; font-size: 13px; line-height: 1.6;">
                 &copy; 2026 El Otro Huerto. Todos los derechos reservados.<br>
-                Cultivando lo humano desde 2014.
+                Cultivando lo humano.
             </p>
         </div>
     </footer>
 
     <script>
-        // Ocultar el botón CTA móvil del header si estamos en escritorio
         if(window.innerWidth >= 768) { document.getElementById('mobile-login-btn').style.display = 'none'; }
         
-        /* Funciones Modal Login */
         function openLogin() {
             document.getElementById("login-modal").classList.add("active");
             setTimeout(() => document.getElementById("passInput").focus(), 100);
@@ -421,11 +430,10 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Permite "Enter" o "Ir" en el teclado del celular
         document.getElementById("passInput").addEventListener("keypress", function(event) {
             if (event.key === "Enter") { 
                 event.preventDefault(); 
-                this.blur(); // Oculta el teclado táctil
+                this.blur(); 
                 checkPassword(); 
             }
         });
