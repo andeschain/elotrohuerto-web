@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>🛠️ DEV - Mercado Rural | El Otro Huerto</title>
+    <meta name="robots" content="noindex, nofollow"> 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600&display=swap" rel="stylesheet">
     
     <style>
@@ -30,7 +31,9 @@
             position: sticky; top: 0; background: #fff; border-bottom: 1px solid var(--border); z-index: 100; padding: 16px 24px;
             display: flex; justify-content: space-between; align-items: center;
         }
+
         .logo-container { display: flex; align-items: center; gap: 12px; font-family: 'Lora', serif; font-weight: 600; font-size: 20px; text-decoration: none; color: var(--text-main); }
+        .logo-container img { height: 28px; width: auto; }
         
         .cart-btn {
             background: none; border: none; cursor: pointer; position: relative;
@@ -42,7 +45,6 @@
             border: 2px solid #fff; font-weight: 700;
         }
 
-        /* OVERLAY SIN BLUR PARA EVITAR DESENFOQUE */
         .overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: rgba(0,0,0,0.4); z-index: 999; 
@@ -60,7 +62,6 @@
         .drawer-header { padding: 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #fff; }
         .drawer-body { padding: 24px; overflow-y: auto; flex-grow: 1; background: #fff; }
 
-        /* ITEMS DEL CARRITO - CORREGIDO COLOR Y VISIBILIDAD */
         .cart-item { 
             display: flex; justify-content: space-between; align-items: center; 
             margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--border);
@@ -70,7 +71,6 @@
         
         .item-controls { display: flex; align-items: center; gap: 12px; background: var(--bg-alt); border-radius: 20px; padding: 6px 12px;}
         .btn-qty { background: none; border: none; width: 24px; height: 24px; cursor: pointer; font-weight: 700; font-size: 18px; color: var(--accent);}
-        .qty-val { color: var(--text-main); font-weight: 600; font-size: 14px; }
 
         .hero { padding: 40px 24px; text-align: center; }
         .search-container { max-width: 1080px; margin: 0 auto 32px auto; padding: 0 24px; }
@@ -83,20 +83,22 @@
         .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 20px; margin-top: auto;}
         
         .btn-add { background: var(--text-main); color: #fff; border: none; padding: 12px 20px; border-radius: 24px; font-weight: 600; cursor: pointer; transition: 0.2s;}
-        .btn-add:active { transform: scale(0.95); }
 
         .drawer-footer { padding: 24px; border-top: 1px solid var(--border); background: #fff; }
         .total-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 16px; color: var(--text-main); }
         .total-row.final { font-size: 20px; font-weight: 700; border-top: 1px dashed var(--border); padding-top: 16px; margin-top: 12px; }
         
         .btn-checkout { width: 100%; background: var(--accent); color: #fff; border: none; padding: 18px; border-radius: 16px; font-size: 16px; font-weight: 600; cursor: pointer; }
-        .btn-secondary { width: 100%; background: #f0f0f0; color: var(--text-main); border: none; padding: 14px; border-radius: 12px; margin-bottom: 12px; cursor: pointer; }
+        .btn-secondary { width: 100%; background: #f0f0f0; color: #1d1d1f; border: none; padding: 14px; border-radius: 12px; margin-bottom: 12px; cursor: pointer; }
 
         input[type="text"], input[type="email"], input[type="tel"] { width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; font-size: 16px; }
 
-        .radio-card { border: 1px solid var(--border); border-radius: 12px; padding: 16px; cursor: pointer; margin-bottom: 10px; display: block; position: relative; background: #fff;}
+        .radio-card { border: 1px solid var(--border); border-radius: 12px; padding: 16px; cursor: pointer; margin-bottom: 12px; display: block; position: relative; background: #fff; transition: 0.2s;}
         .radio-card.selected { border: 2px solid var(--accent); background: var(--bg-alt); }
         .radio-card input { position: absolute; opacity: 0; }
+        .radio-title { display: block; font-weight: 700; font-size: 15px; margin-bottom: 4px; }
+        .radio-desc { display: block; font-size: 13px; color: var(--text-muted); line-height: 1.4; }
+        .radio-price { font-weight: 700; color: var(--accent); }
 
         .dev-badge { position: fixed; bottom: 0; left: 0; background: #D93025; color: white; z-index: 10001; font-size: 11px; padding: 4px 12px; font-weight: bold; border-top-right-radius: 8px; }
 
@@ -146,25 +148,38 @@
         </div>
 
         <div class="drawer-body" id="step-checkout" style="display: none;">
-            <h3 style="font-size:16px; margin-bottom:12px;">1. Método de entrega</h3>
-            <label class="radio-card selected" onclick="selectDelivery('plaza', this)">
-                <input type="radio" name="delivery" value="plaza" checked>
-                <strong>📍 Plaza Las Lilas</strong> (Sáb) - Gratis
-            </label>
-            <label class="radio-card" onclick="selectDelivery('domicilio', this)">
-                <input type="radio" name="delivery" value="domicilio">
-                <strong>🛵 Domicilio</strong> (Jue) - $2.500
-            </label>
+            <h3 style="font-size:14px; margin-bottom:16px; color:var(--accent); text-transform:uppercase; letter-spacing:1px;">1. Método de entrega</h3>
+            
+            <div class="radio-group">
+                <label class="radio-card selected" onclick="selectDelivery('plaza', this)">
+                    <input type="radio" name="delivery" value="plaza" checked>
+                    <span class="radio-title">📍 Plaza Las Lilas <span class="radio-price">Gratis</span></span>
+                    <span class="radio-desc">Te esperamos cada Sábado de 10:00 a 11:30 hrs en Plaza Loreto Cousiño (Frente a Dolce y Salato).</span>
+                </label>
+
+                <label class="radio-card" onclick="selectDelivery('domicilio', this)">
+                    <input type="radio" name="delivery" value="domicilio">
+                    <span class="radio-title">🛵 Despacho a Domicilio <span class="radio-price">$2.500</span></span>
+                    <span class="radio-desc">Entrega los días Jueves. Solo disponible en un radio de 1.5km desde Plaza Las Lilas.</span>
+                </label>
+
+                <label class="radio-card" style="opacity: 0.6; cursor: not-allowed;">
+                    <input type="radio" name="delivery" value="cafe" disabled>
+                    <span class="radio-title">☕ Punto de Retiro <span class="radio-price">Fase 2</span></span>
+                    <span class="radio-desc">Próximamente en tu cafetería más cercana del barrio.</span>
+                </label>
+            </div>
 
             <div id="addressBox" style="display: none; margin-top: 16px;">
-                <input type="text" id="custAddress" placeholder="Dirección (Calle y Número)" autocomplete="off">
+                <h3 style="font-size:14px; margin-bottom:12px;">Dirección de entrega</h3>
+                <input type="text" id="custAddress" placeholder="Ej: El Vergel 2500, Providencia" autocomplete="off">
                 <p id="addressError" style="color: var(--danger); font-size: 12px; display:none; margin-top:-8px; margin-bottom:12px;"></p>
             </div>
 
-            <h3 style="font-size:16px; margin-top:20px; margin-bottom:12px;">2. Datos de contacto</h3>
+            <h3 style="font-size:14px; margin-top:24px; margin-bottom:16px; color:var(--accent); text-transform:uppercase; letter-spacing:1px;">2. Datos de contacto</h3>
             <input type="text" id="custName" placeholder="Nombre completo">
-            <input type="email" id="custEmail" placeholder="Email">
-            <input type="tel" id="custPhone" placeholder="WhatsApp +569...">
+            <input type="email" id="custEmail" placeholder="Correo electrónico">
+            <input type="tel" id="custPhone" placeholder="WhatsApp (Ej: +56912345678)">
         </div>
 
         <div class="drawer-footer">
@@ -176,7 +191,7 @@
             </div>
             <div id="footer-checkout" style="display: none;">
                 <button class="btn-secondary" onclick="changeStep(1)">← Editar pedido</button>
-                <button class="btn-checkout" id="btnFinalPagar" onclick="procesarPedido()">Ir a pagar</button>
+                <button class="btn-checkout" id="btnFinalPagar" onclick="procesarPedido()">Pagar ahora</button>
             </div>
         </div>
     </div>
@@ -199,14 +214,14 @@
                 const place = autocomplete.getPlace();
                 const errorMsg = document.getElementById('addressError');
                 if (!place.geometry) {
-                    errorMsg.innerText = "Selecciona una dirección de la lista.";
+                    errorMsg.innerText = "⚠️ Por favor, selecciona una dirección de la lista sugerida.";
                     errorMsg.style.display = 'block';
                     isAddressValid = false;
                     return;
                 }
                 const dist = google.maps.geometry.spherical.computeDistanceBetween(place.geometry.location, plazaLilas);
                 if (dist > 1500) {
-                    errorMsg.innerText = "Fuera del radio de 1.5km (Plaza Las Lilas).";
+                    errorMsg.innerText = "❌ Dirección fuera del radio de 1.5km desde Plaza Las Lilas.";
                     errorMsg.style.display = 'block';
                     isAddressValid = false;
                 } else {
@@ -226,7 +241,7 @@
                     if (p.estado !== 'Activo') return;
                     grid.innerHTML += `
                         <div class="card">
-                            <img src="${p.imagen_url}" class="card-img">
+                            <img src="${p.imagen_url}" class="card-img" onerror="this.src='https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400'">
                             <div class="card-body">
                                 <span style="font-size:10px; color:var(--accent); font-weight:700; text-transform:uppercase;">${p.segmento}</span>
                                 <h2 style="font-size:20px; margin: 8px 0;">${p.nombre}</h2>
@@ -244,9 +259,8 @@
         function addToCart(id, name, price, btn) {
             if(cart[id]) cart[id].qty++; else cart[id] = { name, price, qty: 1 };
             const originalText = btn.innerText;
-            btn.innerText = "¡Listo! 🌿";
-            btn.style.background = "#4A5D23";
-            setTimeout(() => { btn.innerText = originalText; btn.style.background = ""; }, 1000);
+            btn.innerText = "¡Agregado! 🌿";
+            setTimeout(() => { btn.innerText = originalText; }, 1000);
             updateCartUI();
         }
 
@@ -263,7 +277,7 @@
                         <div class="item-info"><h4>${item.name}</h4><p>$${item.price.toLocaleString('es-CL')}</p></div>
                         <div class="item-controls">
                             <button class="btn-qty" onclick="updateQty('${id}', -1)">-</button>
-                            <span class="qty-val">${item.qty}</span>
+                            <span style="font-weight:600;">${item.qty}</span>
                             <button class="btn-qty" onclick="updateQty('${id}', 1)">+</button>
                         </div>
                     </div>`;
@@ -273,7 +287,7 @@
             document.getElementById('cartCount').innerText = count;
             document.getElementById('cartCount').style.display = count > 0 ? 'block' : 'none';
             if(count === 0) { 
-                container.innerHTML = '<p style="text-align:center; color:#888; padding:20px;">Tu canasta está vacía.</p>';
+                container.innerHTML = '<p style="text-align:center; color:#888; padding:20px;">Tu canasta está vacía. 🌱</p>';
                 document.getElementById('btnGoCheckout').disabled = true;
             } else {
                 document.getElementById('btnGoCheckout').disabled = false;
@@ -298,6 +312,7 @@
             document.getElementById('step-checkout').style.display = s === 2 ? 'block' : 'none';
             document.getElementById('footer-checkout').style.display = s === 2 ? 'block' : 'none';
             document.getElementById('drawerTitle').innerText = s === 1 ? "Tu Cosecha" : "Datos de Entrega";
+            window.scrollTo(0,0);
         }
 
         function selectDelivery(type, el) {
@@ -305,6 +320,7 @@
             el.classList.add('selected');
             deliveryCost = type === 'domicilio' ? 2500 : 0;
             document.getElementById('addressBox').style.display = type === 'domicilio' ? 'block' : 'none';
+            if(type === 'domicilio') isAddressValid = false; else isAddressValid = true;
             updateCartUI();
         }
 
@@ -317,16 +333,16 @@
 
         async function procesarPedido() {
             const btn = document.getElementById('btnFinalPagar');
-            const name = document.getElementById('custName').value;
-            const email = document.getElementById('custEmail').value;
-            const phone = document.getElementById('custPhone').value;
+            const name = document.getElementById('custName').value.trim();
+            const email = document.getElementById('custEmail').value.trim();
+            const phone = document.getElementById('custPhone').value.trim();
 
             if(!name || !email || !phone || (deliveryCost > 0 && !isAddressValid)) {
-                alert("Por favor, completa todos los datos correctamente."); return;
+                alert("Por favor, completa todos los datos correctamente y verifica la dirección."); return;
             }
 
             btn.innerText = "Procesando..."; btn.disabled = true;
-            // Aquí iría tu lógica de fetch para Mercado Pago...
+            // Lógica de pago Mercado Pago aquí...
             alert("Redirigiendo a pago seguro...");
         }
 
