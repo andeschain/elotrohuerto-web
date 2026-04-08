@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
     <title>🛠️ DEV - Mercado Rural | El Otro Huerto</title>
-    <meta name="robots" content="noindex, nofollow"> <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600&display=swap" rel="stylesheet">
+    <meta name="robots" content="noindex, nofollow"> 
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -49,6 +50,15 @@
         .hero h1 { font-size: 42px; line-height: 1.1; margin-bottom: 16px; letter-spacing: -1px; }
         .hero p { font-size: 18px; color: var(--text-muted); line-height: 1.6; }
 
+        /* NUEVO: ESTILOS DEL BUSCADOR */
+        .search-container { max-width: 1080px; margin: 0 auto 32px auto; padding: 0 24px; }
+        .search-input {
+            width: 100%; padding: 16px 20px; font-size: 16px; border: 1px solid var(--border);
+            border-radius: 16px; background: #fff; font-family: 'Inter', sans-serif;
+            transition: all 0.2s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.02); -webkit-appearance: none;
+        }
+        .search-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(74, 93, 35, 0.1); }
+
         .grid {
             display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
             gap: 32px; padding: 0 24px 80px; max-width: 1080px; margin: 0 auto;
@@ -58,7 +68,10 @@
             overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column;
         }
         .card:hover { transform: translateY(-4px); box-shadow: 0 16px 32px rgba(0,0,0,0.06); }
-        .card-img { width: 100%; height: 240px; object-fit: cover; background-color: var(--bg-alt); border-bottom: 1px solid var(--border); }
+        
+        /* MEJORA VISUAL DE IMAGEN: Se cambia cover por contain y se añade padding */
+        .card-img { width: 100%; height: 240px; object-fit: contain; padding: 20px; background-color: var(--bg-alt); border-bottom: 1px solid var(--border); }
+        
         .card-body { padding: 24px; display: flex; flex-direction: column; flex-grow: 1; }
         .card-tag { font-size: 12px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; display: inline-block;}
         .card-title { font-size: 24px; margin-bottom: 8px; letter-spacing: -0.5px;}
@@ -188,26 +201,7 @@
     </div>
 
     <div id="coming-soon-overlay" style="display: none !important; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(253, 252, 251, 0.6); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 9999; align-items: center; justify-content: center; padding: 24px;">
-        <div style="background: #fff; max-width: 440px; width: 100%; padding: 48px 32px; border-radius: 24px; box-shadow: 0 24px 48px rgba(0,0,0,0.08); border: 1px solid var(--border); text-align: center; animation: fadeIn 0.5s ease-out;">
-            <span style="font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px; display: block;">Mercado Rural</span>
-            
-            <h2 style="font-family: 'Lora', serif; font-size: 32px; color: var(--text-main); margin-top: 0; margin-bottom: 16px; line-height: 1.2;">
-                La tierra se está preparando 🌱
-            </h2>
-            
-            <p style="font-family: 'Inter', sans-serif; font-size: 16px; color: var(--text-muted); line-height: 1.6; margin-bottom: 32px;">
-                Estamos ajustando los últimos detalles para abrir nuestra primera cosecha <strong>durante Abril</strong>. Las canastas serán limitadas.
-            </p>
-            
-            <a href="https://wa.me/56958799778?text=Hola%20Jorge,%20%C2%A1quiero%20que%20me%20avisen%20apenas%20abra%20el%20Mercado%20Rural!" target="_blank" style="display: block; width: 100%; background: var(--accent); color: #fff; text-decoration: none; padding: 16px; border-radius: 12px; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 16px; transition: opacity 0.2s;">
-                Avísame cuando abran
-            </a>
-            
-            <a href="index.html" style="display: block; margin-top: 24px; font-family: 'Inter', sans-serif; font-size: 14px; color: #A0A0A0; text-decoration: underline;">
-                Volver al El Otro Huerto
-            </a>
         </div>
-    </div>
 
     <header>
         <a href="index.html" class="logo-container">
@@ -225,6 +219,10 @@
             <h1>¿Conoces el origen de los alimentos que consumes?</h1>
             <p>En nuestro Mercado Rural, si. Cosechamos de nuestro propio huerto, y en los de nuestra red de agricultura colaborativa desde el año 2014 (Quillagua). Rescatamos semillas para cultivar de forma agroecológica, y estamos en transición a la biodinámica. Alimentos 100% reales, con trazabilidad de origen y libres de químicos.</p>
         </section>
+
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-input" placeholder="🔍 Buscar papas, zapallos, canastas..." onkeyup="filtrarProductos()">
+        </div>
 
         <section class="grid" id="productGrid">
             <p style="text-align:center; grid-column: 1/-1; color: var(--text-muted);">Cargando la cosecha de esta semana...</p>
@@ -374,6 +372,35 @@
                 `;
                 grid.innerHTML += html;
             });
+        }
+
+        // --- NUEVA FUNCIÓN: FILTRO EN TIEMPO REAL ---
+        function filtrarProductos() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('#productGrid .card');
+            let count = 0;
+            
+            cards.forEach(card => {
+                const title = card.querySelector('.card-title').innerText.toLowerCase();
+                const tag = card.querySelector('.card-tag').innerText.toLowerCase();
+                
+                if (title.includes(query) || tag.includes(query)) {
+                    card.style.display = 'flex';
+                    count++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            let noMsg = document.getElementById('no-results-msg');
+            if (!noMsg) {
+                noMsg = document.createElement('p');
+                noMsg.id = 'no-results-msg';
+                noMsg.style.cssText = 'text-align:center; grid-column: 1/-1; color: var(--text-muted); padding: 40px 0;';
+                noMsg.innerText = 'No encontramos productos con ese nombre 🌱';
+                document.getElementById('productGrid').appendChild(noMsg);
+            }
+            noMsg.style.display = count === 0 ? 'block' : 'none';
         }
 
         // --- FUNCIONES DEL MODAL ANDESCHAIN ---
