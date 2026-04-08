@@ -31,7 +31,6 @@
             position: sticky; top: 0; background: #fff; border-bottom: 1px solid var(--border); z-index: 100; padding: 16px 24px;
             display: flex; justify-content: space-between; align-items: center;
         }
-
         .logo-container { display: flex; align-items: center; gap: 12px; font-family: 'Lora', serif; font-weight: 600; font-size: 20px; text-decoration: none; color: var(--text-main); }
         .logo-container img { height: 28px; width: auto; }
         
@@ -72,10 +71,6 @@
         .item-controls { display: flex; align-items: center; gap: 12px; background: var(--bg-alt); border-radius: 20px; padding: 6px 12px;}
         .btn-qty { background: none; border: none; width: 24px; height: 24px; cursor: pointer; font-weight: 700; font-size: 18px; color: var(--accent);}
 
-        .hero { padding: 40px 24px; text-align: center; }
-        .search-container { max-width: 1080px; margin: 0 auto 32px auto; padding: 0 24px; }
-        .search-input { width: 100%; padding: 16px; border: 1px solid var(--border); border-radius: 12px; font-size: 16px; }
-
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 32px; padding: 0 24px 80px; max-width: 1080px; margin: 0 auto; }
         .card { background: #fff; border: 1px solid var(--border); border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; }
         .card-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-bottom: 1px solid var(--border); }
@@ -91,7 +86,8 @@
         .btn-checkout { width: 100%; background: var(--accent); color: #fff; border: none; padding: 18px; border-radius: 16px; font-size: 16px; font-weight: 600; cursor: pointer; }
         .btn-secondary { width: 100%; background: #f0f0f0; color: #1d1d1f; border: none; padding: 14px; border-radius: 12px; margin-bottom: 12px; cursor: pointer; }
 
-        input[type="text"], input[type="email"], input[type="tel"] { width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; font-size: 16px; }
+        input[type="text"], input[type="email"], input[type="tel"] { width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; font-size: 16px; background: #fff; }
+        input.error { border: 2px solid var(--danger); background: #FFF9F9; }
 
         .radio-card { border: 1px solid var(--border); border-radius: 12px; padding: 16px; cursor: pointer; margin-bottom: 12px; display: block; position: relative; background: #fff; transition: 0.2s;}
         .radio-card.selected { border: 2px solid var(--accent); background: var(--bg-alt); }
@@ -121,13 +117,14 @@
     </header>
 
     <main>
-        <section class="hero">
+        <section style="padding: 40px 24px; text-align: center;">
             <h1>Cosecha real de Paine</h1>
             <p>Directo a tu mesa en Barrio Las Lilas.</p>
         </section>
 
-        <div class="search-container">
-            <input type="text" id="searchInput" class="search-input" placeholder="🔍 Buscar productos..." onkeyup="filtrarProductos()">
+        <div style="max-width: 1080px; margin: 0 auto 32px auto; padding: 0 24px;">
+            <input type="text" id="searchInput" placeholder="🔍 Buscar productos..." onkeyup="filtrarProductos()" 
+                   style="width: 100%; padding: 16px; border: 1px solid var(--border); border-radius: 12px; font-size: 16px;">
         </div>
 
         <section class="grid" id="productGrid">
@@ -171,9 +168,10 @@
             </div>
 
             <div id="addressBox" style="display: none; margin-top: 16px;">
-                <h3 style="font-size:14px; margin-bottom:12px;">Dirección de entrega</h3>
-                <input type="text" id="custAddress" placeholder="Ej: El Vergel 2500, Providencia" autocomplete="off">
+                <h3 style="font-size:14px; margin-bottom:12px; color:var(--accent);">Dirección de entrega</h3>
+                <input type="text" id="custAddress" placeholder="Busca tu calle y número..." autocomplete="off">
                 <p id="addressError" style="color: var(--danger); font-size: 12px; display:none; margin-top:-8px; margin-bottom:12px;"></p>
+                <input type="text" id="custAddressDetails" placeholder="Depto / Casa / Referencia (Opcional)" style="margin-top: 4px;">
             </div>
 
             <h3 style="font-size:14px; margin-top:24px; margin-bottom:16px; color:var(--accent); text-transform:uppercase; letter-spacing:1px;">2. Datos de contacto</h3>
@@ -185,13 +183,16 @@
         <div class="drawer-footer">
             <div id="footer-cart">
                 <div class="total-row final">
-                    <span>Total:</span> <span id="cartTotal">$0</span>
+                    <span>Total a Pagar:</span> <span id="cartTotal">$0</span>
                 </div>
                 <button class="btn-checkout" id="btnGoCheckout" onclick="changeStep(2)">Continuar</button>
             </div>
             <div id="footer-checkout" style="display: none;">
+                <div class="total-row"><span>Subtotal:</span> <span id="checkoutSubtotal">$0</span></div>
+                <div class="total-row" id="deliveryRow" style="display:none; color:var(--accent);"><span>Despacho:</span> <span>$2.500</span></div>
+                <div class="total-row final"><span>Total:</span> <span id="checkoutTotal">$0</span></div>
                 <button class="btn-secondary" onclick="changeStep(1)">← Editar pedido</button>
-                <button class="btn-checkout" id="btnFinalPagar" onclick="procesarPedido()">Pagar ahora</button>
+                <button class="btn-checkout" id="btnFinalPagar" onclick="procesarPedido()">Ir a pagar</button>
             </div>
         </div>
     </div>
@@ -203,32 +204,34 @@
         let isAddressValid = true;
 
         function initMap() {
-            const input = document.getElementById('custAddress');
-            const autocomplete = new google.maps.places.Autocomplete(input, { 
-                componentRestrictions: { country: 'cl' },
-                fields: ['geometry', 'formatted_address'] 
-            });
-            const plazaLilas = new google.maps.LatLng(-33.433299, -70.598064); 
+            try {
+                const input = document.getElementById('custAddress');
+                const autocomplete = new google.maps.places.Autocomplete(input, { 
+                    componentRestrictions: { country: 'cl' },
+                    fields: ['geometry', 'formatted_address'] 
+                });
+                const plazaLilas = new google.maps.LatLng(-33.433299, -70.598064); 
 
-            autocomplete.addListener('place_changed', () => {
-                const place = autocomplete.getPlace();
-                const errorMsg = document.getElementById('addressError');
-                if (!place.geometry) {
-                    errorMsg.innerText = "⚠️ Por favor, selecciona una dirección de la lista sugerida.";
-                    errorMsg.style.display = 'block';
-                    isAddressValid = false;
-                    return;
-                }
-                const dist = google.maps.geometry.spherical.computeDistanceBetween(place.geometry.location, plazaLilas);
-                if (dist > 1500) {
-                    errorMsg.innerText = "❌ Dirección fuera del radio de 1.5km desde Plaza Las Lilas.";
-                    errorMsg.style.display = 'block';
-                    isAddressValid = false;
-                } else {
-                    errorMsg.style.display = 'none';
-                    isAddressValid = true;
-                }
-            });
+                autocomplete.addListener('place_changed', () => {
+                    const place = autocomplete.getPlace();
+                    const errorMsg = document.getElementById('addressError');
+                    if (!place.geometry) {
+                        errorMsg.innerText = "⚠️ Selecciona una dirección de la lista.";
+                        errorMsg.style.display = 'block';
+                        isAddressValid = false;
+                        return;
+                    }
+                    const dist = google.maps.geometry.spherical.computeDistanceBetween(place.geometry.location, plazaLilas);
+                    if (dist > 1500) {
+                        errorMsg.innerText = "❌ Fuera del radio de 1.5km.";
+                        errorMsg.style.display = 'block';
+                        isAddressValid = false;
+                    } else {
+                        errorMsg.style.display = 'none';
+                        isAddressValid = true;
+                    }
+                });
+            } catch (e) { console.warn("Google Maps no disponible"); }
         }
 
         async function cargarProductos() {
@@ -282,12 +285,16 @@
                         </div>
                     </div>`;
             });
-            const total = subtotal + deliveryCost;
-            document.getElementById('cartTotal').innerText = '$' + total.toLocaleString('es-CL');
+            
+            document.getElementById('cartTotal').innerText = '$' + subtotal.toLocaleString('es-CL');
+            document.getElementById('checkoutSubtotal').innerText = '$' + subtotal.toLocaleString('es-CL');
+            document.getElementById('checkoutTotal').innerText = '$' + (subtotal + deliveryCost).toLocaleString('es-CL');
+            document.getElementById('deliveryRow').style.display = deliveryCost > 0 ? 'flex' : 'none';
             document.getElementById('cartCount').innerText = count;
             document.getElementById('cartCount').style.display = count > 0 ? 'block' : 'none';
+            
             if(count === 0) { 
-                container.innerHTML = '<p style="text-align:center; color:#888; padding:20px;">Tu canasta está vacía. 🌱</p>';
+                container.innerHTML = '<p style="text-align:center; color:#888; padding:20px;">Tu canasta está vacía.</p>';
                 document.getElementById('btnGoCheckout').disabled = true;
             } else {
                 document.getElementById('btnGoCheckout').disabled = false;
@@ -312,7 +319,7 @@
             document.getElementById('step-checkout').style.display = s === 2 ? 'block' : 'none';
             document.getElementById('footer-checkout').style.display = s === 2 ? 'block' : 'none';
             document.getElementById('drawerTitle').innerText = s === 1 ? "Tu Cosecha" : "Datos de Entrega";
-            window.scrollTo(0,0);
+            document.querySelector('.drawer-body').scrollTop = 0;
         }
 
         function selectDelivery(type, el) {
@@ -320,7 +327,7 @@
             el.classList.add('selected');
             deliveryCost = type === 'domicilio' ? 2500 : 0;
             document.getElementById('addressBox').style.display = type === 'domicilio' ? 'block' : 'none';
-            if(type === 'domicilio') isAddressValid = false; else isAddressValid = true;
+            isAddressValid = (type !== 'domicilio');
             updateCartUI();
         }
 
@@ -338,12 +345,52 @@
             const phone = document.getElementById('custPhone').value.trim();
 
             if(!name || !email || !phone || (deliveryCost > 0 && !isAddressValid)) {
-                alert("Por favor, completa todos los datos correctamente y verifica la dirección."); return;
+                alert("Por favor, completa tus datos y verifica que la dirección esté dentro del radio de entrega."); 
+                return;
             }
 
-            btn.innerText = "Procesando..."; btn.disabled = true;
-            // Lógica de pago Mercado Pago aquí...
-            alert("Redirigiendo a pago seguro...");
+            btn.innerText = "Preparando pago seguro..."; 
+            btn.disabled = true;
+
+            const addressMain = document.getElementById('custAddress').value.trim();
+            const addressExtra = document.getElementById('custAddressDetails').value.trim();
+            const fullAddress = addressExtra ? `${addressMain}, ${addressExtra}` : addressMain;
+            const deliveryType = document.querySelector('input[name="delivery"]:checked').value;
+            const logisticaFinal = (deliveryType === 'domicilio') ? "Despacho a Domicilio (Jueves)" : "Retiro en Plaza Las Lilas (Sábado)";
+
+            let resumen = ""; let subtotal = 0;
+            Object.keys(cart).forEach(id => {
+                resumen += `• ${cart[id].qty}x ${cart[id].name} | `;
+                subtotal += (cart[id].price * cart[id].qty);
+            });
+
+            const payload = {
+                nombre: name,
+                email: email,
+                telefono: phone.replace(/\D/g, ''), 
+                direccion: (deliveryType === 'domicilio') ? fullAddress : "Retiro Presencial",
+                logistica: logisticaFinal,
+                total: subtotal + deliveryCost,
+                detalle: resumen
+            };
+
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload)
+                });
+                const responseText = await response.text();
+                const data = JSON.parse(responseText);
+                if (data.status === 'success' && data.paymentUrl) {
+                    window.location.href = data.paymentUrl;
+                } else {
+                    throw new Error(data.message || "Error servidor");
+                }
+            } catch (e) {
+                alert("Error de conexión. Intenta de nuevo.");
+                btn.innerText = "Ir a pagar"; btn.disabled = false;
+            }
         }
 
         cargarProductos();
