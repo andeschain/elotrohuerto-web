@@ -15,6 +15,7 @@
             --accent: #4A5D23; 
             --border: #EAEAEA;
             --danger: #D93025;
+            --coming-soon: #E67E22;
         }
 
         body { 
@@ -68,31 +69,48 @@
         .item-controls { display: flex; align-items: center; gap: 12px; background: var(--bg-alt); border-radius: 20px; padding: 6px 12px;}
         .btn-qty { background: none; border: none; width: 24px; height: 24px; cursor: pointer; font-weight: 700; font-size: 18px; color: var(--accent);}
 
-        /* GRID Y CARDS CON MEJORA DE IMAGEN */
+        /* GRID Y CARDS - TRATAMIENTO DE IMÁGENES */
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 32px; padding: 0 24px 80px; max-width: 1080px; margin: 0 auto; }
-        .card { background: #fff; border: 1px solid var(--border); border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; transition: 0.3s; }
+        .card { background: #fff; border: 1px solid var(--border); border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.3s ease; position: relative;}
         
-        /* MEJORA 1: Centrado de imagen (prioriza arriba-centro) */
+        /* CONTENEDOR DE IMAGEN CON HOVER PARA VER FOCO */
+        .card-img-container {
+            width: 100%;
+            aspect-ratio: 4/3;
+            overflow: hidden;
+            background-color: var(--bg-alt);
+            border-bottom: 1px solid var(--border);
+        }
         .card-img { 
             width: 100%; 
-            aspect-ratio: 4/3; 
+            height: 100%; 
             object-fit: cover; 
-            object-position: center 20%; /* Sube un poco el foco de la imagen */
-            border-bottom: 1px solid var(--border); 
+            object-position: center center; 
+            transition: transform 0.6s ease, object-position 0.6s ease;
         }
-        
-        /* MEJORA 2: Estilo Agotado */
-        .card.out-of-stock { opacity: 0.7; filter: grayscale(1); }
-        .out-of-stock-label { 
-            position: absolute; top: 12px; right: 12px; background: #1d1d1f; color: #fff; 
-            padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: 600; 
+        /* Al pasar el mouse, la imagen se aleja un poco para revelar bordes que podrían estar cortados */
+        .card:hover .card-img {
+            transform: scale(1.05);
         }
 
-        .card-body { padding: 24px; display: flex; flex-direction: column; flex-grow: 1; position: relative;}
+        /* ESTADOS ESPECIALES */
+        .card.out-of-stock { filter: grayscale(1); opacity: 0.6; }
+        .card.coming-soon { border-style: dashed; border-color: var(--coming-soon); }
+        
+        .status-badge { 
+            position: absolute; top: 12px; right: 12px; color: #fff; 
+            padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: 700; z-index: 10;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .badge-out { background: #1d1d1f; }
+        .badge-soon { background: var(--coming-soon); }
+
+        .card-body { padding: 24px; display: flex; flex-direction: column; flex-grow: 1; }
         .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 20px; margin-top: auto;}
         
         .btn-add { background: var(--text-main); color: #fff; border: none; padding: 12px 20px; border-radius: 24px; font-weight: 600; cursor: pointer; transition: 0.2s;}
-        .btn-add:disabled { background: #eee; color: #888; cursor: pointer; }
+        .btn-add:disabled { background: #eee; color: #888; cursor: not-allowed; }
+        .btn-soon { background: var(--bg-alt); color: var(--coming-soon); border: 1px solid var(--coming-soon); }
 
         .drawer-footer { padding: 24px; border-top: 1px solid var(--border); background: #fff; }
         .total-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 16px; color: var(--text-main); }
@@ -102,17 +120,12 @@
         .btn-secondary { width: 100%; background: #f0f0f0; color: #1d1d1f; border: none; padding: 14px; border-radius: 12px; margin-bottom: 12px; cursor: pointer; }
 
         input[type="text"], input[type="email"], input[type="tel"] { width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; font-size: 16px; background: #fff; }
-        input.error { border: 2px solid var(--danger); background: #FFF9F9; }
-
+        
         .radio-card { border: 1px solid var(--border); border-radius: 12px; padding: 16px; cursor: pointer; margin-bottom: 12px; display: block; position: relative; background: #fff; transition: 0.2s;}
         .radio-card.selected { border: 2px solid var(--accent); background: var(--bg-alt); }
         .radio-card input { position: absolute; opacity: 0; }
-        .radio-title { display: block; font-weight: 700; font-size: 14px; margin-bottom: 4px; }
-        .radio-desc { display: block; font-size: 12px; color: var(--text-muted); line-height: 1.4; }
-        .radio-price { font-weight: 700; color: var(--accent); }
 
-        /* NUEVA CINTA MARCHA BLANCA */
-        .badge-marcha { position: fixed; bottom: 0; left: 0; background: #007AFF; color: white; z-index: 10001; font-size: 11px; padding: 4px 12px; font-weight: bold; border-top-right-radius: 8px; text-transform: uppercase; letter-spacing: 1px;}
+        .badge-marcha { position: fixed; bottom: 0; left: 0; background: #007AFF; color: white; z-index: 10001; font-size: 11px; padding: 4px 12px; font-weight: bold; border-top-right-radius: 8px; text-transform: uppercase; }
 
         @media(max-width: 767px) { .grid { grid-template-columns: 1fr; } .drawer { max-width: 100%; } }
     </style>
@@ -166,34 +179,33 @@
             <div class="radio-group">
                 <label class="radio-card selected" onclick="selectDelivery('colegio', this)">
                     <input type="radio" name="delivery" value="colegio" checked>
-                    <span class="radio-title">📍 Colegio Waldorf Michelangelo <span class="radio-price">Gratis</span></span>
-                    <span class="radio-desc">Entrega los Jueves a la salida de clases.</span>
+                    <strong>📍 Colegio Waldorf Michelangelo</strong><br>
+                    <span style="font-size:12px; color:var(--text-muted);">Entrega a la salida de clases.</span>
                 </label>
 
                 <label class="radio-card" onclick="selectDelivery('kinder', this)">
                     <input type="radio" name="delivery" value="kinder">
-                    <span class="radio-title">🏠 Casa Kinder Michelangelo <span class="radio-price">Gratis</span></span>
-                    <span class="radio-desc">Entrega los Jueves a la salida de clases.</span>
+                    <strong>🏠 Casa Kinder Michelangelo</strong><br>
+                    <span style="font-size:12px; color:var(--text-muted);">Entrega a la salida de clases.</span>
                 </label>
 
                 <label class="radio-card" onclick="selectDelivery('domicilio', this)">
                     <input type="radio" name="delivery" value="domicilio">
-                    <span class="radio-title">🛵 Despacho a Domicilio <span class="radio-price">$2.500</span></span>
-                    <span class="radio-desc">Entrega los Jueves. Radio de 1.5km desde Plaza Las Lilas.</span>
+                    <strong>🛵 Despacho a Domicilio ($2.500)</strong><br>
+                    <span style="font-size:12px; color:var(--text-muted);">Radio de 1.5km desde Plaza Las Lilas.</span>
                 </label>
             </div>
 
             <div id="addressBox" style="display: none; margin-top: 16px;">
-                <h3 style="font-size:14px; margin-bottom:12px; color:var(--accent);">Dirección de entrega</h3>
-                <input type="text" id="custAddress" placeholder="Busca tu calle y número..." autocomplete="off">
-                <p id="addressError" style="color: var(--danger); font-size: 12px; display:none; margin-top:-8px; margin-bottom:12px;"></p>
-                <input type="text" id="custAddressDetails" placeholder="Depto / Casa / Referencia (Opcional)" style="margin-top: 4px;">
+                <input type="text" id="custAddress" placeholder="Busca tu dirección..." autocomplete="off">
+                <p id="addressError" style="color: var(--danger); font-size: 12px; display:none;"></p>
+                <input type="text" id="custAddressDetails" placeholder="Depto / Casa / Referencia" style="margin-top: 4px;">
             </div>
 
             <h3 style="font-size:14px; margin-top:24px; margin-bottom:16px; color:var(--accent); text-transform:uppercase; letter-spacing:1px;">2. Tus Datos</h3>
             <input type="text" id="custName" placeholder="Nombre completo">
-            <input type="email" id="custEmail" placeholder="Correo electrónico">
-            <input type="tel" id="custPhone" placeholder="WhatsApp (Ej: +56912345678)">
+            <input type="email" id="custEmail" placeholder="Email">
+            <input type="tel" id="custPhone" placeholder="WhatsApp +569...">
         </div>
 
         <div class="drawer-footer">
@@ -207,7 +219,7 @@
                 <div class="total-row"><span>Subtotal:</span> <span id="checkoutSubtotal">$0</span></div>
                 <div class="total-row" id="deliveryRow" style="display:none; color:var(--accent);"><span>Despacho:</span> <span>$2.500</span></div>
                 <div class="total-row final"><span>Total:</span> <span id="checkoutTotal">$0</span></div>
-                <button class="btn-secondary" onclick="changeStep(1)">← Editar pedido</button>
+                <button class="btn-secondary" onclick="changeStep(1)">← Volver</button>
                 <button class="btn-checkout" id="btnFinalPagar" onclick="procesarPedido()">Pagar Seguro</button>
             </div>
         </div>
@@ -222,32 +234,18 @@
         function initMap() {
             try {
                 const input = document.getElementById('custAddress');
-                const autocomplete = new google.maps.places.Autocomplete(input, { 
-                    componentRestrictions: { country: 'cl' },
-                    fields: ['geometry', 'formatted_address'] 
-                });
+                const autocomplete = new google.maps.places.Autocomplete(input, { componentRestrictions: { country: 'cl' }, fields: ['geometry', 'formatted_address'] });
                 const plazaLilas = new google.maps.LatLng(-33.433299, -70.598064); 
 
                 autocomplete.addListener('place_changed', () => {
                     const place = autocomplete.getPlace();
                     const errorMsg = document.getElementById('addressError');
-                    if (!place.geometry) {
-                        errorMsg.innerText = "⚠️ Selecciona una dirección de la lista.";
-                        errorMsg.style.display = 'block';
-                        isAddressValid = false;
-                        return;
-                    }
+                    if (!place.geometry) { errorMsg.innerText = "Selecciona una dirección de la lista."; errorMsg.style.display = 'block'; isAddressValid = false; return; }
                     const dist = google.maps.geometry.spherical.computeDistanceBetween(place.geometry.location, plazaLilas);
-                    if (dist > 1500) {
-                        errorMsg.innerText = "❌ Fuera del radio de 1.5km.";
-                        errorMsg.style.display = 'block';
-                        isAddressValid = false;
-                    } else {
-                        errorMsg.style.display = 'none';
-                        isAddressValid = true;
-                    }
+                    if (dist > 1500) { errorMsg.innerText = "Fuera del radio de 1.5km."; errorMsg.style.display = 'block'; isAddressValid = false; }
+                    else { errorMsg.style.display = 'none'; isAddressValid = true; }
                 });
-            } catch (e) { console.warn("Google Maps no disponible"); }
+            } catch (e) { console.warn("Maps no cargó"); }
         }
 
         async function cargarProductos() {
@@ -256,22 +254,32 @@
                 const productos = await res.json();
                 const grid = document.getElementById('productGrid');
                 grid.innerHTML = '';
+                
                 productos.forEach(p => {
-                    if (p.estado !== 'Activo') return;
-                    const isOut = p.stock <= 0;
+                    if (p.estado === 'Inactivo') return;
+                    
+                    const isSoon = p.estado === 'Próximamente';
+                    const isOut = p.stock <= 0 && !isSoon;
+                    
                     grid.innerHTML += `
-                        <div class="card ${isOut ? 'out-of-stock' : ''}">
-                            ${isOut ? '<span class="out-of-stock-label">AGOTADO</span>' : ''}
-                            <img src="${p.imagen_url}" class="card-img" onerror="this.src='https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400'">
+                        <div class="card ${isOut ? 'out-of-stock' : ''} ${isSoon ? 'coming-soon' : ''}">
+                            ${isOut ? '<span class="status-badge badge-out">AGOTADO</span>' : ''}
+                            ${isSoon ? '<span class="status-badge badge-soon">PRONTO A COSECHAR</span>' : ''}
+                            <div class="card-img-container">
+                                <img src="${p.imagen_url}" class="card-img" onerror="this.src='https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400'">
+                            </div>
                             <div class="card-body">
                                 <span style="font-size:10px; color:var(--accent); font-weight:700; text-transform:uppercase;">${p.segmento}</span>
-                                <h2 style="font-size:20px; margin: 8px 0;">${p.nombre}</h2>
-                                <p style="font-size:14px; color:var(--text-muted); flex-grow:1;">${p.descripcion}</p>
+                                <h2 style="font-size:18px; margin: 8px 0;">${p.nombre}</h2>
+                                <p style="font-size:13px; color:var(--text-muted); flex-grow:1;">${p.descripcion}</p>
                                 <div class="card-footer">
-                                    <strong style="font-size:18px;">$${Number(p.precio).toLocaleString('es-CL')}</strong>
-                                    ${isOut ? 
-                                        `<button class="btn-add" onclick="window.open('https://wa.me/56958799778?text=Hola, avísenme cuando tengan stock de: ${p.nombre}', '_blank')">Avisarme</button>` : 
-                                        `<button class="btn-add" onclick="addToCart('${p.id}', '${p.nombre}', ${p.precio}, this)">Agregar</button>`
+                                    <strong style="font-size:16px;">$${Number(p.precio).toLocaleString('es-CL')}</strong>
+                                    ${isSoon ? 
+                                        `<button class="btn-add btn-soon" onclick="window.open('https://wa.me/56958799778?text=Me interesa el producto que viene pronto: ${p.nombre}', '_blank')">Avísenme</button>` :
+                                        (isOut ? 
+                                            `<button class="btn-add" onclick="window.open('https://wa.me/56958799778?text=Hola, avísenme cuando tengan stock de: ${p.nombre}', '_blank')">Avisarme</button>` : 
+                                            `<button class="btn-add" onclick="addToCart('${p.id}', '${p.nombre}', ${p.precio}, this)">Agregar</button>`
+                                        )
                                     }
                                 </div>
                             </div>
@@ -283,7 +291,7 @@
         function addToCart(id, name, price, btn) {
             if(cart[id]) cart[id].qty++; else cart[id] = { name, price, qty: 1 };
             const originalText = btn.innerText;
-            btn.innerText = "¡Agregado! 🌿";
+            btn.innerText = "¡Listo! 🌿";
             setTimeout(() => { btn.innerText = originalText; }, 1000);
             updateCartUI();
         }
@@ -301,25 +309,19 @@
                         <div class="item-info"><h4>${item.name}</h4><p>$${item.price.toLocaleString('es-CL')}</p></div>
                         <div class="item-controls">
                             <button class="btn-qty" onclick="updateQty('${id}', -1)">-</button>
-                            <span style="font-weight:600;">${item.qty}</span>
+                            <span style="font-weight:600; min-width:20px; text-align:center;">${item.qty}</span>
                             <button class="btn-qty" onclick="updateQty('${id}', 1)">+</button>
                         </div>
                     </div>`;
             });
-            
             document.getElementById('cartTotal').innerText = '$' + subtotal.toLocaleString('es-CL');
             document.getElementById('checkoutSubtotal').innerText = '$' + subtotal.toLocaleString('es-CL');
             document.getElementById('checkoutTotal').innerText = '$' + (subtotal + deliveryCost).toLocaleString('es-CL');
             document.getElementById('deliveryRow').style.display = deliveryCost > 0 ? 'flex' : 'none';
             document.getElementById('cartCount').innerText = count;
             document.getElementById('cartCount').style.display = count > 0 ? 'block' : 'none';
-            
-            if(count === 0) { 
-                container.innerHTML = '<p style="text-align:center; color:#888; padding:20px;">Tu canasta está vacía. 🌱</p>';
-                document.getElementById('btnGoCheckout').disabled = true;
-            } else {
-                document.getElementById('btnGoCheckout').disabled = false;
-            }
+            document.getElementById('btnGoCheckout').disabled = (count === 0);
+            if(count === 0) container.innerHTML = '<p style="text-align:center; color:#888; padding:20px;">Canasta vacía. 🌱</p>';
         }
 
         function updateQty(id, change) {
@@ -340,7 +342,6 @@
             document.getElementById('step-checkout').style.display = s === 2 ? 'block' : 'none';
             document.getElementById('footer-checkout').style.display = s === 2 ? 'block' : 'none';
             document.getElementById('drawerTitle').innerText = s === 1 ? "Tu Cosecha" : "Datos de Entrega";
-            document.querySelector('.drawer-body').scrollTop = 0;
         }
 
         function selectDelivery(type, el) {
@@ -354,9 +355,7 @@
 
         function filtrarProductos() {
             const q = document.getElementById('searchInput').value.toLowerCase();
-            document.querySelectorAll('.card').forEach(c => {
-                c.style.display = c.innerText.toLowerCase().includes(q) ? 'flex' : 'none';
-            });
+            document.querySelectorAll('.card').forEach(c => c.style.display = c.innerText.toLowerCase().includes(q) ? 'flex' : 'none');
         }
 
         async function procesarPedido() {
@@ -365,22 +364,18 @@
             const email = document.getElementById('custEmail').value.trim();
             const phone = document.getElementById('custPhone').value.trim();
 
-            if(!name || !email || !phone || (deliveryCost > 0 && !isAddressValid)) {
-                alert("Por favor, completa tus datos y verifica la dirección de entrega."); 
-                return;
-            }
+            if(!name || !email || !phone || (deliveryCost > 0 && !isAddressValid)) { alert("Datos incompletos."); return; }
 
-            btn.innerText = "Preparando pago seguro..."; 
-            btn.disabled = true;
-
+            btn.innerText = "Conectando..."; btn.disabled = true;
+            
             const addressMain = document.getElementById('custAddress').value.trim();
             const addressExtra = document.getElementById('custAddressDetails').value.trim();
             const fullAddress = addressExtra ? `${addressMain}, ${addressExtra}` : addressMain;
             const deliveryType = document.querySelector('input[name="delivery"]:checked').value;
             
-            let logisticaFinal = "Retiro Colegio Michelangelo (Jueves)";
-            if(deliveryType === 'kinder') logisticaFinal = "Retiro Casa Kinder Michelangelo (Jueves)";
-            if(deliveryType === 'domicilio') logisticaFinal = "Despacho a Domicilio (Jueves)";
+            let logisticaFinal = "Colegio Michelangelo";
+            if(deliveryType === 'kinder') logisticaFinal = "Casa Kinder Michelangelo";
+            if(deliveryType === 'domicilio') logisticaFinal = "Domicilio";
 
             let resumen = ""; let subtotal = 0;
             Object.keys(cart).forEach(id => {
@@ -389,13 +384,11 @@
             });
 
             const payload = {
-                nombre: name,
-                email: email,
+                nombre: name, email: email,
                 telefono: phone.replace(/\D/g, ''), 
                 direccion: (deliveryType === 'domicilio') ? fullAddress : logisticaFinal,
                 logistica: logisticaFinal,
-                total: subtotal + deliveryCost,
-                detalle: resumen
+                total: subtotal + deliveryCost, detalle: resumen
             };
 
             try {
@@ -404,15 +397,11 @@
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify(payload)
                 });
-                const responseText = await response.text();
-                const data = JSON.parse(responseText);
-                if (data.status === 'success' && data.paymentUrl) {
-                    window.location.href = data.paymentUrl;
-                } else {
-                    throw new Error("Error servidor");
-                }
+                const data = JSON.parse(await response.text());
+                if (data.status === 'success') window.location.href = data.paymentUrl;
+                else throw new Error();
             } catch (e) {
-                alert("Hubo un problema. Intenta de nuevo o escríbenos por WhatsApp.");
+                alert("Error al procesar. Revisa tu conexión.");
                 btn.innerText = "Pagar Seguro"; btn.disabled = false;
             }
         }
