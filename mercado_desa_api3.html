@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mercado Rural | Marcha Blanca | El Otro Huerto</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-page: #FDFCFB; 
+            --bg-alt: #F4F6F0; 
+            --text-main: #1D1D1F; 
+            --text-muted: #515154; 
+            --accent: #4A5D23; 
+            --border: #EAEAEA;
+            --danger: #D93025;
+        }
+
+        body { 
+            font-family: 'Inter', sans-serif; background-color: var(--bg-page); color: var(--text-main); 
+            margin: 0; padding: 0; -webkit-font-smoothing: antialiased; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh;
+        }
+
+        *, *:before, *:after { box-sizing: border-box; }
+        h1, h2, h3 { font-family: 'Lora', serif; margin-top: 0; color: var(--text-main); }
+        main { flex-grow: 1; }
+        
+        header {
+            position: sticky; top: 0; background: #fff; border-bottom: 1px solid var(--border); z-index: 100; padding: 16px 24px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo-container { display: flex; align-items: center; gap: 12px; font-family: 'Lora', serif; font-weight: 600; font-size: 20px; text-decoration: none; color: var(--text-main); }
+        
+        .cart-btn {
+            background: none; border: none; cursor: pointer; position: relative;
+            display: flex; align-items: center; gap: 8px; font-family: 'Inter', sans-serif; font-weight: 600; color: var(--accent); padding: 8px;
+        }
+        .cart-badge {
+            background: var(--accent); color: white; font-size: 12px; padding: 2px 6px; 
+            border-radius: 12px; position: absolute; top: -2px; right: -8px; display: none;
+            border: 2px solid #fff; font-weight: 700;
+        }
+
+        .overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.4); z-index: 999; 
+            opacity: 0; visibility: hidden; transition: 0.3s;
+        }
+        .overlay.open { opacity: 1; visibility: visible; }
+
+        .drawer {
+            position: fixed; top: 0; right: -100%; width: 100%; max-width: 440px; height: 100vh; 
+            background: #fff; z-index: 1000; box-shadow: -10px 0 40px rgba(0,0,0,0.1); 
+            display: flex; flex-direction: column; transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .drawer.open { right: 0; }
+
+        .drawer-header { padding: 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #fff; }
+        .drawer-body { padding: 24px; overflow-y: auto; flex-grow: 1; background: #fff; }
+
+        .cart-item { 
+            display: flex; justify-content: space-between; align-items: center; 
+            margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--border);
+        }
+        .item-info h4 { margin: 0 0 4px 0; font-size: 15px; font-family: 'Inter', sans-serif; color: var(--text-main); }
+        
+        .item-controls { display: flex; align-items: center; gap: 12px; background: var(--bg-alt); border-radius: 20px; padding: 6px 12px;}
+        .btn-qty { background: none; border: none; width: 24px; height: 24px; cursor: pointer; font-weight: 700; font-size: 18px; color: var(--accent);}
+
+        /* GRID Y CARDS CON MEJORA DE IMAGEN */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 32px; padding: 0 24px 80px; max-width: 1080px; margin: 0 auto; }
+        .card { background: #fff; border: 1px solid var(--border); border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; transition: 0.3s; }
+        
+        /* MEJORA 1: Centrado de imagen (prioriza arriba-centro) */
+        .card-img { 
+            width: 100%; 
+            aspect-ratio: 4/3; 
+            object-fit: cover; 
+            object-position: center 20%; /* Sube un poco el foco de la imagen */
+            border-bottom: 1px solid var(--border); 
+        }
+        
+        /* MEJORA 2: Estilo Agotado */
+        .card.out-of-stock { opacity: 0.7; filter: grayscale(1); }
+        .out-of-stock-label { 
+            position: absolute; top: 12px; right: 12px; background: #1d1d1f; color: #fff; 
+            padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: 600; 
+        }
+
+        .card-body { padding: 24px; display: flex; flex-direction: column; flex-grow: 1; position: relative;}
+        .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 20px; margin-top: auto;}
+        
+        .btn-add { background: var(--text-main); color: #fff; border: none; padding: 12px 20px; border-radius: 24px; font-weight: 600; cursor: pointer; transition: 0.2s;}
+        .btn-add:disabled { background: #eee; color: #888; cursor: pointer; }
+
+        .drawer-footer { padding: 24px; border-top: 1px solid var(--border); background: #fff; }
+        .total-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 16px; color: var(--text-main); }
+        .total-row.final { font-size: 20px; font-weight: 700; border-top: 1px dashed var(--border); padding-top: 16px; margin-top: 12px; }
+        
+        .btn-checkout { width: 100%; background: var(--accent); color: #fff; border: none; padding: 18px; border-radius: 16px; font-size: 16px; font-weight: 600; cursor: pointer; }
+        .btn-secondary { width: 100%; background: #f0f0f0; color: #1d1d1f; border: none; padding: 14px; border-radius: 12px; margin-bottom: 12px; cursor: pointer; }
+
+        input[type="text"], input[type="email"], input[type="tel"] { width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; font-size: 16px; background: #fff; }
+        input.error { border: 2px solid var(--danger); background: #FFF9F9; }
+
+        .radio-card { border: 1px solid var(--border); border-radius: 12px; padding: 16px; cursor: pointer; margin-bottom: 12px; display: block; position: relative; background: #fff; transition: 0.2s;}
+        .radio-card.selected { border: 2px solid var(--accent); background: var(--bg-alt); }
+        .radio-card input { position: absolute; opacity: 0; }
+        .radio-title { display: block; font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+        .radio-desc { display: block; font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+        .radio-price { font-weight: 700; color: var(--accent); }
+
+        /* NUEVA CINTA MARCHA BLANCA */
+        .badge-marcha { position: fixed; bottom: 0; left: 0; background: #007AFF; color: white; z-index: 10001; font-size: 11px; padding: 4px 12px; font-weight: bold; border-top-right-radius: 8px; text-transform: uppercase; letter-spacing: 1px;}
+
+        @media(max-width: 767px) { .grid { grid-template-columns: 1fr; } .drawer { max-width: 100%; } }
+    </style>
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB1CcdwY-opGXS-a9m30PxcPPYcOa4L6wE&libraries=places,geometry&callback=initMap"></script>
+</head>
+<body>
+
+    <div class="badge-marcha">MARCHA BLANCA</div>
+
+    <header>
+        <a href="index.html" class="logo-container">
+            El Otro Huerto <span style="font-weight:400; color:var(--text-muted);">| Mercado Rural</span>
+        </a>
+        <button class="cart-btn" onclick="toggleDrawer()" id="headerCartBtn">
+            🛒 <span class="cart-badge" id="cartCount">0</span>
+        </button>
+    </header>
+
+    <main>
+        <section style="padding: 40px 24px; text-align: center;">
+            <h1>Cosecha real de Paine</h1>
+            <p>Directo a tu mesa en Barrio Las Lilas y Comunidad Michelangelo.</p>
+        </section>
+
+        <div style="max-width: 1080px; margin: 0 auto 32px auto; padding: 0 24px;">
+            <input type="text" id="searchInput" placeholder="🔍 Buscar productos..." onkeyup="filtrarProductos()" 
+                   style="width: 100%; padding: 16px; border: 1px solid var(--border); border-radius: 12px; font-size: 16px;">
+        </div>
+
+        <section class="grid" id="productGrid">
+            <p style="text-align:center; grid-column: 1/-1;">Cargando cosecha...</p>
+        </section>
+    </main>
+
+    <div class="overlay" id="overlay" onclick="toggleDrawer()"></div>
+    
+    <div class="drawer" id="drawer">
+        <div class="drawer-header">
+            <h2 id="drawerTitle">Tu Cosecha</h2>
+            <button class="close-drawer" onclick="toggleDrawer()">×</button>
+        </div>
+        
+        <div class="drawer-body" id="step-cart">
+            <div id="cartItemsContainer"></div>
+        </div>
+
+        <div class="drawer-body" id="step-checkout" style="display: none;">
+            <h3 style="font-size:14px; margin-bottom:16px; color:var(--accent); text-transform:uppercase; letter-spacing:1px;">1. Método de entrega (Jueves)</h3>
+            
+            <div class="radio-group">
+                <label class="radio-card selected" onclick="selectDelivery('colegio', this)">
+                    <input type="radio" name="delivery" value="colegio" checked>
+                    <span class="radio-title">📍 Colegio Waldorf Michelangelo <span class="radio-price">Gratis</span></span>
+                    <span class="radio-desc">Entrega los Jueves a la salida de clases.</span>
+                </label>
+
+                <label class="radio-card" onclick="selectDelivery('kinder', this)">
+                    <input type="radio" name="delivery" value="kinder">
+                    <span class="radio-title">🏠 Casa Kinder Michelangelo <span class="radio-price">Gratis</span></span>
+                    <span class="radio-desc">Entrega los Jueves a la salida de clases.</span>
+                </label>
+
+                <label class="radio-card" onclick="selectDelivery('domicilio', this)">
+                    <input type="radio" name="delivery" value="domicilio">
+                    <span class="radio-title">🛵 Despacho a Domicilio <span class="radio-price">$2.500</span></span>
+                    <span class="radio-desc">Entrega los Jueves. Radio de 1.5km desde Plaza Las Lilas.</span>
+                </label>
+            </div>
+
+            <div id="addressBox" style="display: none; margin-top: 16px;">
+                <h3 style="font-size:14px; margin-bottom:12px; color:var(--accent);">Dirección de entrega</h3>
+                <input type="text" id="custAddress" placeholder="Busca tu calle y número..." autocomplete="off">
+                <p id="addressError" style="color: var(--danger); font-size: 12px; display:none; margin-top:-8px; margin-bottom:12px;"></p>
+                <input type="text" id="custAddressDetails" placeholder="Depto / Casa / Referencia (Opcional)" style="margin-top: 4px;">
+            </div>
+
+            <h3 style="font-size:14px; margin-top:24px; margin-bottom:16px; color:var(--accent); text-transform:uppercase; letter-spacing:1px;">2. Tus Datos</h3>
+            <input type="text" id="custName" placeholder="Nombre completo">
+            <input type="email" id="custEmail" placeholder="Correo electrónico">
+            <input type="tel" id="custPhone" placeholder="WhatsApp (Ej: +56912345678)">
+        </div>
+
+        <div class="drawer-footer">
+            <div id="footer-cart">
+                <div class="total-row final">
+                    <span>Total:</span> <span id="cartTotal">$0</span>
+                </div>
+                <button class="btn-checkout" id="btnGoCheckout" onclick="changeStep(2)">Continuar</button>
+            </div>
+            <div id="footer-checkout" style="display: none;">
+                <div class="total-row"><span>Subtotal:</span> <span id="checkoutSubtotal">$0</span></div>
+                <div class="total-row" id="deliveryRow" style="display:none; color:var(--accent);"><span>Despacho:</span> <span>$2.500</span></div>
+                <div class="total-row final"><span>Total:</span> <span id="checkoutTotal">$0</span></div>
+                <button class="btn-secondary" onclick="changeStep(1)">← Editar pedido</button>
+                <button class="btn-checkout" id="btnFinalPagar" onclick="procesarPedido()">Pagar Seguro</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzr4xUDOZtACKNZgdHoUbvd3VMwuY7Reuj8KL2bRMEgtSoEwBrzuhqElqC-sWObuhVg/exec';
+        let cart = {};
+        let deliveryCost = 0;
+        let isAddressValid = true;
+
+        function initMap() {
+            try {
+                const input = document.getElementById('custAddress');
+                const autocomplete = new google.maps.places.Autocomplete(input, { 
+                    componentRestrictions: { country: 'cl' },
+                    fields: ['geometry', 'formatted_address'] 
+                });
+                const plazaLilas = new google.maps.LatLng(-33.433299, -70.598064); 
+
+                autocomplete.addListener('place_changed', () => {
+                    const place = autocomplete.getPlace();
+                    const errorMsg = document.getElementById('addressError');
+                    if (!place.geometry) {
+                        errorMsg.innerText = "⚠️ Selecciona una dirección de la lista.";
+                        errorMsg.style.display = 'block';
+                        isAddressValid = false;
+                        return;
+                    }
+                    const dist = google.maps.geometry.spherical.computeDistanceBetween(place.geometry.location, plazaLilas);
+                    if (dist > 1500) {
+                        errorMsg.innerText = "❌ Fuera del radio de 1.5km.";
+                        errorMsg.style.display = 'block';
+                        isAddressValid = false;
+                    } else {
+                        errorMsg.style.display = 'none';
+                        isAddressValid = true;
+                    }
+                });
+            } catch (e) { console.warn("Google Maps no disponible"); }
+        }
+
+        async function cargarProductos() {
+            try {
+                const res = await fetch(GOOGLE_SCRIPT_URL);
+                const productos = await res.json();
+                const grid = document.getElementById('productGrid');
+                grid.innerHTML = '';
+                productos.forEach(p => {
+                    if (p.estado !== 'Activo') return;
+                    const isOut = p.stock <= 0;
+                    grid.innerHTML += `
+                        <div class="card ${isOut ? 'out-of-stock' : ''}">
+                            ${isOut ? '<span class="out-of-stock-label">AGOTADO</span>' : ''}
+                            <img src="${p.imagen_url}" class="card-img" onerror="this.src='https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400'">
+                            <div class="card-body">
+                                <span style="font-size:10px; color:var(--accent); font-weight:700; text-transform:uppercase;">${p.segmento}</span>
+                                <h2 style="font-size:20px; margin: 8px 0;">${p.nombre}</h2>
+                                <p style="font-size:14px; color:var(--text-muted); flex-grow:1;">${p.descripcion}</p>
+                                <div class="card-footer">
+                                    <strong style="font-size:18px;">$${Number(p.precio).toLocaleString('es-CL')}</strong>
+                                    ${isOut ? 
+                                        `<button class="btn-add" onclick="window.open('https://wa.me/56958799778?text=Hola, avísenme cuando tengan stock de: ${p.nombre}', '_blank')">Avisarme</button>` : 
+                                        `<button class="btn-add" onclick="addToCart('${p.id}', '${p.nombre}', ${p.precio}, this)">Agregar</button>`
+                                    }
+                                </div>
+                            </div>
+                        </div>`;
+                });
+            } catch(e) { console.error(e); }
+        }
+
+        function addToCart(id, name, price, btn) {
+            if(cart[id]) cart[id].qty++; else cart[id] = { name, price, qty: 1 };
+            const originalText = btn.innerText;
+            btn.innerText = "¡Agregado! 🌿";
+            setTimeout(() => { btn.innerText = originalText; }, 1000);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cartItemsContainer');
+            container.innerHTML = '';
+            let subtotal = 0; let count = 0;
+            Object.keys(cart).forEach(id => {
+                const item = cart[id];
+                subtotal += item.price * item.qty;
+                count += item.qty;
+                container.innerHTML += `
+                    <div class="cart-item">
+                        <div class="item-info"><h4>${item.name}</h4><p>$${item.price.toLocaleString('es-CL')}</p></div>
+                        <div class="item-controls">
+                            <button class="btn-qty" onclick="updateQty('${id}', -1)">-</button>
+                            <span style="font-weight:600;">${item.qty}</span>
+                            <button class="btn-qty" onclick="updateQty('${id}', 1)">+</button>
+                        </div>
+                    </div>`;
+            });
+            
+            document.getElementById('cartTotal').innerText = '$' + subtotal.toLocaleString('es-CL');
+            document.getElementById('checkoutSubtotal').innerText = '$' + subtotal.toLocaleString('es-CL');
+            document.getElementById('checkoutTotal').innerText = '$' + (subtotal + deliveryCost).toLocaleString('es-CL');
+            document.getElementById('deliveryRow').style.display = deliveryCost > 0 ? 'flex' : 'none';
+            document.getElementById('cartCount').innerText = count;
+            document.getElementById('cartCount').style.display = count > 0 ? 'block' : 'none';
+            
+            if(count === 0) { 
+                container.innerHTML = '<p style="text-align:center; color:#888; padding:20px;">Tu canasta está vacía. 🌱</p>';
+                document.getElementById('btnGoCheckout').disabled = true;
+            } else {
+                document.getElementById('btnGoCheckout').disabled = false;
+            }
+        }
+
+        function updateQty(id, change) {
+            cart[id].qty += change;
+            if(cart[id].qty <= 0) delete cart[id];
+            updateCartUI();
+        }
+
+        function toggleDrawer() {
+            document.getElementById('drawer').classList.toggle('open');
+            document.getElementById('overlay').classList.toggle('open');
+            if(!document.getElementById('drawer').classList.contains('open')) changeStep(1);
+        }
+
+        function changeStep(s) {
+            document.getElementById('step-cart').style.display = s === 1 ? 'block' : 'none';
+            document.getElementById('footer-cart').style.display = s === 1 ? 'block' : 'none';
+            document.getElementById('step-checkout').style.display = s === 2 ? 'block' : 'none';
+            document.getElementById('footer-checkout').style.display = s === 2 ? 'block' : 'none';
+            document.getElementById('drawerTitle').innerText = s === 1 ? "Tu Cosecha" : "Datos de Entrega";
+            document.querySelector('.drawer-body').scrollTop = 0;
+        }
+
+        function selectDelivery(type, el) {
+            document.querySelectorAll('.radio-card').forEach(r => r.classList.remove('selected'));
+            el.classList.add('selected');
+            deliveryCost = type === 'domicilio' ? 2500 : 0;
+            document.getElementById('addressBox').style.display = type === 'domicilio' ? 'block' : 'none';
+            isAddressValid = (type !== 'domicilio');
+            updateCartUI();
+        }
+
+        function filtrarProductos() {
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            document.querySelectorAll('.card').forEach(c => {
+                c.style.display = c.innerText.toLowerCase().includes(q) ? 'flex' : 'none';
+            });
+        }
+
+        async function procesarPedido() {
+            const btn = document.getElementById('btnFinalPagar');
+            const name = document.getElementById('custName').value.trim();
+            const email = document.getElementById('custEmail').value.trim();
+            const phone = document.getElementById('custPhone').value.trim();
+
+            if(!name || !email || !phone || (deliveryCost > 0 && !isAddressValid)) {
+                alert("Por favor, completa tus datos y verifica la dirección de entrega."); 
+                return;
+            }
+
+            btn.innerText = "Preparando pago seguro..."; 
+            btn.disabled = true;
+
+            const addressMain = document.getElementById('custAddress').value.trim();
+            const addressExtra = document.getElementById('custAddressDetails').value.trim();
+            const fullAddress = addressExtra ? `${addressMain}, ${addressExtra}` : addressMain;
+            const deliveryType = document.querySelector('input[name="delivery"]:checked').value;
+            
+            let logisticaFinal = "Retiro Colegio Michelangelo (Jueves)";
+            if(deliveryType === 'kinder') logisticaFinal = "Retiro Casa Kinder Michelangelo (Jueves)";
+            if(deliveryType === 'domicilio') logisticaFinal = "Despacho a Domicilio (Jueves)";
+
+            let resumen = ""; let subtotal = 0;
+            Object.keys(cart).forEach(id => {
+                resumen += `• ${cart[id].qty}x ${cart[id].name} | `;
+                subtotal += (cart[id].price * cart[id].qty);
+            });
+
+            const payload = {
+                nombre: name,
+                email: email,
+                telefono: phone.replace(/\D/g, ''), 
+                direccion: (deliveryType === 'domicilio') ? fullAddress : logisticaFinal,
+                logistica: logisticaFinal,
+                total: subtotal + deliveryCost,
+                detalle: resumen
+            };
+
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload)
+                });
+                const responseText = await response.text();
+                const data = JSON.parse(responseText);
+                if (data.status === 'success' && data.paymentUrl) {
+                    window.location.href = data.paymentUrl;
+                } else {
+                    throw new Error("Error servidor");
+                }
+            } catch (e) {
+                alert("Hubo un problema. Intenta de nuevo o escríbenos por WhatsApp.");
+                btn.innerText = "Pagar Seguro"; btn.disabled = false;
+            }
+        }
+
+        cargarProductos();
+    </script>
+</body>
+</html>
