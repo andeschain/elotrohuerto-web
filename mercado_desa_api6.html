@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Mercado Rural | El Otro Huerto | Marcha Blanca</title>
     
-    <meta name="description" content="Cosechas locales y libre de químicos directa en el Barrio Las Lilas. Alimentos reales y trazables.">
+    <meta name="description" content="🧺 Cosecha agroecológica de Paine a Providencia. Productos frescos y trazables.">
     <meta property="og:title" content="El Otro Huerto | Mercado Rural 🌿">
-    <meta property="og:description" content="Marcha Blanca: Despacho a domicilio y retiro en Casa Kinder Waldorf Michelangelo. ¡Haz tu pedido aquí!">
+    <meta property="og:description" content="Marcha Blanca: Despacho a domicilio y retiro en Casa Kinder. ¡Haz tu pedido aquí!">
     <meta property="og:image" content="https://elotrohuerto.cl/assets/jardin.jpg">
     <meta property="og:url" content="https://elotrohuerto.cl/mercado">
     <meta property="og:type" content="website">
@@ -74,31 +74,29 @@
             margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--border);
         }
         .item-info h4 { margin: 0 0 4px 0; font-size: 15px; font-family: 'Inter', sans-serif; color: var(--text-main); }
-        
         .item-controls { display: flex; align-items: center; gap: 12px; background: var(--bg-alt); border-radius: 20px; padding: 6px 12px;}
         .btn-qty { background: none; border: none; width: 24px; height: 24px; cursor: pointer; font-weight: 700; font-size: 18px; color: var(--accent);}
 
-        /* GRID Y CARDS - DISEÑO V4 INTACTO */
+        /* GRID Y CARDS */
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 32px; padding: 0 24px 80px; max-width: 1080px; margin: 0 auto; }
         .card { background: #fff; border: 1px solid var(--border); border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.3s ease; position: relative;}
         
+        /* SEGURIDAD DE IMAGEN */
         .card-img-container {
             width: 100%;
             aspect-ratio: 4/3;
             overflow: hidden;
             background-color: var(--bg-alt);
-            position: relative; /* Para la capa de seguridad */
+            position: relative;
         }
-        /* Capa de seguridad invisible */
         .card-img-container::after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; }
-        
         .card-img { 
             width: 100%; 
             height: 100%; 
             object-fit: cover; 
             object-position: center; 
             transition: transform 0.5s ease;
-            -webkit-user-drag: none; /* Seguridad */
+            -webkit-user-drag: none;
         }
         .card:hover .card-img { transform: scale(1.08); }
 
@@ -117,30 +115,37 @@
         .badge-out { background: #1d1d1f; }
         .badge-soon { background: var(--coming-soon); }
         
+        /* ESTILO SEGMENTO (VERSION 4) */
+        .card-segment {
+            font-size: 12px; 
+            font-weight: 700; 
+            color: var(--accent); 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            margin-bottom: 8px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* ALERTA DE STOCK (VERSION 4) */
         .stock-label {
-            font-size: 12px; font-weight: 600; color: var(--stock-warning); margin-bottom: 8px; display: block;
+            font-size: 13px; 
+            font-weight: 600; 
+            color: var(--stock-warning); 
+            margin-bottom: 12px; 
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
         .card-body { padding: 24px; display: flex; flex-direction: column; flex-grow: 1; }
-        .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 20px; margin-top: auto;}
+        .card-title { font-size: 24px; margin: 0 0 8px 0; font-family: 'Lora', serif; font-weight: 600; }
+        .card-desc { font-size: 15px; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px; flex-grow: 1; }
         
+        .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 20px; margin-top: auto;}
+        .price { font-size: 20px; font-weight: 700; }
         .btn-add { background: var(--text-main); color: #fff; border: none; padding: 12px 20px; border-radius: 24px; font-weight: 600; cursor: pointer; transition: 0.2s;}
         .btn-add:disabled { background: #eee; color: #888; cursor: not-allowed; }
 
-        .drawer-footer { padding: 24px; border-top: 1px solid var(--border); background: #fff; }
-        .total-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 16px; color: var(--text-main); }
-        .total-row.final { font-size: 20px; font-weight: 700; border-top: 1px dashed var(--border); padding-top: 16px; margin-top: 12px; }
-        
-        .btn-checkout { width: 100%; background: var(--accent); color: #fff; border: none; padding: 18px; border-radius: 16px; font-size: 16px; font-weight: 600; cursor: pointer; }
-        .btn-secondary { width: 100%; background: #f0f0f0; color: #1d1d1f; border: none; padding: 14px; border-radius: 12px; margin-bottom: 12px; cursor: pointer; }
-
-        input[type="text"], input[type="email"], input[type="tel"] { width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; font-size: 16px; background: #fff; }
-        
-        .radio-card { border: 1px solid var(--border); border-radius: 12px; padding: 16px; cursor: pointer; margin-bottom: 12px; display: block; position: relative; background: #fff; transition: 0.2s;}
-        .radio-card.selected { border: 2px solid var(--accent); background: var(--bg-alt); }
-        .radio-card input { position: absolute; opacity: 0; }
-
-        /* BADGE MARCHA BLANCA VERDE RESPONSIVO */
         .badge-marcha { 
             position: fixed; bottom: 0; left: 0; background: var(--accent); color: white; z-index: 10001; 
             font-size: 11px; padding: 6px 14px; font-weight: bold; border-top-right-radius: 12px; 
@@ -178,7 +183,6 @@
         <div class="filter-container">
             <input type="text" id="searchInput" placeholder="🔍 Buscar productos..." onkeyup="filtrar()" 
                    style="width: 100%; padding: 16px; border: 1px solid var(--border); border-radius: 12px; font-size: 16px; margin-bottom: 15px; outline:none;">
-            
             <div class="filter-pills" id="categoryFilters">
                 <button class="pill active" onclick="filtrarCategoria('Todos', this)">Todos</button>
             </div>
@@ -193,8 +197,8 @@
     
     <div class="drawer" id="drawer">
         <div class="drawer-header">
-            <h2 id="drawerTitle">Tu Cosecha</h2>
-            <button class="close-drawer" onclick="toggleDrawer()" style="background:none; border:none; font-size:32px; cursor:pointer;">&times;</button>
+            <h2 id="drawerTitle" style="font-size:18px;">Tu Canasta</h2>
+            <button onclick="toggleDrawer()" style="background:none; border:none; font-size:32px; cursor:pointer;">&times;</button>
         </div>
         
         <div class="drawer-body" id="step-cart">
@@ -203,52 +207,44 @@
 
         <div class="drawer-body" id="step-checkout" style="display: none;">
             <h3 style="font-size:14px; margin-bottom:16px; color:var(--accent); text-transform:uppercase; letter-spacing:1px;">1. Método de entrega (Jueves)</h3>
-            
             <div class="radio-group">
-                <label class="radio-card selected" onclick="selectDelivery('colegio', this)">
-                    <input type="radio" name="delivery" value="colegio" checked>
-                    <strong>📍 Colegio Waldorf Michelangelo</strong><br>
-                    <span style="font-size:12px; color:var(--text-muted);">Retiro jueves a la salida de clases.</span>
-                </label>
-
-                <label class="radio-card" onclick="selectDelivery('kinder', this)">
-                    <input type="radio" name="delivery" value="kinder">
+                <label class="radio-card selected" onclick="selectDelivery('kinder', this)">
+                    <input type="radio" name="delivery" value="kinder" checked>
                     <strong>🏠 Casa Kinder Michelangelo</strong><br>
                     <span style="font-size:12px; color:var(--text-muted);">Retiro jueves entre 8:30 y 9:30 hrs.</span>
                 </label>
-
                 <label class="radio-card" onclick="selectDelivery('domicilio', this)">
                     <input type="radio" name="delivery" value="domicilio">
-                    <strong>🛵 Despacho a Domicilio ($3.500)</strong><br>
-                    <span style="font-size:12px; color:var(--text-muted);">Radio de 1.5km desde Plaza Las Lilas.</span>
+                    <strong>🛵 Domicilio ($3.500)</strong><br>
+                    <span style="font-size:12px; color:var(--text-muted);">Radio de 1.5km desde Plaza Las Lilas. Jueves tarde.</span>
                 </label>
             </div>
-
             <div id="addressBox" style="display: none; margin-top: 16px;">
                 <input type="text" id="custAddress" placeholder="Busca tu dirección..." autocomplete="off">
-                <p id="addressError" style="color: var(--danger); font-size: 12px; display:none;"></p>
-                <input type="text" id="custAddressDetails" placeholder="Depto / Casa / Referencia" style="margin-top: 4px;">
+                <p id="addressError" style="color:var(--danger); font-size:11px; display:none;"></p>
+                <input type="text" id="custAddressDetails" placeholder="Depto / Casa / Referencia">
             </div>
-
             <h3 style="font-size:14px; margin-top:24px; margin-bottom:16px; color:var(--accent); text-transform:uppercase; letter-spacing:1px;">2. Tus Datos</h3>
             <input type="text" id="custName" placeholder="Nombre completo">
             <input type="email" id="custEmail" placeholder="Correo electrónico">
             <input type="tel" id="custPhone" placeholder="WhatsApp +569...">
         </div>
 
-        <div class="drawer-footer">
+        <div class="drawer-footer" style="padding: 24px; border-top: 1px solid var(--border);">
             <div id="footer-cart">
-                <div class="total-row final">
+                <div style="display:flex; justify-content:space-between; font-weight:700; font-size:18px; margin-bottom:20px;">
                     <span>Total:</span> <span id="cartTotal">$0</span>
                 </div>
-                <button class="btn-checkout" id="btnGoCheckout" onclick="changeStep(2)">Siguiente</button>
+                <button class="btn-checkout" id="btnGoCheckout" onclick="changeStep(2)" style="width: 100%; background: var(--accent); color: #fff; border: none; padding: 18px; border-radius: 16px; font-size: 16px; font-weight: 600; cursor: pointer;">Siguiente</button>
             </div>
             <div id="footer-checkout" style="display: none;">
-                <div class="total-row"><span>Subtotal:</span> <span id="checkoutSubtotal">$0</span></div>
-                <div class="total-row" id="deliveryRow" style="display:none; color:var(--accent);"><span>Despacho:</span> <span>$3.500</span></div>
-                <div class="total-row final"><span>Total:</span> <span id="checkoutTotal">$0</span></div>
-                <button class="btn-secondary" onclick="changeStep(1)">← Volver</button>
-                <button class="btn-checkout" id="btnFinalPagar" onclick="procesarPedido()">Pagar Seguro</button>
+                <div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>Subtotal:</span> <span id="checkoutSubtotal">$0</span></div>
+                <div id="deliveryRow" style="display:none; justify-content:space-between; margin-bottom:5px; color:var(--accent);"><span>Despacho:</span> <span>$3.500</span></div>
+                <div style="display:flex; justify-content:space-between; font-weight:700; font-size:20px; margin:15px 0; border-top: 1px dashed #eee; padding-top:15px;">
+                    <span>Total:</span> <span id="checkoutTotal">$0</span>
+                </div>
+                <button onclick="changeStep(1)" style="width: 100%; background: #f0f0f0; border: none; padding: 14px; border-radius: 12px; margin-bottom: 12px; cursor: pointer;">← Volver</button>
+                <button onclick="procesarPedido()" style="width: 100%; background: var(--accent); color: #fff; border: none; padding: 18px; border-radius: 16px; font-size: 16px; font-weight: 600; cursor: pointer;">Pagar Seguro</button>
             </div>
         </div>
     </div>
@@ -260,7 +256,6 @@
         let isAddressValid = true;
         let selectedCategory = 'Todos';
 
-        // SEGURIDAD: Bloqueo de descarga de imágenes
         document.addEventListener('contextmenu', e => { if (e.target.closest('.card-img-container')) e.preventDefault(); });
 
         function initMap() {
@@ -268,13 +263,12 @@
                 const input = document.getElementById('custAddress');
                 const autocomplete = new google.maps.places.Autocomplete(input, { componentRestrictions: { country: 'cl' }, fields: ['geometry', 'formatted_address'] });
                 const plazaLilas = new google.maps.LatLng(-33.433299, -70.598064); 
-
                 autocomplete.addListener('place_changed', () => {
                     const place = autocomplete.getPlace();
                     const errorMsg = document.getElementById('addressError');
-                    if (!place.geometry) { errorMsg.innerText = "Selecciona una dirección de la lista."; errorMsg.style.display = 'block'; isAddressValid = false; return; }
+                    if (!place.geometry) { errorMsg.innerText = "Selecciona de la lista."; errorMsg.style.display = 'block'; isAddressValid = false; return; }
                     const dist = google.maps.geometry.spherical.computeDistanceBetween(place.geometry.location, plazaLilas);
-                    if (dist > 1500) { errorMsg.innerText = "Fuera del radio de 1.5km."; errorMsg.style.display = 'block'; isAddressValid = false; }
+                    if (dist > 1500) { errorMsg.innerText = "❌ Fuera del radio (1.5km)."; errorMsg.style.display = 'block'; isAddressValid = false; }
                     else { errorMsg.style.display = 'none'; isAddressValid = true; }
                 });
             } catch (e) { console.warn("Maps no cargó"); }
@@ -284,13 +278,10 @@
             try {
                 const res = await fetch(GOOGLE_SCRIPT_URL);
                 const productos = await res.json();
-                
-                // Generar Filtros dinámicos según el Excel
                 const categories = ['Todos', ...new Set(productos.filter(p => p.estado !== 'Inactivo').map(p => p.segmento))];
                 document.getElementById('categoryFilters').innerHTML = categories.map(cat => `
                     <button class="pill ${cat === 'Todos' ? 'active' : ''}" onclick="filtrarCategoria('${cat}', this)">${cat}</button>
                 `).join('');
-
                 renderGrid(productos);
             } catch(e) { console.error(e); }
         }
@@ -302,20 +293,22 @@
                 if (p.estado === 'Inactivo') return;
                 const isSoon = p.estado === 'Próximamente';
                 const isOut = p.stock <= 0 && !isSoon;
+                const lowStock = p.stock > 0 && p.stock <= 10;
                 
                 grid.innerHTML += `
                     <div class="card" data-category="${p.segmento}" style="${isOut ? 'filter:grayscale(1); opacity:0.8;' : ''}">
                         <div class="card-img-container">
-                            ${isOut ? '<span class="status-badge badge-out">AGOTADO</span>' : ''}
-                            ${isSoon ? '<span class="status-badge badge-soon">PRÓXIMAMENTE</span>' : ''}
-                            <img src="${p.imagen_url}" class="card-img" alt="${p.nombre} - El Otro Huerto Paine" loading="lazy">
+                            ${isOut ? '<span class="status-badge badge-out">Agotado</span>' : ''}
+                            ${isSoon ? '<span class="status-badge badge-soon">Próximamente</span>' : ''}
+                            <img src="${p.imagen_url}" class="card-img" alt="${p.nombre} - Paine Local" loading="lazy">
                         </div>
                         <div class="card-body">
-                            <span class="card-tag">${p.segmento}</span>
-                            <h2 style="font-size:18px; margin: 0 0 8px 0;">${p.nombre}</h2>
-                            <p style="font-size:13px; color:var(--text-muted); flex-grow:1;">${p.descripcion}</p>
+                            <div class="card-segment">${p.segmento}</div>
+                            <h2 class="card-title">${p.nombre}</h2>
+                            ${lowStock && !isSoon ? `<div class="stock-label">⚠️ ¡Solo quedan ${p.stock} unidades!</div>` : ''}
+                            <p class="card-desc">${p.descripcion}</p>
                             <div class="card-footer">
-                                <strong style="font-size:16px;">$${Number(p.precio).toLocaleString('es-CL')}</strong>
+                                <strong class="price">$${Number(p.precio).toLocaleString('es-CL')}</strong>
                                 ${isSoon ? 
                                     `<button class="btn-add" style="background:#eee; color:#666;" onclick="window.open('https://wa.me/56958799778?text=Me interesa: ${p.nombre}')">Avisarme</button>` :
                                     `<button class="btn-add" onclick="addToCart('${p.id}', '${p.nombre}', ${p.precio}, this)" ${isOut ? 'disabled' : ''}>${isOut ? 'Sin Stock' : 'Agregar'}</button>`
@@ -362,9 +355,9 @@
                     <div class="cart-item">
                         <div class="item-info"><h4>${item.name}</h4><p>$${item.price.toLocaleString('es-CL')}</p></div>
                         <div class="item-controls">
-                            <button class="btn-qty" onclick="updateQty('${id}', -1)">-</button>
-                            <span style="font-weight:600; min-width:20px; text-align:center;">${item.qty}</span>
-                            <button class="btn-qty" onclick="updateQty('${id}', 1)">+</button>
+                            <button onclick="updateQty('${id}', -1)" style="background:none; border:none; cursor:pointer; font-weight:700;">-</button>
+                            <span style="font-weight:600;">${item.qty}</span>
+                            <button onclick="updateQty('${id}', 1)" style="background:none; border:none; cursor:pointer; font-weight:700;">+</button>
                         </div>
                     </div>`;
             });
@@ -394,8 +387,7 @@
             document.getElementById('footer-cart').style.display = s === 1 ? 'block' : 'none';
             document.getElementById('step-checkout').style.display = s === 2 ? 'block' : 'none';
             document.getElementById('footer-checkout').style.display = s === 2 ? 'block' : 'none';
-            document.getElementById('drawerTitle').innerText = s === 1 ? "Tu Cosecha" : "Datos de Entrega";
-            document.querySelector('.drawer-body').scrollTop = 0;
+            document.getElementById('drawerTitle').innerText = s === 1 ? "Tu Canasta" : "Datos de Envío";
         }
 
         function selectDelivery(type, el) {
@@ -408,24 +400,15 @@
         }
 
         async function procesarPedido() {
-            const btn = document.getElementById('btnFinalPagar');
             const name = document.getElementById('custName').value.trim();
             const email = document.getElementById('custEmail').value.trim();
             const phone = document.getElementById('custPhone').value.trim();
-
-            if(!name || !email || !phone || (deliveryCost > 0 && !isAddressValid)) { alert("Por favor completa todos tus datos."); return; }
-
-            btn.innerText = "Conectando..."; btn.disabled = true;
+            if(!name || !email || !phone || (deliveryCost > 0 && !isAddressValid)) { alert("Completa tus datos."); return; }
             
             const addressMain = document.getElementById('custAddress').value.trim();
             const addressExtra = document.getElementById('custAddressDetails').value.trim();
-            const fullAddress = addressExtra ? `${addressMain}, ${addressExtra}` : addressMain;
             const deliveryType = document.querySelector('input[name="delivery"]:checked').value;
             
-            let logisticaFinal = "Retiro Colegio Michelangelo";
-            if(deliveryType === 'kinder') logisticaFinal = "Retiro Casa Kinder Michelangelo";
-            if(deliveryType === 'domicilio') logisticaFinal = "Despacho a Domicilio";
-
             let resumen = ""; let subtotal = 0;
             Object.keys(cart).forEach(id => {
                 resumen += `• ${cart[id].qty}x ${cart[id].name} | `;
@@ -434,23 +417,16 @@
 
             const payload = {
                 nombre: name, email: email, telefono: phone.replace(/\D/g, ''),
-                direccion: (deliveryType === 'domicilio') ? fullAddress : logisticaFinal,
-                logistica: logisticaFinal,
+                direccion: deliveryType === 'domicilio' ? `${addressMain}, ${addressExtra}` : "Casa Kinder Michelangelo",
+                logistica: deliveryType === 'domicilio' ? "Despacho Jueves" : "Retiro Kinder Jueves",
                 total: subtotal + deliveryCost, detalle: resumen
             };
 
             try {
-                const response = await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify(payload)
-                });
+                const response = await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) });
                 const data = JSON.parse(await response.text());
                 if (data.status === 'success') window.location.href = data.paymentUrl;
-            } catch (e) {
-                alert("Error al conectar.");
-                btn.innerText = "Pagar"; btn.disabled = false;
-            }
+            } catch (e) { alert("Error al procesar."); }
         }
 
         cargarProductos();
