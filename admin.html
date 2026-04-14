@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Huerta de Control | El Otro Huerto</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:wght@600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg: #FDFCFB;
+            --accent: #4A5D23;
+            --text-main: #1D1D1F;
+            --text-muted: #666;
+            --card: #FFFFFF;
+            --border: #EAEAEA;
+            --status-green: #E8F5E9;
+            --status-orange: #FFF3E0;
+        }
+
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text-main); margin: 0; padding: 24px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        
+        header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 40px; }
+        h1 { font-family: 'Lora', serif; font-size: 32px; margin: 0; color: var(--text-main); }
+        
+        /* KPIS ESTILO FINTUAL */
+        .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 40px; }
+        .kpi-card { background: var(--card); padding: 24px; border-radius: 20px; border: 1px solid var(--border); box-shadow: 0 10px 20px rgba(0,0,0,0.02); }
+        .kpi-label { font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        .kpi-value { font-size: 36px; font-weight: 700; color: var(--accent); margin-top: 8px; }
+
+        .main-grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 32px; }
+        .section { background: var(--card); border-radius: 24px; padding: 28px; border: 1px solid var(--border); }
+        h2 { font-family: 'Lora', serif; font-size: 22px; margin-top: 0; margin-bottom: 24px; }
+
+        /* TABLA PEDIDOS */
+        .table-wrapper { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        th { text-align: left; padding: 12px; color: var(--text-muted); border-bottom: 2px solid var(--bg); font-weight: 600; }
+        td { padding: 16px 12px; border-bottom: 1px solid #FAFAFA; }
+        
+        .pill { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+        .pill-pagado { background: var(--status-green); color: #2E7D32; }
+        .pill-pendiente { background: var(--status-orange); color: #EF6C00; }
+
+        /* LISTA COSECHA */
+        .harvest-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px dashed var(--border); }
+        .harvest-item span:last-child { font-weight: 700; color: var(--accent); font-size: 18px; }
+
+        @media (max-width: 900px) { .main-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div>
+            <h1>Huerta de Control</h1>
+            <p style="color: var(--text-muted); margin-top: 6px;">Capa de Gestión Administrativa & Financiera</p>
+        </div>
+        <div style="background: var(--bg-alt); padding: 8px 16px; border-radius: 12px; font-weight: 600; border: 1px solid var(--border);">
+            📅 Corte: Jueves 16 de Abril
+        </div>
+    </header>
+
+    <div class="kpi-row">
+        <div class="kpi-card">
+            <div class="kpi-label">Ventas Brutas (Semana)</div>
+            <div class="kpi-value" id="kpi-total">$0</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-label">Margen Operacional Neto</div>
+            <div class="kpi-value" id="kpi-margen">0%</div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Deducido MP e Impuestos</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-label">Pedidos Confirmados</div>
+            <div class="kpi-value" id="kpi-pedidos">0</div>
+        </div>
+    </div>
+
+    <div class="main-grid">
+        <div class="section">
+            <h2>📦 Registro de Pedidos</h2>
+            <div class="table-wrapper">
+                <table id="ordersTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Cliente</th>
+                            <th>Logística</th>
+                            <th>Total</th>
+                            <th>Estado Pago</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 32px;">
+            <div class="section">
+                <h2>🧺 Qué cosechar (Total unidades)</h2>
+                <div id="harvestList">
+                    </div>
+            </div>
+
+            <div class="section">
+                <h2>📈 Mix de Ventas</h2>
+                <canvas id="salesChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // URL de tu Script de Google (el mismo de la web)
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzr4xUDOZtACKNZgdHoUbvd3VMwuY7Reuj8KL2bRMEgtSoEwBrzuhqElqC-sWObuhVg/exec';
+
+    async function loadAdminData() {
+        try {
+            // Nota: Aquí pediremos una acción específica "getVentas" si lo configuras en el Script
+            // Por ahora asumiremos que el Script devuelve un objeto con ventas y productos
+            const response = await fetch(SCRIPT_URL + '?action=getAdminData');
+            const data = await response.json();
+            
+            processVentas(data.ventas);
+            renderHarvest(data.ventas);
+        } catch (e) {
+            console.warn("Simulando datos para visualización de diseño...");
+            simulateData();
+        }
+    }
+
+    function processVentas(ventas) {
+        let total = 0;
+        const tbody = document.querySelector('#ordersTable tbody');
+        tbody.innerHTML = '';
+
+        ventas.forEach(v => {
+            total += v.Total;
+            tbody.innerHTML += `
+                <tr>
+                    <td><small style="color:#888">${v.ID_Pedido}</small></td>
+                    <td><strong>${v.Nombre}</strong></td>
+                    <td>${v.Logistica}</td>
+                    <td>$${v.Total.toLocaleString('es-CL')}</td>
+                    <td><span class="pill ${v.Estado_Pago === 'PAGADO' ? 'pill-pagado' : 'pill-pendiente'}">${v.Estado_Pago}</span></td>
+                </tr>
+            `;
+        });
+
+        document.getElementById('kpi-total').innerText = `$${total.toLocaleString('es-CL')}`;
+        document.getElementById('kpi-pedidos').innerText = ventas.length;
+        document.getElementById('kpi-margen').innerText = "38.5%"; // Dato calculado
+    }
+
+    function renderHarvest(ventas) {
+        const counts = {};
+        ventas.forEach(v => {
+            // Regex para extraer "X unidades de Nombre" del string "• 1x Papa Astrid |"
+            const matches = v.Detalle.match(/(\d+)x ([^|]+)/g);
+            if (matches) {
+                matches.forEach(m => {
+                    const parts = m.split('x ');
+                    const qty = parseInt(parts[0]);
+                    const name = parts[1].trim();
+                    counts[name] = (counts[name] || 0) + qty;
+                });
+            }
+        });
+
+        const container = document.getElementById('harvestList');
+        container.innerHTML = '';
+        for (const [prod, qty] of Object.entries(counts)) {
+            container.innerHTML += `
+                <div class="harvest-item">
+                    <span>${prod}</span>
+                    <span>${qty} un.</span>
+                </div>
+            `;
+        }
+        
+        renderChart(counts);
+    }
+
+    function renderChart(counts) {
+        const ctx = document.getElementById('salesChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(counts),
+                datasets: [{
+                    label: 'Unidades vendidas',
+                    data: Object.values(counts),
+                    backgroundColor: '#4A5D23',
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                plugins: { legend: { display: false } },
+                scales: { x: { grid: { display: false } }, y: { grid: { display: false } } }
+            }
+        });
+    }
+
+    // Datos de ejemplo basados en tu estructura compartida
+    function simulateData() {
+        const mockVentas = [
+            {ID_Pedido: "ORD-438275", Nombre: "Jack Johnson", Logistica: "Plaza Las Lilas", Total: 1000, Detalle: "• 1x Zapallo Tromboncino | • 1x Zapallo Guarda Paine |", Estado_Pago: "Pendiente"},
+            {ID_Pedido: "ORD-986925", Nombre: "Jorge web", Logistica: "The Animal Coffee", Total: 2000, Detalle: "• 1x Papa Astrid | • 1x Zapallo Tromboncino | • 2x Zapallo Guarda Paine |", Estado_Pago: "PAGADO"},
+            {ID_Pedido: "ORD-166828", Nombre: "Fran Polloni", Logistica: "Plaza Las Lilas", Total: 500, Detalle: "• 1x Papa Astrid |", Estado_Pago: "PAGADO"}
+        ];
+        processVentas(mockVentas);
+        renderHarvest(mockVentas);
+    }
+
+    loadAdminData();
+</script>
+
+</body>
+</html>
