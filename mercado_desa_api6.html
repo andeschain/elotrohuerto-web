@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Mercado Rural | El Otro Huerto | Marcha Blanca</title>
     
-    <meta name="description" content="🧺 Cosecha agroecológica de Paine a Providencia. Productos frescos y trazables.">
+    <meta name="description" content="🧺 Cosechas libres de químicos. Productos honestos y con origen.">
     <meta property="og:title" content="El Otro Huerto | Mercado Rural 🌿">
-    <meta property="og:description" content="Marcha Blanca: Despacho a domicilio y retiro en Casa Kinder. ¡Haz tu pedido aquí!">
+    <meta property="og:description" content="Marcha Blanca: Despacho a domicilio y retiro en Casa Kinder o Casona. ¡Haz tu pedido aquí!">
     <meta property="og:image" content="https://elotrohuerto.cl/assets/jardin.jpg">
     <meta property="og:url" content="https://elotrohuerto.cl/mercado">
     <meta property="og:type" content="website">
@@ -45,7 +45,7 @@
         .cart-btn { background: none; border: none; cursor: pointer; position: relative; display: flex; align-items: center; gap: 8px; font-family: 'Inter', sans-serif; font-weight: 600; color: var(--accent); padding: 8px; }
         .cart-badge { background: var(--accent); color: white; font-size: 11px; padding: 2px 6px; border-radius: 12px; position: absolute; top: -2px; right: -8px; display: none; border: 2px solid #fff; font-weight: 700; }
 
-        /* GRID Y CARDS - DISEÑO V4 INTACTO */
+        /* GRID Y CARDS */
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 32px; padding: 0 24px 80px; max-width: 1080px; margin: 0 auto; }
         .card { background: #fff; border: 1px solid var(--border); border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.3s ease; position: relative;}
         .card:hover { transform: translateY(-4px); box-shadow: 0 16px 32px rgba(0,0,0,0.06); }
@@ -55,14 +55,13 @@
         .card-img { width: 100%; height: 100%; object-fit: cover; object-position: center; transition: transform 0.5s ease; -webkit-user-drag: none; }
         .card:hover .card-img { transform: scale(1.08); }
 
-        /* FILTROS PILLS */
         .filter-container { max-width: 1080px; margin: 0 auto 30px; padding: 0 24px; }
         .filter-pills { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding: 5px 0; }
         .filter-pills::-webkit-scrollbar { display: none; }
         .pill { padding: 8px 16px; border-radius: 50px; background: #fff; border: 1px solid var(--border); font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: 0.2s; color: var(--text-muted); }
         .pill.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 
-        /* DISEÑO DE CONTENIDO SEGUN IMAGEN V4 */
+        /* DISEÑO DE CONTENIDO */
         .card-body { padding: 24px; display: flex; flex-direction: column; flex-grow: 1; }
         .card-segment { font-size: 11px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 8px; font-family: 'Inter', sans-serif; }
         .card-title { font-size: 22px; margin: 0 0 8px 0; font-family: 'Lora', serif; font-weight: 600; line-height: 1.2; }
@@ -78,20 +77,18 @@
         .badge-out { background: #1d1d1f; }
         .badge-soon { background: var(--coming-soon); }
 
-        /* --- MOBILE DRAWER OPTIMIZATION --- */
+        /* MOBILE DRAWER & NAVIGATION FIX */
         .drawer { position: fixed; top: 0; right: -100%; width: 100%; max-width: 440px; height: 100vh; background: #fff; z-index: 1000; box-shadow: -10px 0 40px rgba(0,0,0,0.1); display: flex; flex-direction: column; transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
         .drawer.open { right: 0; }
         
         .drawer-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #fff; position: sticky; top: 0; z-index: 11; }
         .drawer-body { padding: 24px; overflow-y: auto; flex-grow: 1; background: #fff; -webkit-overflow-scrolling: touch; }
         
-        /* CANASTA ITEMS MOBILE */
         .cart-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
         .item-info h4 { margin: 0 0 4px 0; font-size: 16px; font-weight: 600; }
         .item-controls { display: flex; align-items: center; gap: 16px; background: var(--bg-alt); border-radius: 30px; padding: 8px 16px;}
         .btn-qty { background: none; border: none; width: 24px; height: 24px; cursor: pointer; font-weight: 700; font-size: 20px; color: var(--accent); display: flex; align-items: center; justify-content: center; }
 
-        /* FORMULARIO MOBILE */
         .form-input { width: 100%; padding: 16px; border: 1px solid var(--border); border-radius: 12px; margin-bottom: 16px; font-size: 16px; background: #FAFAFA; font-family: 'Inter', sans-serif; -webkit-appearance: none; }
         .form-input:focus { border-color: var(--accent); outline: none; background: #fff; }
         
@@ -101,19 +98,22 @@
         .radio-title { font-weight: 700; font-size: 15px; display: block; margin-bottom: 4px; }
         .radio-desc { font-size: 13px; color: var(--text-muted); line-height: 1.4; }
 
-        .drawer-footer { padding: 24px; border-top: 1px solid var(--border); background: #fff; position: sticky; bottom: 0; box-shadow: 0 -5px 15px rgba(0,0,0,0.03); }
+        /* FIX: Evitar que el footer se solape con la cinta inferior en mobile */
+        .drawer-footer { padding: 24px; padding-bottom: 60px; border-top: 1px solid var(--border); background: #fff; position: sticky; bottom: 0; box-shadow: 0 -5px 15px rgba(0,0,0,0.03); }
         .btn-main { width: 100%; background: var(--accent); color: #fff; border: none; padding: 18px; border-radius: 16px; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.2s; -webkit-tap-highlight-color: transparent; }
         .btn-main:active { transform: scale(0.98); opacity: 0.9; }
 
-        .badge-marcha { position: fixed; bottom: 0; left: 0; background: var(--accent); color: white; z-index: 10001; font-size: 11px; padding: 6px 14px; font-weight: bold; border-top-right-radius: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+        /* MARCHA BLANCA BADGE */
+        .badge-marcha { position: fixed; bottom: 0; left: 0; background: var(--accent); color: white; z-index: 10002; font-size: 11px; padding: 8px 14px; font-weight: bold; border-top-right-radius: 12px; text-transform: uppercase; letter-spacing: 0.5px; width: auto; pointer-events: none; }
 
         @media(max-width: 767px) { 
-            .grid { grid-template-columns: 1fr; padding: 0 20px 100px; } 
+            .grid { grid-template-columns: 1fr; padding: 0 20px 120px; } 
             .drawer { max-width: 100%; }
-            .badge-marcha { width: 100%; border-top-right-radius: 0; text-align: center; font-size: 10px; }
+            .badge-marcha { width: 100%; border-top-right-radius: 0; text-align: center; font-size: 9px; padding: 10px; }
             header { padding: 12px 20px; }
             .card-title { font-size: 20px; }
             h1 { font-size: 32px !important; }
+            .drawer-footer { padding-bottom: 70px; } /* Espacio extra para que el botón no toque la cinta */
         }
     </style>
 
@@ -121,7 +121,7 @@
 </head>
 <body>
 
-    <div class="badge-marcha">Marcha Blanca: Barrio Las Lilas & Colegio Waldorf Michelangelo</div>
+    <div class="badge-marcha">Marcha Blanca: Las Lilas, Michelangelo & Casona</div>
 
     <header>
         <a href="index.html" class="logo-container">
@@ -172,6 +172,12 @@
                     <span class="radio-desc">Retiro gratuito entre 8:30 y 9:30 hrs.</span>
                 </label>
 
+                <label class="radio-card" onclick="selectDelivery('casona', this)">
+                    <input type="radio" name="delivery" value="casona">
+                    <span class="radio-title">🏛️ Casona Waldorf Michelangelo</span>
+                    <span class="radio-desc">Retiro gratuito a la salida de clases.</span>
+                </label>
+
                 <label class="radio-card" onclick="selectDelivery('domicilio', this)">
                     <input type="radio" name="delivery" value="domicilio">
                     <span class="radio-title">🛵 Despacho a Domicilio ($3.500)</span>
@@ -180,7 +186,7 @@
             </div>
 
             <div id="addressBox" style="display: none; margin-top: 16px;">
-                <input type="text" id="custAddress" placeholder="Escribe tu calle y número..." class="form-input" autocomplete="off">
+                <input type="text" id="custAddress" placeholder="Calle y número..." class="form-input" autocomplete="off">
                 <p id="addressError" style="color:var(--danger); font-size:11px; display:none; margin-top: -10px; margin-bottom: 10px;"></p>
                 <input type="text" id="custAddressDetails" placeholder="Depto / Casa / Referencia" class="form-input">
             </div>
@@ -227,12 +233,12 @@
                 autocomplete.addListener('place_changed', () => {
                     const place = autocomplete.getPlace();
                     const errorMsg = document.getElementById('addressError');
-                    if (!place.geometry) { errorMsg.innerText = "⚠️ Selecciona de la lista sugerida."; errorMsg.style.display = 'block'; isAddressValid = false; return; }
+                    if (!place.geometry) { errorMsg.innerText = "Selecciona de la lista sugerida."; errorMsg.style.display = 'block'; isAddressValid = false; return; }
                     const dist = google.maps.geometry.spherical.computeDistanceBetween(place.geometry.location, plazaLilas);
                     if (dist > 1500) { errorMsg.innerText = "❌ Fuera del radio de 1.5km."; errorMsg.style.display = 'block'; isAddressValid = false; }
                     else { errorMsg.style.display = 'none'; isAddressValid = true; }
                 });
-            } catch (e) { console.warn("Google Maps no cargó correctamente."); }
+            } catch (e) { console.warn("Google Maps Error"); }
         }
 
         async function cargarProductos() {
@@ -255,7 +261,6 @@
                 const isSoon = p.estado === 'Próximamente';
                 const isOut = p.stock <= 0 && !isSoon;
                 const lowStock = p.stock > 0 && p.stock <= 10;
-                
                 grid.innerHTML += `
                     <div class="card" data-category="${p.segmento}" style="${isOut ? 'filter:grayscale(1); opacity:0.8;' : ''}">
                         <div class="card-img-container">
@@ -367,17 +372,16 @@
             const name = document.getElementById('custName').value.trim();
             const email = document.getElementById('custEmail').value.trim();
             const phone = document.getElementById('custPhone').value.trim();
-
             if(!name || !email || !phone || (deliveryCost > 0 && !isAddressValid)) { alert("Por favor completa los datos faltantes."); return; }
 
             btn.innerText = "Preparando pago seguro..."; btn.disabled = true;
             
             const addressMain = document.getElementById('custAddress').value.trim();
             const addressExtra = document.getElementById('custAddressDetails').value.trim();
-            const fullAddress = addressExtra ? `${addressMain}, ${addressExtra}` : addressMain;
             const deliveryType = document.querySelector('input[name="delivery"]:checked').value;
             
             let logisticaFinal = "Casa Kinder Michelangelo (8:30-9:30)";
+            if(deliveryType === 'casona') logisticaFinal = "Casona Waldorf Michelangelo (Salida clases)";
             if(deliveryType === 'domicilio') logisticaFinal = "Domicilio (Jueves PM)";
 
             let resumen = ""; let subtotal = 0;
@@ -388,8 +392,8 @@
 
             const payload = {
                 nombre: name, email: email, telefono: phone.replace(/\D/g, ''),
-                direccion: deliveryType === 'domicilio' ? fullAddress : "Casa Kinder Michelangelo",
-                logistica: deliveryType === 'domicilio' ? "Despacho Jueves" : "Retiro Kinder Jueves",
+                direccion: deliveryType === 'domicilio' ? `${addressMain}, ${addressExtra}` : logisticaFinal,
+                logistica: logisticaFinal,
                 total: subtotal + deliveryCost, detalle: resumen
             };
 
