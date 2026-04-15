@@ -36,7 +36,7 @@
         <div class="login-card">
             <h2>El Otro Huerto</h2>
             <p style="font-size:14px; color:#666; margin-bottom:24px;">Panel Administrativo Confidencial</p>
-            <input type="password" id="pass-field" class="login-input" placeholder="Ingrese Clave" autofocus>
+            <input type="password" id="pass-field" class="login-input" placeholder="Ingresa tu clave" autofocus>
             <button class="login-btn" onclick="checkAccess()">Entrar</button>
             <p id="error-msg" style="color:var(--danger); font-size:12px; margin-top:10px;"></p>
         </div>
@@ -52,9 +52,9 @@
         </header>
 
         <div class="kpi-grid">
-            <div class="kpi-card"><div class="kpi-label">Venta Mes Actual (MTD)</div><div class="kpi-value" id="kpi-mtd">$0</div></div>
-            <div class="kpi-card"><div class="kpi-label">Venta Últimos 7 Días</div><div class="kpi-value" id="kpi-week">$0</div></div>
-            <div class="kpi-card"><div class="kpi-label">Margen Neto (Est.)</div><div class="kpi-value" id="kpi-margin">$0</div></div>
+            <div class="kpi-card"><div class="kpi-label">Venta Mes Actual (MTD)</div><div class="kpi-value" id="kpi-mtd">$0</div><div style="font-size:10px; color:var(--success);">● Acumulado mensual</div></div>
+            <div class="kpi-card"><div class="kpi-label">Venta Últimos 7 Días</div><div class="kpi-value" id="kpi-week">$0</div><div style="font-size:10px; color:var(--text-muted);">● Ciclo semanal</div></div>
+            <div class="kpi-card"><div class="kpi-label">Margen Neto (Est.)</div><div class="kpi-value" id="kpi-margin">$0</div><div id="margin-sub" style="font-size:10px; color:var(--text-muted);">● Bruto - Comisión MP</div></div>
         </div>
 
         <div class="main-grid">
@@ -63,7 +63,7 @@
                 <div style="overflow-x: auto;">
                     <table id="ordersTable">
                         <thead><tr><th>Fecha</th><th>Cliente</th><th>Venta</th><th>Neto MP</th><th>Pago</th></tr></thead>
-                        <tbody><tr><td colspan="5" style="text-align:center; padding:40px;">Cargando pedidos...</td></tr></tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>
@@ -96,23 +96,21 @@
         tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:40px;">Sincronizando...</td></tr>';
         
         try {
-            // FORZAMOS LA ACCIÓN getAdminData PARA QUE EL SCRIPT LEA "PEDIDOS"
             const res = await fetch(`${SCRIPT_URL}?action=getAdminData`);
             const data = await res.json();
             
-            // Si data tiene .pedidos lo usamos, sino asumimos que data es el array
             const pedidos = data.pedidos || (Array.isArray(data) ? data : []);
 
             if (pedidos.length > 0) {
-                // Filtro de seguridad: Solo procesar si el objeto parece un pedido (tiene 'total' o 'id_pedido')
-                const pedidosReales = pedidos.filter(p => p.total || p.id_pedido || p.totalventa);
+                // Filtramos para ignorar filas que no son pedidos reales (basado en 'total' o 'nombre')
+                const pedidosReales = pedidos.filter(p => p.total || p.totalventa || p.nombre);
                 processData(pedidosReales);
             } else {
                 tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:40px;">No se encontraron pedidos.</td></tr>';
             }
         } catch (e) {
-            console.error(e);
-            tbody.innerHTML = '<tr><td colspan="5" style="color:red; text-align:center;">Error de conexión.</td></tr>';
+            console.error("Error en Fetch:", e);
+            tbody.innerHTML = '<tr><td colspan="5" style="color:red; text-align:center; padding:20px;">Error de conexión. Revisa que el Script esté publicado como "Cualquier persona".</td></tr>';
         }
     }
 
@@ -128,15 +126,17 @@
 
     function processData(pedidos) {
         let mtd = 0, week = 0, margin = 0;
-        const now = new Date(), lastWeek = new Date(now.getTime() - 7*24*60*60*1000);
+        const now = new Date();
+        const lastWeek = new Date(now.getTime() - 7*24*60*60*1000);
         const tbody = document.querySelector('#ordersTable tbody');
         tbody.innerHTML = '';
         const counts = {};
 
         pedidos.forEach(v => {
-            const totalVenta = Number(v.total || v.totalventa || 0);
-            const comision = Number(v.comision_mp || v.comisionmp || 0);
-            const vDate = parseSafeDate(v.fecha);
+            // Mapeo flexible de nombres de columnas (minúsculas vs mayúsculas)
+            const totalVenta = Number(v.total || v.totalventa || v.Total || 0);
+            const comision = Number(v.comision_mp || v.comisionmp || v.Comision_MP || 0);
+            const vDate = parseSafeDate(v.fecha || v.Fecha);
 
             if (vDate.getMonth() === now.getMonth() && vDate.getFullYear() === now.getFullYear()) mtd += totalVenta;
             if (vDate >= lastWeek) week += totalVenta;
@@ -144,15 +144,16 @@
 
             tbody.innerHTML += `
                 <tr>
-                    <td>${v.fecha || '---'}</td>
-                    <td><strong>${v.nombre || '---'}</strong></td>
+                    <td>${v.fecha || v.Fecha || '---'}</td>
+                    <td><strong>${v.nombre || v.Nombre || '---'}</strong></td>
                     <td>$${totalVenta.toLocaleString('es-CL')}</td>
                     <td style="color:var(--success)">$${Math.floor(totalVenta - comision).toLocaleString('es-CL')}</td>
-                    <td><span style="font-weight:700; color:var(--accent); font-size:10px;">${v.estado_pago || '---'}</span></td>
+                    <td><span style="font-weight:700; color:var(--accent); font-size:10px;">${v.estado_pago || v.Estado_Pago || '---'}</span></td>
                 </tr>
             `;
 
-            const matches = (v.detalle || "").match(/(\d+)x ([^|]+)/g);
+            const detalleStr = v.detalle || v.Detalle || "";
+            const matches = detalleStr.match(/(\d+)x ([^|]+)/g);
             if (matches) {
                 matches.forEach(m => {
                     const p = m.split('x ');
@@ -162,16 +163,21 @@
             }
         });
 
-        document.getElementById('kpi-mtd').innerText = `$${mtd.toLocaleString('es-CL')}`;
-        document.getElementById('kpi-week').innerText = `$${week.toLocaleString('es-CL')}`;
-        document.getElementById('kpi-margin').innerText = `$${Math.floor(margin).toLocaleString('es-CL')}`;
-        document.getElementById('kpi-margin').nextElementSibling.innerText = "● Ingreso neto tras Mercado Pago";
+        // Actualización Segura de KPIs
+        const elMtd = document.getElementById('kpi-mtd');
+        const elWeek = document.getElementById('kpi-week');
+        const elMargin = document.getElementById('kpi-margin');
+
+        if(elMtd) elMtd.innerText = `$${mtd.toLocaleString('es-CL')}`;
+        if(elWeek) elWeek.innerText = `$${week.toLocaleString('es-CL')}`;
+        if(elMargin) elMargin.innerText = `$${Math.floor(margin).toLocaleString('es-CL')}`;
 
         renderPicking(counts);
     }
 
     function renderPicking(counts) {
         const container = document.getElementById('picking-list');
+        if(!container) return;
         container.innerHTML = '';
         const labels = [], values = [];
         Object.entries(counts).sort((a,b) => b[1]-a[1]).forEach(([n, q]) => {
@@ -179,7 +185,9 @@
             labels.push(n); values.push(q);
         });
         
-        const ctx = document.getElementById('salesChart').getContext('2d');
+        const canvas = document.getElementById('salesChart');
+        if(!canvas) return;
+        const ctx = canvas.getContext('2d');
         if (window.myChart) window.myChart.destroy();
         window.myChart = new Chart(ctx, {
             type: 'bar', data: { labels, datasets: [{ data: values, backgroundColor: '#4A5D23', borderRadius: 4 }] },
