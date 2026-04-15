@@ -2,7 +2,7 @@
 <html lang="es-CL">
 <head>
     <meta charset="UTF-8">
-    <title>Mercado Rural | El Otro Huerto | Gestión v9.8</title>
+    <title>BI El Otro Huerto | Gestión Pro V9.8.2</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB1CcdwY-opGXS-a9m30PxcPPYcOa4L6wE&libraries=visualization,geometry"></script>
@@ -16,7 +16,6 @@
         .login-btn { width: 100%; background: var(--accent); color: #fff; border: none; padding: 16px; border-radius: 12px; font-weight: 700; cursor: pointer; font-size: 16px; display: block; }
 
         #admin-content { display: none; padding: 40px; max-width: 1450px; margin: 0 auto; }
-        
         header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
         .header-controls { display: flex; gap: 15px; align-items: center; }
         .time-filters { background: #F4F6F0; padding: 4px; border-radius: 12px; display: flex; }
@@ -43,8 +42,10 @@
         .picking-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed var(--border); font-size: 14px; }
         .qty-badge { background: var(--accent); color: white; padding: 2px 8px; border-radius: 6px; font-weight: 700; }
         
-        .loyalty-item { padding: 12px 0; border-bottom: 1px solid #f9f9f9; }
-        .loyalty-name { font-weight: 600; font-size: 14px; color: var(--text); display: block; }
+        /* DISEÑO RANKING SOLICITADO */
+        .loyalty-item { padding: 12px 0; border-bottom: 1px solid #f9f9f9; display: flex; justify-content: space-between; align-items: center; }
+        .loyalty-info { display: flex; flex-direction: column; }
+        .loyalty-name { font-weight: 600; font-size: 14px; color: var(--text); }
         .loyalty-mail { font-size: 11px; color: var(--muted); }
 
         h3 { font-family: 'Lora', serif; margin-top: 0; font-size: 20px; color: var(--accent); }
@@ -66,7 +67,7 @@
     <header>
         <div>
             <h1 style="font-family:'Lora'; font-size: 32px; margin:0;">Análisis de Cosecha</h1>
-            <p id="sync-text" style="color:var(--muted); margin:5px 0;">Actualizado con data de producción</p>
+            <p id="sync-text" style="color:var(--muted); margin:5px 0;">Sincronizado con producción</p>
         </div>
         <div class="header-controls">
             <div class="time-filters">
@@ -81,25 +82,25 @@
 
     <div class="kpi-row">
         <div class="kpi-card">
-            <span class="legend">Suma total de ingresos (columna Total) en el periodo seleccionado.</span>
+            <span class="legend">Suma total de ingresos (columna Total) en el periodo filtrado.</span>
             <div class="kpi-label">Ventas Periodo ⓘ</div>
             <div class="kpi-value" id="v-total">$0</div>
             <div class="kpi-label" id="p-count" style="color:var(--accent)">0 Pedidos</div>
         </div>
         <div class="kpi-card">
-            <span class="legend">Fórmula: Venta - (2.72% Comisión MP) - Costo Insumos. Es tu utilidad operacional.</span>
+            <span class="legend">Fórmula: Venta - (2.72% Comisión MP) - Costo Insumos.</span>
             <div class="kpi-label">Margen Operacional ⓘ</div>
             <div class="kpi-value" id="v-margin" style="color:var(--accent)">$0</div>
             <div class="kpi-label">Líquido estimado</div>
         </div>
         <div class="kpi-card">
-            <span class="legend">LTV: Porcentaje de clientes únicos que tienen más de 1 pedido registrado.</span>
+            <span class="legend">LTV: % de clientes únicos que tienen más de 1 pedido.</span>
             <div class="kpi-label">LTV (Retorno) ⓘ</div>
             <div class="kpi-value" id="v-ltv">0%</div>
             <div class="kpi-label">Fidelidad detectada</div>
         </div>
         <div class="kpi-card">
-            <span class="legend">Monto promedio transaccionado por pedido en el periodo filtrado.</span>
+            <span class="legend">Monto promedio transaccionado por pedido.</span>
             <div class="kpi-label">Ticket Promedio ⓘ</div>
             <div class="kpi-value" id="v-ticket">$0</div>
             <div class="kpi-label">Valor medio canasta</div>
@@ -111,13 +112,12 @@
             <div class="card">
                 <h3>📍 Mapa de Calor Armónico</h3>
                 <div id="map"></div>
-                <p style="font-size: 11px; color: var(--muted); margin-top: 10px;">Tonos verdes indican densidad de pedidos. Marcador central: Plaza Las Lilas.</p>
             </div>
             <div class="card">
-                <h3>📋 Registro de Pedidos (Preparación)</h3>
+                <h3>📋 Registro de Pedidos</h3>
                 <div style="overflow-x:auto;">
                     <table class="orders-table" id="orders-table">
-                        <thead><tr><th>Fecha</th><th>Cliente</th><th>Total</th><th>Estado Pago</th><th>Logística</th></tr></thead>
+                        <thead><tr><th>Fecha</th><th>Cliente</th><th>Total</th><th>Estado</th><th>Logística</th></tr></thead>
                         <tbody></tbody>
                     </table>
                 </div>
@@ -133,7 +133,7 @@
                 <canvas id="marginChart" height="150"></canvas>
             </div>
             <div class="card">
-                <h3>👥 Fidelización de Clientes</h3>
+                <h3>👥 Ranking de Clientes</h3>
                 <div id="loyalty-list"></div>
             </div>
         </div>
@@ -176,11 +176,10 @@
         processData();
     }
 
-    function parseGoogleDate(dateValue) {
-        if (!dateValue) return new Date(0);
-        if (dateValue instanceof Date) return dateValue;
-        const dateStr = String(dateValue);
-        const parts = dateStr.split(' ');
+    function parseGoogleDate(dateStr) {
+        if (!dateStr) return new Date(0);
+        if (dateStr instanceof Date) return dateStr;
+        const parts = String(dateStr).split(' ');
         const dateParts = parts[0].split('/');
         if (dateParts.length === 3) {
             return new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
@@ -189,7 +188,7 @@
     }
 
     function processData() {
-        if (!rawData.pedidos || rawData.pedidos.length === 0) return;
+        if (!rawData.pedidos) return;
 
         const now = new Date();
         const startOfWeek = new Date();
@@ -213,39 +212,32 @@
         tbody.innerHTML = '';
 
         const costMap = {};
-        if(rawData.productos) {
-            rawData.productos.forEach(p => {
-                if(p.nombre) costMap[p.nombre.trim()] = { costo: Number(p.costo || 0), precio: Number(p.precio || 0) };
-            });
-        }
+        rawData.productos.forEach(p => costMap[p.nombre.trim()] = { costo: Number(p.costo || 0), precio: Number(p.precio || 0) });
 
         filtered.slice().reverse().forEach(p => {
-            const monto = Number(String(p.total).replace(/[^0-9.-]+/g,"")) || 0;
+            const monto = Number(String(p.total).replace(/[^0-9.-]+/g,""));
             vTotal += monto;
             
-            // KEY PARA CLIENTE: Combina Nombre + Mail para el ranking
-            const cKey = p.email || p.nombre;
+            // Lógica de Ranking de Clientes (Corregida)
+            const cKey = (p.email || p.nombre || "Sin Identificar").trim();
             if(!clientes[cKey]) clientes[cKey] = { nombre: p.nombre || 'Sin nombre', email: p.email || '', count: 0 };
             clientes[cKey].count++;
 
-            // FECHA COMPLETA SOLICITADA: 15/04/2026
+            // Fecha Completa (DD/MM/YYYY)
             const displayDate = String(p.fecha).split(' ')[0];
-            
-            tbody.innerHTML += `<tr><td>${displayDate}</td><td><strong>${p.nombre || '---'}</strong></td><td>$${monto.toLocaleString('es-CL')}</td><td>${p.estado_pago || 'Pendiente'}</td><td><small>${p.logistica || '---'}</small></td></tr>`;
+            tbody.innerHTML += `<tr><td>${displayDate}</td><td><strong>${p.nombre}</strong></td><td>$${monto.toLocaleString('es-CL')}</td><td>${p.estado_pago}</td><td><small>${p.logistica}</small></td></tr>`;
 
             const items = (p.detalle || "").match(/(\d+)x ([^|]+)/g);
             if (items) {
                 items.forEach(m => {
                     const parts = m.split('x ');
-                    if(parts.length === 2) {
-                        const q = parseInt(parts[0]);
-                        const n = parts[1].trim();
-                        picking[n] = (picking[n] || 0) + q;
-                        if(costMap[n]) {
-                            const mU = costMap[n].precio - costMap[n].costo;
-                            productMargin[n] = (productMargin[n] || 0) + (mU * q);
-                            totalInsumos += (costMap[n].costo * q);
-                        }
+                    const q = parseInt(parts[0]);
+                    const n = parts[1].trim();
+                    picking[n] = (picking[n] || 0) + q;
+                    if(costMap[n]) {
+                        const mU = costMap[n].precio - costMap[n].costo;
+                        productMargin[n] = (productMargin[n] || 0) + (mU * q);
+                        totalInsumos += (costMap[n].costo * q);
                     }
                 });
             }
@@ -274,16 +266,13 @@
     }
 
     function renderLoyalty(clientes) {
-        // RANKING MEJORADO: Nombre + Mail con diseño limpio
         document.getElementById('loyalty-list').innerHTML = Object.values(clientes).sort((a,b)=>b.count - a.count).map(c => 
             `<div class="loyalty-item">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <div>
-                        <span class="loyalty-name">${c.nombre}</span>
-                        <span class="loyalty-mail">${c.email}</span>
-                    </div>
-                    <span class="qty-badge" style="background:#F4F6F0; color:var(--accent);">${c.count} ped.</span>
+                <div class="loyalty-info">
+                    <span class="loyalty-name">${c.nombre}</span>
+                    <span class="loyalty-mail">${c.email}</span>
                 </div>
+                <span class="qty-badge" style="background:#F4F6F0; color:var(--accent)">${c.count}</span>
             </div>`
         ).join('');
     }
@@ -295,16 +284,13 @@
         window.myChart = new Chart(ctx, {
             type: 'bar',
             data: { labels: top.map(x=>x[0].substring(0,15)), datasets:[{ data: top.map(x=>x[1]), backgroundColor: '#4A5D23', borderRadius: 6 }] },
-            options: { indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { grid: { display: false } } } }
+            options: { indexAxis: 'y', plugins: { legend: { display: false } } }
         });
     }
 
     function initMap(pedidos) {
         const center = { lat: -33.428384, lng: -70.594276 };
-        const map = new google.maps.Map(document.getElementById("map"), { 
-            zoom: 15, center: center, 
-            styles: [{ featureType: "all", stylers: [{ saturation: -100 }] }, { featureType: "water", stylers: [{ color: "#E3E9D6" }] }] 
-        });
+        const map = new google.maps.Map(document.getElementById("map"), { zoom: 15, center: center, styles: [{ featureType: "all", stylers: [{ saturation: -100 }] }] });
         
         const hubIcon = { path: google.maps.SymbolPath.CIRCLE, scale: 10, fillColor: "#4A5D23", fillOpacity: 1, strokeWeight: 2, strokeColor: "#FFFFFF" };
         new google.maps.Marker({ position: center, map, title: "Plaza Las Lilas", icon: hubIcon });
@@ -312,13 +298,13 @@
         const heatPoints = [];
         const geocoder = new google.maps.Geocoder();
         
-        // GRADIENTE SUAVE Y CLARO SOLICITADO
-        const softGreenGradient = [
+        // GRADIENTE SUAVE SOLICITADO
+        const softGradient = [
             'rgba(74, 93, 35, 0)',
             'rgba(142, 161, 102, 0.3)',
-            'rgba(111, 133, 67, 0.5)',
-            'rgba(74, 93, 35, 0.7)',
-            'rgba(43, 56, 19, 0.8)'
+            'rgba(111, 133, 67, 0.6)',
+            'rgba(74, 93, 35, 0.8)',
+            'rgba(43, 56, 19, 1)'
         ];
 
         pedidos.forEach(p => {
@@ -326,7 +312,7 @@
                 geocoder.geocode({ address: p.direccion + ", Providencia, Chile" }, (res, status) => {
                     if (status === "OK") {
                         heatPoints.push(res[0].geometry.location);
-                        new google.maps.visualization.HeatmapLayer({ data: heatPoints, map: map, radius: 40, opacity: 0.6, gradient: softGreenGradient });
+                        new google.maps.visualization.HeatmapLayer({ data: heatPoints, map: map, radius: 40, opacity: 0.6, gradient: softGradient });
                     }
                 });
             }
