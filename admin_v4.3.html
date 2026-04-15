@@ -2,89 +2,132 @@
 <html lang="es-CL">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Huerta de Control | El Otro Huerto BI</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --bg-page: #FDFCFB; --bg-alt: #F4F6F0; --accent: #4A5D23;
-            --text-main: #1D1D1F; --text-muted: #515154; --border: #EAEAEA;
+            --bg-page: #FDFCFB; --bg-alt: #F4F6F0; --text-main: #1D1D1F;
+            --text-muted: #515154; --accent: #4A5D23; --border: #EAEAEA;
+            --danger: #D93025; --success: #27AE60;
         }
-        body { font-family: 'Inter', sans-serif; background: var(--bg-page); color: var(--text-main); margin: 0; padding: 0; }
-        
-        #login-overlay { position: fixed; inset: 0; background: var(--bg-page); z-index: 10000; display: flex; align-items: center; justify-content: center; }
-        .login-card { background: #fff; padding: 48px; border-radius: 32px; box-shadow: 0 20px 60px rgba(0,0,0,0.05); text-align: center; width: 340px; border: 1px solid var(--border); }
-        .login-input { width: 100%; padding: 18px; border: 1px solid var(--border); border-radius: 16px; margin-bottom: 20px; text-align: center; font-size: 18px; outline: none; background: #FAFAFA; }
-        .login-btn { width: 100%; background: var(--accent); color: #fff; border: none; padding: 18px; border-radius: 16px; font-weight: 700; cursor: pointer; }
 
+        body { font-family: 'Inter', sans-serif; background: var(--bg-page); color: var(--text-main); margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
+
+        /* LOGIN ESTILO MERCADO V4.3 */
+        #login-overlay { position: fixed; inset: 0; background: var(--bg-page); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .login-card { background: #fff; padding: 48px 32px; border-radius: 32px; box-shadow: 0 20px 60px rgba(0,0,0,0.05); text-align: center; width: 100%; max-width: 380px; border: 1px solid var(--border); }
+        .login-card h2 { font-family: 'Lora', serif; font-size: 28px; margin: 0 0 8px; color: var(--text-main); }
+        .login-input { width: 100%; padding: 18px; border: 1px solid var(--border); border-radius: 16px; margin-bottom: 20px; text-align: center; font-size: 18px; outline: none; background: #FAFAFA; font-family: 'Inter', sans-serif; transition: 0.3s; }
+        .login-input:focus { border-color: var(--accent); background: #fff; }
+        .login-btn { width: 100%; background: var(--accent); color: #fff; border: none; padding: 18px; border-radius: 16px; font-weight: 700; cursor: pointer; font-size: 16px; transition: 0.2s; }
+        .login-btn:active { transform: scale(0.98); }
+
+        /* DASHBOARD UX */
         #admin-content { display: none; padding: 40px 24px; max-width: 1300px; margin: 0 auto; }
         header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; border-bottom: 1px solid var(--border); padding-bottom: 24px; }
-        
+        h1 { font-family: 'Lora', serif; font-size: 36px; margin: 0; color: var(--accent); }
+
         .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; margin-bottom: 40px; }
-        .kpi-card { background: #fff; padding: 28px; border-radius: 24px; border: 1px solid var(--border); }
+        .kpi-card { background: #fff; padding: 28px; border-radius: 24px; border: 1px solid var(--border); transition: 0.3s; }
+        .kpi-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.04); }
         .kpi-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.2px; }
         .kpi-value { font-size: 34px; font-weight: 700; color: var(--accent); margin: 12px 0; }
+        .kpi-sub { font-size: 12px; color: var(--text-muted); font-weight: 500; }
 
         .main-grid { display: grid; grid-template-columns: 1.8fr 1fr; gap: 32px; }
         .card { background: #fff; border-radius: 24px; padding: 32px; border: 1px solid var(--border); margin-bottom: 32px; }
         h3 { font-family: 'Lora', serif; margin: 0 0 24px 0; font-size: 22px; color: var(--text-main); }
 
-        table { width: 100%; border-collapse: collapse; font-size: 13px; }
-        th { text-align: left; padding: 16px; border-bottom: 2px solid var(--bg-alt); color: var(--text-muted); font-size: 11px; text-transform: uppercase; }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        th { text-align: left; padding: 16px; border-bottom: 2px solid var(--bg-alt); color: var(--text-muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
         td { padding: 16px; border-bottom: 1px solid var(--border); }
 
-        .picking-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed var(--border); }
-        .picking-qty { font-weight: 700; color: var(--accent); background: var(--bg-alt); padding: 2px 10px; border-radius: 8px; }
+        .picking-row { display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px dashed var(--border); }
+        .picking-qty { font-weight: 700; color: var(--accent); background: var(--bg-alt); padding: 4px 12px; border-radius: 12px; }
+
+        #data-status-pill { padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-block; margin-top: 8px; }
+
+        @media (max-width: 1024px) { .main-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
     <div id="login-overlay">
         <div class="login-card">
-            <h2 style="font-family:'Lora'; margin-top:0;">El Otro Huerto</h2>
+            <h2>El Otro Huerto</h2>
+            <p style="color:var(--text-muted); font-size:14px; margin-bottom:32px;">Panel Operativo V8.0</p>
             <input type="password" id="pass-field" class="login-input" placeholder="Clave Maestra" autofocus>
             <button class="login-btn" onclick="checkAccess()">Ingresar al Dashboard</button>
-            <div id="error-msg" style="color:red; font-size:12px; margin-top:16px;"></div>
+            <div id="error-msg" style="color:var(--danger); font-size:13px; margin-top:16px; font-weight:500;"></div>
         </div>
     </div>
 
     <div id="admin-content">
         <header>
             <div>
-                <h1>Huerta de Control V7.1</h1>
-                <p id="data-status" style="color:var(--text-muted); margin: 5px 0;">Sincronizando con Google Sheets...</p>
+                <h1>Huerta de Control</h1>
+                <div id="data-status-pill">Sincronizando...</div>
             </div>
-            <button onclick="syncData()" style="background:var(--accent); color:white; border:none; padding:12px 24px; border-radius:14px; cursor:pointer; font-weight:600;">🔄 Sincronizar</button>
+            <div style="text-align: right;">
+                <div id="corte-timer" style="font-weight: 700; color: var(--accent); font-size: 13px; margin-bottom: 8px;"></div>
+                <button onclick="syncData()" style="background:var(--accent); color:white; border:none; padding:12px 24px; border-radius:14px; cursor:pointer; font-weight:600; font-family:'Inter';">🔄 Sincronizar</button>
+            </div>
         </header>
 
         <div class="kpi-grid">
-            <div class="kpi-card"><div class="kpi-label">Ventas Brutas</div><div class="kpi-value" id="kpi-sales">$0</div></div>
-            <div class="kpi-card"><div class="kpi-label">Utilidad Operativa</div><div class="kpi-value" id="kpi-utility">$0</div></div>
-            <div class="kpi-card"><div class="kpi-label">Margen Est.</div><div class="kpi-value" id="kpi-margin">0%</div></div>
-            <div class="kpi-card"><div class="kpi-label">N° Pedidos</div><div class="kpi-value" id="kpi-qty">0</div></div>
+            <div class="kpi-card">
+                <div class="kpi-label">Ventas del Mes</div>
+                <div class="kpi-value" id="kpi-sales">$0</div>
+                <div class="kpi-sub" id="kpi-ticket">Ticket Prom: $0</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Utilidad Neta Est.</div>
+                <div class="kpi-value" id="kpi-utility">$0</div>
+                <div class="kpi-sub" id="kpi-margin">Post-costos y comisiones</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Órdenes</div>
+                <div class="kpi-value" id="kpi-qty">0</div>
+                <div class="kpi-sub" style="color:var(--success)">Activas esta semana</div>
+            </div>
         </div>
 
         <div class="main-grid">
-            <div class="card">
-                <h3>📦 Registro de Órdenes</h3>
-                <div style="overflow-x: auto;"><table id="orders-table"><thead><tr><th>ID</th><th>Fecha</th><th>Cliente</th><th>Total</th><th>Pago</th></tr></thead><tbody></tbody></table></div>
+            <div class="left-col">
+                <div class="card">
+                    <h3>📦 Gestión de Órdenes</h3>
+                    <div style="overflow-x: auto;">
+                        <table id="orders-table">
+                            <thead><tr><th>Fecha</th><th>Cliente</th><th>Total</th><th>Pago</th><th>Logística</th></tr></thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-            <div class="card">
-                <h3>🧺 Picking List (Cosecha)</h3>
-                <div id="picking-list"></div>
-                <canvas id="productsChart" style="margin-top:40px;"></canvas>
+            <div class="right-col">
+                <div class="card">
+                    <h3>🧺 Picking List de Cosecha</h3>
+                    <div id="picking-list"></div>
+                </div>
+                <div class="card">
+                    <h3>🏆 Ranking de Productos</h3>
+                    <canvas id="productsChart" height="200"></canvas>
+                </div>
             </div>
         </div>
     </div>
 
 <script>
-    // USA LA NUEVA URL QUE GENERASTE AYER
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzr4xUDOZtACKNZgdHoUbvd3VMwuY7Reuj8KL2bRMEgtSoEwBrzuhqElqC-sWObuhVg/exec';
-    const MASTER_KEY = "RU9IMjAyNg=="; 
+    const MASTER_KEY = "RU9IMjAyNg=="; // EOH2026
 
-    // CONSTANTES DE NEGOCIO
-    const COSTOS_FIJOS_SEMANAL = 16000 + 30000 + 5000; // Viaje + Persona + Gastos
-    const COMISION_MP_PORC = 0.0229 * 1.19; // 2.29% + IVA
+    // CONSTANTES DE NEGOCIO (BI)
+    const COSTO_OPERATIVO_SEMANAL = 16000 + 34500 + 5000; // Viaje + Persona + Gastos
+    const COMISION_MP_PORC = 0.0272; // 2.29% + IVA aprox.
+
+    document.getElementById('pass-field').addEventListener('keypress', e => { if (e.key === 'Enter') checkAccess(); });
 
     function checkAccess() {
         if (btoa(document.getElementById('pass-field').value) === MASTER_KEY) {
@@ -92,112 +135,127 @@
             document.getElementById('admin-content').style.display = 'block';
             syncData();
         } else {
-            document.getElementById('error-msg').innerText = "⚠️ Clave incorrecta.";
+            const msgs = ["⚠️ Esa semilla no brotó.", "⚠️ Tierra seca en la clave.", "⚠️ Intento de plaga detectado."];
+            document.getElementById('error-msg').innerText = msgs[Math.floor(Math.random()*msgs.length)];
+            document.getElementById('pass-field').value = "";
         }
     }
 
     async function syncData() {
-        const status = document.getElementById('data-status');
-        status.innerText = "⏳ Conectando con Google...";
+        const pill = document.getElementById('data-status-pill');
+        pill.innerText = "⏳ Consultando...";
+        pill.style.background = "var(--bg-alt)";
+        
         try {
-            // Bypass de caché agregando timestamp
-            const res = await fetch(`${SCRIPT_URL}?action=getAdminData&t=${Date.now()}`);
+            const res = await fetch(`${SCRIPT_URL}?action=getAdminData&cache=${Date.now()}`);
             const data = await res.json();
             
-            console.log("Datos recibidos:", data); // AUDITORÍA EN CONSOLA (F12)
+            // ANALIZADOR DE DATOS: Si Google manda productos en lugar del objeto admin
+            if (Array.isArray(data) && !data.pedidos) {
+                pill.innerHTML = "⚠️ ERROR: Google mandó Productos. Refresca la Implementación del Script.";
+                pill.style.background = "#FFEBEE";
+                pill.style.color = "var(--danger)";
+                console.error("El script ignoró el parámetro action. Recibido:", data);
+                return;
+            }
 
             if (data.pedidos) {
-                status.innerText = `✅ Sincronizado: ${data.pedidos.length} registros.`;
-                render(data.pedidos, data.productos || []);
-            } else {
-                status.innerHTML = "<b style='color:red'>⚠️ Error: No se encontraron pedidos.</b>";
+                pill.innerText = "✅ Sincronizado";
+                pill.style.background = "#E8F5E9";
+                pill.style.color = "var(--success)";
+                render(data.pedidos, data.productos);
             }
         } catch (e) {
-            status.innerText = "❌ Error de conexión.";
-            console.error(e);
+            pill.innerText = "❌ Error de conexión";
+            pill.style.background = "#FFEBEE";
         }
     }
 
     function render(pedidos, productos) {
-        let sales = 0, totalUtility = 0;
+        let sales = 0, utility = 0;
         const tbody = document.querySelector('#orders-table tbody');
         tbody.innerHTML = '';
-        const picking = {};
+        const counts = {};
 
-        // Mapa de costos
         const costosMap = {};
-        productos.forEach(p => {
-            const n = (p.nombre || p.Nombre || "").trim();
-            costosMap[n] = Number(p.costo || p.Costo || 0);
-        });
+        productos.forEach(p => costosMap[(p.nombre || "").trim()] = Number(p.costo || 0));
 
         pedidos.slice().reverse().forEach(p => {
-            // NORMALIZADOR DE CAMPOS (Tolerante a mayúsculas/minúsculas)
-            const total = Number(p.total || p.Total || 0);
-            const comisionMP = Number(p.comision_mp || p.Comision_MP || total * COMISION_MP_PORC);
-            const id = p.id_pedido || p.ID_Pedido || "---";
-            const fecha = (p.fecha || p.Fecha || "").split(' ')[0];
-            const cliente = p.nombre || p.Nombre || "---";
+            const valVenta = Number(p.total || p.Total || 0);
+            const valComision = valVenta * COMISION_MP_PORC;
             const detalle = p.detalle || p.Detalle || "";
-            const pago = p.estado_pago || p.Estado_Pago || "Pendiente";
-
-            sales += total;
-            let costoProductos = 0;
+            
+            sales += valVenta;
+            let costoProd = 0;
 
             const matches = detalle.match(/(\d+)x ([^|]+)/g);
             if (matches) {
                 matches.forEach(m => {
                     const parts = m.split('x ');
                     const q = parseInt(parts[0]);
-                    const name = parts[1].trim();
-                    picking[name] = (picking[name] || 0) + q;
-                    if(costosMap[name]) costoProductos += (costosMap[name] * q);
+                    const n = parts[1].trim();
+                    counts[n] = (counts[n] || 0) + q;
+                    if(costosMap[n]) costoProd += (costosMap[n] * q);
                 });
             }
 
-            totalUtility += (total - comisionMP - costoProductos);
+            utility += (valVenta - valComision - costoProd);
 
             tbody.innerHTML += `
                 <tr>
-                    <td><small>${id}</small></td>
-                    <td>${fecha}</td>
-                    <td><strong>${cliente}</strong></td>
-                    <td>$${total.toLocaleString('es-CL')}</td>
-                    <td><span style="font-weight:700; font-size:10px;">${pago}</span></td>
+                    <td><small>${p.id_pedido || '---'}</small></td>
+                    <td>${(p.fecha || "").split(' ')[0]}</td>
+                    <td><strong>${p.nombre || '---'}</strong></td>
+                    <td>$${valVenta.toLocaleString('es-CL')}</td>
+                    <td><span style="font-weight:700; font-size:10px;">${p.estado_pago || ''}</span></td>
+                    <td><small>${p.logistica || ''}</small></td>
                 </tr>
             `;
         });
 
-        // Actualizar KPIs
-        const utilidadFinal = totalUtility - COSTOS_FIJOS_SEMANAL;
+        // KPIs
+        const finalUtility = utility - COSTO_OPERATIVO_SEMANAL;
         document.getElementById('kpi-sales').innerText = `$${sales.toLocaleString('es-CL')}`;
-        document.getElementById('kpi-utility').innerText = `$${Math.floor(utilidadFinal).toLocaleString('es-CL')}`;
+        document.getElementById('kpi-utility').innerText = `$${Math.floor(finalUtility).toLocaleString('es-CL')}`;
         document.getElementById('kpi-qty').innerText = pedidos.length;
-        document.getElementById('kpi-margin').innerText = `${Math.round((utilidadFinal/sales)*100)}%`;
+        document.getElementById('kpi-ticket').innerText = `Ticket Prom: $${Math.floor(sales/pedidos.length).toLocaleString('es-CL')}`;
+        document.getElementById('kpi-margin').innerText = `Margen: ${Math.round((finalUtility/sales)*100)}%`;
 
-        renderPicking(picking);
-        renderChart(picking);
+        renderPicking(counts);
+        renderChart(counts);
+        updateTimer();
     }
 
-    function renderPicking(picking) {
+    function renderPicking(counts) {
         const container = document.getElementById('picking-list');
         container.innerHTML = '';
-        Object.entries(picking).sort((a,b) => b[1]-a[1]).forEach(([n, q]) => {
-            container.innerHTML += `<div class="picking-row"><span>${n}</span><span class="picking-qty">${q} un.</span></div>`;
+        Object.entries(counts).sort((a,b) => b[1]-a[1]).forEach(([n, q]) => {
+            container.innerHTML += `<div class="picking-row"><span>${n}</span><span class="picking-qty">${q}</span></div>`;
         });
     }
 
-    function renderChart(picking) {
+    function renderChart(counts) {
         const ctx = document.getElementById('productsChart').getContext('2d');
         if (window.myChart) window.myChart.destroy();
         window.myChart = new Chart(ctx, {
-            type: 'bar',
+            type: 'doughnut',
             data: {
-                labels: Object.keys(picking).slice(0, 5).map(l => l.substring(0,12)),
-                datasets: [{ data: Object.values(picking).slice(0, 5), backgroundColor: '#4A5D23', borderRadius: 8 }]
+                labels: Object.keys(counts).slice(0, 5),
+                datasets: [{ data: Object.values(counts).slice(0, 5), backgroundColor: ['#4A5D23','#6A7F3D','#8A9F5D','#AABF7D','#CADF9D'], borderWidth: 0 }]
             },
-            options: { plugins: { legend: { display: false } } }
+            options: { cutout: '75%', plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } } } }
         });
+    }
+
+    function updateTimer() {
+        const now = new Date();
+        const nextWed = new Date();
+        nextWed.setDate(now.getDate() + (3 - now.getDay() + 7) % 7);
+        nextWed.setHours(12, 0, 0, 0);
+        const diff = nextWed - now;
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        document.getElementById('corte-timer').innerText = `Próximo corte: ${days}d ${hours}h`;
     }
 </script>
 </body>
