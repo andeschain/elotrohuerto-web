@@ -3,38 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Huerta de Control | Admin</title>
+    <title>Huerta de Control | El Otro Huerto</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:wght@600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        :root { --bg: #F9FAF6; --accent: #4A5D23; --text: #1D1D1F; --muted: #6E6E73; --border: #E5E5E1; --success: #27AE60; --danger: #D93025; }
-        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); }
+        :root { --bg: #FDFCFB; --bg-alt: #F4F6F0; --accent: #4A5D23; --text: #1D1D1F; --border: #EAEAEA; --success: #27AE60; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 0; }
+        
+        #login-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center; }
+        .login-card { background: #fff; padding: 48px; border-radius: 24px; border: 1px solid var(--border); text-align: center; width: 340px; box-shadow: 0 15px 35px rgba(0,0,0,0.05); }
+        .login-input { width: 100%; padding: 16px; border: 1px solid var(--border); border-radius: 14px; margin-bottom: 20px; text-align: center; font-size: 18px; outline: none; background: #FAFAFA; }
+        .login-btn { width: 100%; background: var(--accent); color: #fff; border: none; padding: 16px; border-radius: 14px; font-weight: 700; cursor: pointer; }
 
-        /* --- LOGIN PROFESIONAL --- */
-        #login-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .login-card { background: #fff; padding: 48px 32px; border-radius: 28px; box-shadow: 0 15px 35px rgba(0,0,0,0.05); text-align: center; width: 100%; max-width: 360px; border: 1px solid var(--border); }
-        .login-card h2 { font-family: 'Lora', serif; font-size: 26px; margin: 0 0 8px; }
-        .login-card p { font-size: 14px; color: var(--muted); margin-bottom: 24px; }
-        .login-input { width: 100%; padding: 16px; border: 1px solid var(--border); border-radius: 14px; margin-bottom: 16px; text-align: center; font-size: 16px; outline: none; background: #FAFAFA; box-sizing: border-box; transition: 0.3s; }
-        .login-input:focus { border-color: var(--accent); background: #fff; }
-        .login-btn { width: 100%; background: var(--accent); color: white; border: none; padding: 16px; border-radius: 14px; font-weight: 700; cursor: pointer; font-size: 16px; }
-        #error-msg { color: var(--danger); font-size: 13px; margin-top: 16px; font-weight: 500; }
-
-        /* --- DASHBOARD --- */
         #admin-content { display: none; padding: 40px 24px; max-width: 1200px; margin: 0 auto; }
-        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
-        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 40px; }
+        header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; }
+        h1 { font-family: 'Lora', serif; font-size: 32px; margin: 0; }
+
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; margin-bottom: 40px; }
         .kpi-card { background: #fff; padding: 24px; border-radius: 20px; border: 1px solid var(--border); }
-        .kpi-label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+        .kpi-label { font-size: 11px; font-weight: 700; color: #666; text-transform: uppercase; letter-spacing: 1px; }
         .kpi-value { font-size: 32px; font-weight: 700; color: var(--accent); margin: 8px 0; }
+
         .main-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 32px; }
-        .section-box { background: #fff; border-radius: 24px; padding: 24px; border: 1px solid var(--border); }
-        h3 { font-family: 'Lora', serif; font-size: 20px; margin: 0 0 20px 0; color: var(--accent); }
-        table { width: 100%; border-collapse: collapse; font-size: 12px; }
-        th { text-align: left; padding: 12px; color: var(--muted); border-bottom: 2px solid var(--bg); font-weight: 600; }
-        td { padding: 14px 12px; border-bottom: 1px solid #f9f9f9; }
-        .picking-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed var(--border); font-size: 13px; }
-        .picking-qty { font-weight: 700; color: var(--accent); }
+        .card { background: #fff; border-radius: 24px; padding: 28px; border: 1px solid var(--border); }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th { text-align: left; padding: 12px; border-bottom: 2px solid var(--bg-alt); color: #666; }
+        td { padding: 12px; border-bottom: 1px solid #f9f9f9; }
+
+        .picking-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed var(--border); }
+        .picking-qty { font-weight: 700; color: var(--accent); background: var(--bg-alt); padding: 2px 10px; border-radius: 6px; }
         @media (max-width: 900px) { .main-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -42,160 +39,104 @@
 
     <div id="login-overlay">
         <div class="login-card">
-            <h2>El Otro Huerto</h2>
-            <p>Panel de Gestión V3.9</p>
-            <input type="password" id="pass-field" class="login-input" placeholder="Clave de Acceso">
-            <button class="login-btn" onclick="checkAccess()">Ingresar</button>
-            <div id="error-msg"></div>
+            <h2 style="font-family:'Lora'; margin-top:0;">Huerta Admin</h2>
+            <input type="password" id="pass-field" class="login-input" placeholder="••••••••" autofocus>
+            <button class="login-btn" onclick="checkAccess()">Sincronizar</button>
+            <div id="error-msg" style="color:red; font-size:12px; margin-top:16px;"></div>
         </div>
     </div>
 
     <div id="admin-content">
         <header>
-            <div>
-                <h1 style="font-family:'Lora'; margin:0; font-size: 32px;">Huerta de Control</h1>
-                <p style="color:var(--muted); margin:4px 0;">Reporting Financiero & Cosecha</p>
-            </div>
-            <button id="sync-btn" onclick="initDashboard()" style="background:white; border: 1px solid var(--border); padding: 12px 20px; border-radius: 12px; cursor:pointer; font-weight:600;">🔄 Sincronizar Datos</button>
+            <div><h1>Panel de Control</h1><p id="data-status" style="color:#666;">Consultando registros...</p></div>
+            <button onclick="fetchRealData()" style="background:white; border: 1px solid var(--border); padding: 10px 20px; border-radius:12px; cursor:pointer;">🔄 Actualizar</button>
         </header>
 
         <div class="kpi-grid">
-            <div class="kpi-card"><div class="kpi-label">Venta Mes Actual (MTD)</div><div class="kpi-value" id="kpi-mtd">$0</div></div>
-            <div class="kpi-card"><div class="kpi-label">Venta Últimos 7 Días</div><div class="kpi-value" id="kpi-week">$0</div></div>
-            <div class="kpi-card"><div class="kpi-label">Margen Neto (MP)</div><div class="kpi-value" id="kpi-margin">$0</div></div>
+            <div class="kpi-card"><div class="kpi-label">Ventas Brutas</div><div class="kpi-value" id="kpi-bruto">$0</div></div>
+            <div class="kpi-card"><div class="kpi-label">Utilidad Neto MP</div><div class="kpi-value" id="kpi-neto">$0</div></div>
+            <div class="kpi-card"><div class="kpi-label">N° Pedidos</div><div class="kpi-value" id="kpi-qty">0</div></div>
         </div>
 
         <div class="main-grid">
-            <div class="section-box">
-                <h3>📦 Órdenes de Pedidos Reales</h3>
-                <div style="overflow-x: auto;">
-                    <table id="ordersTable">
-                        <thead><tr><th>Fecha</th><th>Cliente</th><th>Total</th><th>Neto</th><th>Estado</th></tr></thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
+            <div class="card">
+                <h3>📦 Registro de Órdenes</h3>
+                <div style="overflow-x: auto;"><table id="ordersTable"><thead><tr><th>Fecha</th><th>Cliente</th><th>Total</th><th>Estado</th></tr></thead><tbody></tbody></table></div>
             </div>
-            <div style="display: flex; flex-direction: column; gap: 32px;">
-                <div class="section-box"><h3>🧺 Picking List (Cosecha)</h3><div id="picking-list"></div></div>
-                <div class="section-box"><h3>📊 Mix de Productos</h3><canvas id="salesChart"></canvas></div>
+            <div class="card">
+                <h3>🧺 Picking List (Cosecha Jueves)</h3>
+                <div id="picking-list"></div>
             </div>
         </div>
     </div>
 
 <script>
-    const _0xval = "RU9IMjAyNg=="; // EOH2026
+    // 1. PEGA AQUÍ LA URL NUEVA QUE GENERASTE EN EL PASO 1
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzr4xUDOZtACKNZgdHoUbvd3VMwuY7Reuj8KL2bRMEgtSoEwBrzuhqElqC-sWObuhVg/exec';
-
-    document.getElementById('pass-field').addEventListener('keypress', e => { if (e.key === 'Enter') checkAccess(); });
+    const _0xkey = "RU9IMjAyNg=="; 
 
     function checkAccess() {
-        if (btoa(document.getElementById('pass-field').value) === _0xval) {
+        if (btoa(document.getElementById('pass-field').value) === _0xkey) {
             document.getElementById('login-overlay').style.display = 'none';
             document.getElementById('admin-content').style.display = 'block';
-            initDashboard();
+            fetchRealData();
         } else {
-            const msgs = ["⚠️ Esa semilla no brotó.","⚠️ Tierra seca en la clave.","⚠️ Clave incorrecta."];
-            document.getElementById('error-msg').innerText = msgs[Math.floor(Math.random()*msgs.length)];
-            document.getElementById('pass-field').value = "";
+            document.getElementById('error-msg').innerText = "⚠️ Clave incorrecta.";
         }
     }
 
-    async function initDashboard() {
-        const tbody = document.querySelector('#ordersTable tbody');
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:40px;">Cargando pedidos reales...</td></tr>';
-        
+    async function fetchRealData() {
+        const status = document.getElementById('data-status');
         try {
-            // USAMOS UN TIMESTAMP PARA EVITAR CACHÉ DE GOOGLE
+            // Agregamos t= para romper cualquier caché
             const res = await fetch(`${SCRIPT_URL}?action=getAdminData&t=${Date.now()}`);
             const data = await res.json();
             
-            // Si el script manda el objeto con .pedidos o el array directo
-            const rawPedidos = data.pedidos || (Array.isArray(data) ? data : []);
-
-            // FILTRO RADICAL: Solo pedidos que tengan ID_PEDIDO o NOMBRE o TOTAL > 0
-            // Esto descarta la lista de productos si el script se equivoca
-            const pedidosReales = rawPedidos.filter(p => {
-                const id = p.id_pedido || p.idpedido || "";
-                return id.toString().includes("ORD-");
-            });
-
-            if (pedidosReales.length > 0) {
-                processData(pedidosReales);
+            if (data.pedidos && Array.isArray(data.pedidos)) {
+                status.innerText = `✅ ${data.pedidos.length} pedidos reales sincronizados.`;
+                render(data.pedidos);
             } else {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:40px; color:red;">Error: El sistema está leyendo la lista de Productos. Revisa la pestaña activa en Google Sheets.</td></tr>';
+                status.innerHTML = "<b style='color:red'>⚠️ Google sigue enviando PRODUCTOS.</b><br>Revisa que la URL sea la de la NUEVA IMPLEMENTACIÓN.";
             }
         } catch (e) {
-            tbody.innerHTML = '<tr><td colspan="5" style="color:red; text-align:center; padding:20px;">Error de conexión.</td></tr>';
+            status.innerText = "❌ Error de conexión.";
         }
     }
 
-    function parseSafeDate(dInput) {
-        if (!dInput) return new Date();
-        let d = new Date(dInput);
-        if (isNaN(d.getTime())) {
-            const p = dInput.split(' ')[0].split('/');
-            if(p.length === 3) d = new Date(p[2], p[1]-1, p[0]);
-        }
-        return isNaN(d.getTime()) ? new Date() : d;
-    }
-
-    function processData(pedidos) {
-        let mtd = 0, week = 0, margin = 0;
-        const now = new Date(), lastWeek = new Date(now.getTime() - 7*24*60*60*1000);
+    function render(pedidos) {
+        let bruto = 0, neto = 0;
         const tbody = document.querySelector('#ordersTable tbody');
         tbody.innerHTML = '';
         const counts = {};
 
-        pedidos.forEach(v => {
-            const totalVenta = Number(v.total || v.totalventa || 0);
-            const comision = Number(v.comision_mp || v.comisionmp || 0);
-            const vDate = parseSafeDate(v.fecha);
+        pedidos.slice().reverse().forEach(p => {
+            // Mapeo exacto basado en tu auditoría de ayer
+            const total = Number(p.total || 0);
+            const comision = Number(p.comision_mp || 0);
+            
+            bruto += total;
+            neto += (total - comision);
 
-            if (vDate.getMonth() === now.getMonth() && vDate.getFullYear() === now.getFullYear()) mtd += totalVenta;
-            if (vDate >= lastWeek) week += totalVenta;
-            margin += (totalVenta - comision);
+            tbody.innerHTML += `<tr><td>${(p.fecha || "").split(' ')[0]}</td><td><strong>${p.nombre || '---'}</strong></td><td>$${total.toLocaleString('es-CL')}</td><td>${p.estado_pago || ''}</td></tr>`;
 
-            tbody.innerHTML += `
-                <tr>
-                    <td>${v.fecha || '---'}</td>
-                    <td><strong>${v.nombre || '---'}</strong></td>
-                    <td>$${totalVenta.toLocaleString('es-CL')}</td>
-                    <td style="color:var(--success)">$${Math.floor(totalVenta - comision).toLocaleString('es-CL')}</td>
-                    <td><span style="font-weight:700; color:var(--accent); font-size:10px;">${v.estado_pago || '---'}</span></td>
-                </tr>
-            `;
-
-            const detalleStr = v.detalle || "";
-            const matches = detalleStr.match(/(\d+)x ([^|]+)/g);
+            const matches = (p.detalle || "").match(/(\d+)x ([^|]+)/g);
             if (matches) {
                 matches.forEach(m => {
                     const p = m.split('x ');
-                    const name = p[1].split('|')[0].trim();
+                    const name = p[1].trim();
                     counts[name] = (counts[name] || 0) + parseInt(p[0]);
                 });
             }
         });
 
-        document.getElementById('kpi-mtd').innerText = `$${mtd.toLocaleString('es-CL')}`;
-        document.getElementById('kpi-week').innerText = `$${week.toLocaleString('es-CL')}`;
-        document.getElementById('kpi-margin').innerText = `$${Math.floor(margin).toLocaleString('es-CL')}`;
-        renderPicking(counts);
-    }
+        document.getElementById('kpi-bruto').innerText = `$${bruto.toLocaleString('es-CL')}`;
+        document.getElementById('kpi-neto').innerText = `$${Math.floor(neto).toLocaleString('es-CL')}`;
+        document.getElementById('kpi-qty').innerText = pedidos.length;
 
-    function renderPicking(counts) {
-        const container = document.getElementById('picking-list');
-        container.innerHTML = '';
-        const labels = [], values = [];
+        const pickDiv = document.getElementById('picking-list');
+        pickDiv.innerHTML = '';
         Object.entries(counts).sort((a,b) => b[1]-a[1]).forEach(([n, q]) => {
-            container.innerHTML += `<div class="picking-item"><span>${n}</span><span class="picking-qty">${q} un.</span></div>`;
-            labels.push(n); values.push(q);
-        });
-        
-        const ctx = document.getElementById('salesChart').getContext('2d');
-        if (window.myChart) window.myChart.destroy();
-        window.myChart = new Chart(ctx, {
-            type: 'bar', data: { labels, datasets: [{ data: values, backgroundColor: '#4A5D23', borderRadius: 4 }] },
-            options: { indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { grid: { display: false }, ticks: { font: { size: 10 } } } } }
+            pickDiv.innerHTML += `<div class="picking-item"><span>${n}</span><span class="picking-qty">${q} un.</span></div>`;
         });
     }
 </script>
