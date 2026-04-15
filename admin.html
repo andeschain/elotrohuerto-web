@@ -18,58 +18,34 @@
             --success: #27AE60;
         }
 
-        body, html { 
-            margin: 0; padding: 0; height: 100%; 
-            font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text-main); 
-        }
+        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text-main); }
 
-        /* --- LOGIN PROFESIONAL CENTRADO --- */
-        #login-overlay { 
-            position: fixed; inset: 0; background: var(--bg); z-index: 9999; 
-            display: flex; align-items: center; justify-content: center; padding: 20px;
-        }
-        .login-card { 
-            background: var(--white); padding: 48px 32px; border-radius: 28px; 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.05); text-align: center; 
-            width: 100%; max-width: 360px; border: 1px solid var(--border);
-        }
-        .login-card h2 { font-family: 'Lora', serif; font-size: 24px; margin-bottom: 8px; color: var(--text-main); }
-        .login-card p { color: var(--text-muted); font-size: 14px; margin-bottom: 32px; }
-        
-        .login-input { 
-            width: 100%; padding: 16px; border: 1px solid var(--border); border-radius: 14px; 
-            margin-bottom: 16px; text-align: center; font-size: 16px; outline: none; 
-            transition: all 0.3s; background: #FAFAFA; box-sizing: border-box;
-        }
+        /* --- LOGIN PROFESIONAL --- */
+        #login-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; transition: 0.5s; }
+        .login-card { background: var(--white); padding: 48px 32px; border-radius: 28px; box-shadow: 0 15px 35px rgba(0,0,0,0.05); text-align: center; width: 100%; max-width: 360px; border: 1px solid var(--border); }
+        .login-card h2 { font-family: 'Lora', serif; font-size: 24px; margin-bottom: 8px; }
+        .login-input { width: 100%; padding: 16px; border: 1px solid var(--border); border-radius: 14px; margin-bottom: 16px; text-align: center; font-size: 16px; outline: none; transition: 0.3s; background: #FAFAFA; box-sizing: border-box; }
         .login-input:focus { border-color: var(--accent); background: #fff; box-shadow: 0 0 0 4px rgba(74, 93, 35, 0.05); }
-        
-        .login-btn { 
-            width: 100%; background: var(--accent); color: white; border: none; padding: 16px; 
-            border-radius: 14px; font-weight: 700; font-size: 16px; cursor: pointer; 
-            transition: transform 0.2s, background 0.3s; 
-        }
-        .login-btn:hover { background: #3a4a1c; }
-        .login-btn:active { transform: scale(0.98); }
-        
+        .login-btn { width: 100%; background: var(--accent); color: white; border: none; padding: 16px; border-radius: 14px; font-weight: 700; cursor: pointer; transition: 0.2s; }
         #error-msg { color: var(--danger); font-size: 13px; margin-top: 16px; font-weight: 500; min-height: 20px; }
 
         /* --- DASHBOARD --- */
         #admin-content { display: none; padding: 40px 24px; max-width: 1200px; margin: 0 auto; }
         header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
-        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 40px; }
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; margin-bottom: 40px; }
         .kpi-card { background: var(--white); padding: 24px; border-radius: 20px; border: 1px solid var(--border); }
-        .kpi-label { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
-        .kpi-value { font-size: 32px; font-weight: 700; color: var(--accent); margin: 8px 0; }
+        .kpi-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+        .kpi-value { font-size: 28px; font-weight: 700; color: var(--accent); margin: 8px 0; }
         
         .main-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 32px; }
         .section-box { background: var(--white); border-radius: 24px; padding: 24px; border: 1px solid var(--border); }
-        h3 { font-family: 'Lora', serif; font-size: 20px; margin-top: 0; margin-bottom: 20px; color: var(--accent); }
+        h3 { font-family: 'Lora', serif; font-size: 18px; margin-top: 0; margin-bottom: 20px; color: var(--accent); }
 
-        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        table { width: 100%; border-collapse: collapse; font-size: 12px; }
         th { text-align: left; padding: 12px; color: var(--text-muted); border-bottom: 2px solid var(--bg); font-weight: 600; }
         td { padding: 14px 12px; border-bottom: 1px solid #f9f9f9; }
 
-        .picking-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed var(--border); font-size: 14px; }
+        .picking-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed var(--border); font-size: 13px; }
         .picking-qty { font-weight: 700; color: var(--accent); }
 
         @media (max-width: 900px) { .main-grid { grid-template-columns: 1fr; } }
@@ -80,9 +56,9 @@
     <div id="login-overlay">
         <div class="login-card">
             <h2>El Otro Huerto</h2>
-            <p>Panel de Control Administrativo</p>
-            <input type="password" id="pass-field" class="login-input" placeholder="Ingresa tu clave" autofocus>
-            <button class="login-btn" onclick="checkAccess()">Acceder al Dashboard</button>
+            <p style="color: #666; font-size: 14px; margin-bottom: 24px;">Acceso administrativo confidencial</p>
+            <input type="password" id="pass-field" class="login-input" placeholder="Clave Maestra" autofocus>
+            <button class="login-btn" onclick="checkAccess()">Ingresar al Sistema</button>
             <p id="error-msg"></p>
         </div>
     </div>
@@ -90,33 +66,33 @@
     <div id="admin-content">
         <header>
             <div>
-                <h1 style="font-family:'Lora'; margin:0;">Huerta de Control</h1>
-                <p style="color:var(--text-muted); margin:4px 0;">Gestión V3.1 - Conectado a base real</p>
+                <h1 style="font-family:'Lora'; margin:0; font-size: 28px;">Huerta de Control</h1>
+                <p style="color:var(--text-muted); margin:4px 0; font-size: 14px;">MTD Reporting & Picking List</p>
             </div>
-            <button onclick="location.reload()" style="background:white; border: 1px solid var(--border); padding: 10px 20px; border-radius: 12px; cursor:pointer; font-weight:600;">🔄 Sincronizar</button>
+            <button onclick="location.reload()" style="background:white; border: 1px solid var(--border); padding: 10px 18px; border-radius: 12px; cursor:pointer; font-weight:600; font-size: 13px;">🔄 Sincronizar</button>
         </header>
 
         <div class="kpi-grid">
             <div class="kpi-card">
                 <div class="kpi-label">Venta Mes Actual (MTD)</div>
                 <div class="kpi-value" id="kpi-mtd">$0</div>
-                <div style="font-size:11px; color:var(--success); font-weight:600;">● Flujo acumulado Abril</div>
+                <div style="font-size:10px; color:var(--success); font-weight:600;">● Total acumulado</div>
             </div>
             <div class="kpi-card">
                 <div class="kpi-label">Venta Últimos 7 Días</div>
                 <div class="kpi-value" id="kpi-week">$0</div>
-                <div style="font-size:11px; color:var(--text-muted);">● Rendimiento semanal</div>
+                <div style="font-size:10px; color:var(--text-muted);">● Ciclo semanal</div>
             </div>
             <div class="kpi-card">
-                <div class="kpi-label">Total Pedidos</div>
-                <div class="kpi-value" id="kpi-pedidos">0</div>
-                <div style="font-size:11px; color:var(--accent); font-weight:600;">● Órdenes en historial</div>
+                <div class="kpi-label">Rentabilidad Operativa</div>
+                <div class="kpi-value" id="kpi-margin">$0</div>
+                <div style="font-size:10px; color:var(--text-muted);">● Bruto - Comisión MP</div>
             </div>
         </div>
 
         <div class="main-grid">
             <div class="section-box">
-                <h3>📦 Historial de Ventas</h3>
+                <h3>📦 Historial de Órdenes</h3>
                 <div style="overflow-x: auto;">
                     <table id="ordersTable">
                         <thead>
@@ -124,8 +100,8 @@
                                 <th>Fecha</th>
                                 <th>Cliente</th>
                                 <th>Logística</th>
-                                <th>Total</th>
-                                <th>Pago</th>
+                                <th>Venta</th>
+                                <th>Neto MP</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -136,7 +112,9 @@
             <div style="display: flex; flex-direction: column; gap: 32px;">
                 <div class="section-box">
                     <h3>🧺 Picking List de Cosecha</h3>
-                    <div id="picking-list"></div>
+                    <div id="picking-list">
+                        <p style="color:#aaa; font-size: 12px;">Esperando datos...</p>
+                    </div>
                 </div>
                 <div class="section-box">
                     <h3>📊 Mix de Productos</h3>
@@ -147,7 +125,8 @@
     </div>
 
 <script>
-    const _0xval = "RU9IMjAyNg=="; // Clave: EOH2026
+    // CLAVE EOH2026 ENCAPSULADA
+    const _0xval = "RU9IMjAyNg=="; 
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzr4xUDOZtACKNZgdHoUbvd3VMwuY7Reuj8KL2bRMEgtSoEwBrzuhqElqC-sWObuhVg/exec';
 
     document.getElementById('pass-field').addEventListener('keypress', e => { if (e.key === 'Enter') checkAccess(); });
@@ -155,80 +134,95 @@
     function checkAccess() {
         const input = document.getElementById('pass-field').value;
         if (btoa(input) === _0xval) {
-            document.getElementById('login-overlay').style.display = 'none';
-            document.getElementById('admin-content').style.display = 'block';
-            initDashboard();
+            document.getElementById('login-overlay').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('login-overlay').style.display = 'none';
+                document.getElementById('admin-content').style.display = 'block';
+                initDashboard();
+            }, 400);
         } else {
-            const msgs = ["⚠️ Esa semilla no brotó. Reintenta.", "⚠️ Clave incorrecta. Tierra seca.", "⚠️ Acceso denegado. Intenta de nuevo."];
-            document.getElementById('error-msg').innerText = msgs[Math.floor(Math.random()*msgs.length)];
+            const ludicos = ["⚠️ Esa semilla no brotó. Reintenta.", "⚠️ Tierra seca en la clave.", "⚠️ Acceso denegado."];
+            document.getElementById('error-msg').innerText = ludicos[Math.floor(Math.random()*ludicos.length)];
             document.getElementById('pass-field').value = "";
         }
     }
 
     async function initDashboard() {
         try {
-            // Se asume que el script de Google ya tiene implementada la lógica para leer la hoja correcta.
-            const res = await fetch(SCRIPT_URL);
+            // Llamamos con el parámetro action que tu script doGet ya maneja
+            const res = await fetch(SCRIPT_URL + "?action=getAdminData");
             const data = await res.json();
-            processData(data);
+            
+            // Tu script devuelve { productos: [], pedidos: [] }
+            if (data.pedidos) {
+                processData(data.pedidos);
+            }
         } catch (e) {
-            console.error("Error cargando datos reales.");
+            console.error("Error cargando datos:", e);
+            alert("No se pudo conectar con la base de datos. Revisa la consola.");
         }
     }
 
-    function parseDate(d) {
-        if (!d) return new Date(0);
-        const parts = d.split(' ')[0].split('/');
-        return new Date(parts[2], parts[1] - 1, parts[0]);
+    function parseMyDate(dateStr) {
+        if (!dateStr) return new Date(0);
+        // Maneja "25 Mar 2026" o "25/03/2026"
+        return new Date(dateStr);
     }
 
-    function processData(ventas) {
+    function processData(pedidos) {
         let mtdTotal = 0;
         let weekTotal = 0;
+        let marginTotal = 0;
         const now = new Date();
+        const currentMonth = now.getMonth();
+        const currentYear = now.getFullYear();
         const lastWeek = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
 
         const tbody = document.querySelector('#ordersTable tbody');
         tbody.innerHTML = '';
         const counts = {};
 
-        // Ordenar por fecha descendente
-        ventas.sort((a,b) => parseDate(b.Fecha) - parseDate(a.Fecha)).forEach(v => {
-            const vDate = parseDate(v.Fecha);
-            
-            // MTD (Mes actual)
-            if (vDate.getMonth() === now.getMonth() && vDate.getFullYear() === now.getFullYear()) {
-                mtdTotal += Number(v.Total || 0);
+        // Ordenamos por fecha
+        pedidos.sort((a,b) => parseMyDate(b.fecha) - parseMyDate(a.fecha)).forEach(v => {
+            const vDate = parseMyDate(v.fecha);
+            const totalVenta = Number(v.total || 0);
+            const comision = Number(v.comision_mp || 0);
+
+            // KPIs (Nombres de campos en minúsculas por tu limpieza de headers en el Script)
+            if (vDate.getMonth() === currentMonth && vDate.getFullYear() === currentYear) {
+                mtdTotal += totalVenta;
             }
-            // Semanal
             if (vDate >= lastWeek) {
-                weekTotal += Number(v.Total || 0);
+                weekTotal += totalVenta;
             }
+            marginTotal += (totalVenta - comision);
 
             tbody.innerHTML += `
                 <tr>
-                    <td>${v.Fecha.split(' ')[0]}</td>
-                    <td><strong>${v.Nombre}</strong></td>
-                    <td><small>${v.Logistica}</small></td>
-                    <td>$${Number(v.Total).toLocaleString('es-CL')}</td>
-                    <td><span style="font-weight:700; color:var(--accent); font-size:10px;">${v.Estado_Pago}</span></td>
+                    <td>${v.fecha || '---'}</td>
+                    <td><strong>${v.nombre || 'Sin nombre'}</strong></td>
+                    <td><small>${v.logistica || '---'}</small></td>
+                    <td>$${totalVenta.toLocaleString('es-CL')}</td>
+                    <td style="color:var(--success)">$${Math.floor(totalVenta - comision).toLocaleString('es-CL')}</td>
                 </tr>
             `;
 
-            // Picking List
-            const matches = v.Detalle.match(/(\d+)x ([^|]+)/g);
+            // Picking List (Detalle en minúscula)
+            const detalle = v.detalle || "";
+            const matches = detalle.match(/(\d+)x ([^|]+)/g);
             if (matches) {
                 matches.forEach(m => {
-                    const [qty, name] = m.split('x ');
-                    const cleanName = name.split('|')[0].trim();
-                    counts[cleanName] = (counts[cleanName] || 0) + parseInt(qty);
+                    const parts = m.split('x ');
+                    const qty = parseInt(parts[0]);
+                    const name = parts[1].split('|')[0].trim();
+                    counts[name] = (counts[name] || 0) + qty;
                 });
             }
         });
 
         document.getElementById('kpi-mtd').innerText = `$${mtdTotal.toLocaleString('es-CL')}`;
         document.getElementById('kpi-week').innerText = `$${weekTotal.toLocaleString('es-CL')}`;
-        document.getElementById('kpi-pedidos').innerText = ventas.length;
+        document.getElementById('kpi-margin').innerText = `$${Math.floor(marginTotal).toLocaleString('es-CL')}`;
 
         renderPicking(counts);
     }
@@ -258,12 +252,15 @@
             type: 'bar',
             data: {
                 labels: labels,
-                datasets: [{ data: values, backgroundColor: '#4A5D23', borderRadius: 5 }]
+                datasets: [{ data: values, backgroundColor: '#4A5D23', borderRadius: 4 }]
             },
             options: {
                 indexAxis: 'y',
                 plugins: { legend: { display: false } },
-                scales: { x: { display: false }, y: { grid: { display: false }, ticks: { font: { size: 10 } } } }
+                scales: { 
+                    x: { display: false }, 
+                    y: { grid: { display: false }, ticks: { font: { size: 10 } } } 
+                }
             }
         });
     }
