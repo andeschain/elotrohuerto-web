@@ -58,7 +58,7 @@
         <div class="login-card">
             <h2>El Otro Huerto</h2>
             <p style="color: #666; font-size: 14px; margin-bottom: 24px;">Panel de Gestión Financiera</p>
-            <input type="password" id="pass-field" class="login-input" placeholder="Clave Maestra" autofocus>
+            <input type="password" id="pass-field" class="login-input" placeholder="EOH2026" autofocus>
             <button class="login-btn" onclick="checkAccess()">Ingresar</button>
             <p id="error-msg"></p>
         </div>
@@ -77,17 +77,14 @@
             <div class="kpi-card">
                 <div class="kpi-label">Venta Mes Actual (MTD)</div>
                 <div class="kpi-value" id="kpi-mtd">$0</div>
-                <div style="font-size:10px; color:var(--success); font-weight:600;">● Acumulado del mes</div>
             </div>
             <div class="kpi-card">
                 <div class="kpi-label">Venta Últimos 7 Días</div>
                 <div class="kpi-value" id="kpi-week">$0</div>
-                <div style="font-size:10px; color:var(--text-muted);">● Ciclo semanal actual</div>
             </div>
             <div class="kpi-card">
                 <div class="kpi-label">Utilidad Operativa Est.</div>
                 <div class="kpi-value" id="kpi-margin">$0</div>
-                <div style="font-size:10px; color:var(--text-muted);">● Bruto menos comisiones</div>
             </div>
         </div>
 
@@ -106,7 +103,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td colspan="5" style="text-align:center; padding:40px; color:#aaa;">Cargando pedidos...</td></tr>
+                            <tr><td colspan="5" style="text-align:center; padding:40px; color:#aaa;">Conectando con el huerto...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -115,9 +112,7 @@
             <div style="display: flex; flex-direction: column; gap: 32px;">
                 <div class="section-box">
                     <h3>🧺 Picking List de Cosecha</h3>
-                    <div id="picking-list">
-                        <p style="color:#aaa; font-size: 12px;">Procesando canastas...</p>
-                    </div>
+                    <div id="picking-list"></div>
                 </div>
                 <div class="section-box">
                     <h3>📊 Mix de Productos</h3>
@@ -139,36 +134,38 @@
             document.getElementById('admin-content').style.display = 'block';
             initDashboard();
         } else {
-            document.getElementById('error-msg').innerText = "⚠️ Clave incorrecta. El huerto necesita la llave correcta.";
-            document.getElementById('pass-field').value = "";
+            document.getElementById('error-msg').innerText = "⚠️ Clave incorrecta.";
         }
     }
 
     async function initDashboard() {
         try {
-            // USAMOS "TEXT" PARA EVITAR PROBLEMAS DE CORS ANTES DEL PARSE
             const res = await fetch(SCRIPT_URL + "?action=getAdminData");
-            const rawData = await res.text();
-            const data = JSON.parse(rawData);
+            const data = await res.json();
             
-            if (data && data.pedidos) {
-                processData(data.pedidos);
+            // CORRECCIÓN CLAVE: Si data es un Array directo, o si es un objeto con .pedidos
+            let listaPedidos = [];
+            if (Array.isArray(data)) {
+                listaPedidos = data;
+            } else if (data && data.pedidos) {
+                listaPedidos = data.pedidos;
+            }
+
+            if (listaPedidos.length > 0) {
+                processData(listaPedidos);
             } else {
-                console.error("Estructura de datos no válida", data);
+                document.querySelector('#ordersTable tbody').innerHTML = '<tr><td colspan="5" style="text-align:center; padding:40px;">No hay pedidos registrados aún.</td></tr>';
             }
         } catch (e) {
             console.error("Error crítico:", e);
-            document.querySelector('#ordersTable tbody').innerHTML = '<tr><td colspan="5" style="color:red; text-align:center;">Error de conexión con Google Sheets.</td></tr>';
+            document.querySelector('#ordersTable tbody').innerHTML = '<tr><td colspan="5" style="color:red; text-align:center;">Error de comunicación.</td></tr>';
         }
     }
 
-    // PARSER DE FECHA ROBUSTO
     function parseSafeDate(dateInput) {
         if (!dateInput) return new Date();
-        // Si ya es un string tipo "14 Apr 2026" o "14/04/2026"
         let d = new Date(dateInput);
         if (isNaN(d.getTime())) {
-            // Intento manual para formato DD/MM/YYYY
             const parts = dateInput.split(' ')[0].split('/');
             if(parts.length === 3) d = new Date(parts[2], parts[1] - 1, parts[0]);
         }
@@ -176,29 +173,20 @@
     }
 
     function processData(pedidos) {
-        let mtdTotal = 0;
-        let weekTotal = 0;
-        let marginTotal = 0;
+        let mtdTotal = 0; let weekTotal = 0; let marginTotal = 0;
         const now = new Date();
         const lastWeek = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-
         const tbody = document.querySelector('#ordersTable tbody');
         tbody.innerHTML = '';
         const counts = {};
 
         pedidos.forEach(v => {
-            // Normalizar nombres de campos a minúsculas por si el script los cambió
             const totalVenta = Number(v.total || v.Total || 0);
             const comision = Number(v.comision_mp || v.Comision_MP || 0);
             const vDate = parseSafeDate(v.fecha || v.Fecha);
 
-            // KPIs
-            if (vDate.getMonth() === now.getMonth() && vDate.getFullYear() === now.getFullYear()) {
-                mtdTotal += totalVenta;
-            }
-            if (vDate >= lastWeek) {
-                weekTotal += totalVenta;
-            }
+            if (vDate.getMonth() === now.getMonth() && vDate.getFullYear() === now.getFullYear()) mtdTotal += totalVenta;
+            if (vDate >= lastWeek) weekTotal += totalVenta;
             marginTotal += (totalVenta - comision);
 
             tbody.innerHTML += `
@@ -207,11 +195,10 @@
                     <td><strong>${v.nombre || v.Nombre || '---'}</strong></td>
                     <td>$${totalVenta.toLocaleString('es-CL')}</td>
                     <td style="color:var(--success)">$${Math.floor(totalVenta - comision).toLocaleString('es-CL')}</td>
-                    <td><span style="font-weight:700; color:var(--accent); font-size:10px; text-transform:uppercase;">${v.estado_pago || v.Estado_Pago || '---'}</span></td>
+                    <td><span style="font-weight:700; color:var(--accent); font-size:10px;">${v.estado_pago || v.Estado_Pago || '---'}</span></td>
                 </tr>
             `;
 
-            // Procesar Picking List del Detalle
             const detalle = v.detalle || v.Detalle || "";
             const matches = detalle.match(/(\d+)x ([^|]+)/g);
             if (matches) {
@@ -227,7 +214,6 @@
         document.getElementById('kpi-mtd').innerText = `$${mtdTotal.toLocaleString('es-CL')}`;
         document.getElementById('kpi-week').innerText = `$${weekTotal.toLocaleString('es-CL')}`;
         document.getElementById('kpi-margin').innerText = `$${Math.floor(marginTotal).toLocaleString('es-CL')}`;
-
         renderPicking(counts);
     }
 
@@ -235,16 +221,9 @@
         const container = document.getElementById('picking-list');
         container.innerHTML = '';
         const labels = []; const values = [];
-
         Object.entries(counts).sort((a,b) => b[1] - a[1]).forEach(([name, qty]) => {
-            container.innerHTML += `
-                <div class="picking-item">
-                    <span>${name}</span>
-                    <span class="picking-qty">${qty} un.</span>
-                </div>
-            `;
-            labels.push(name);
-            values.push(qty);
+            container.innerHTML += `<div class="picking-item"><span>${name}</span><span class="picking-qty">${qty} un.</span></div>`;
+            labels.push(name); values.push(qty);
         });
         renderChart(labels, values);
     }
@@ -254,18 +233,8 @@
         if (window.myChart) window.myChart.destroy();
         window.myChart = new Chart(ctx, {
             type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{ data: values, backgroundColor: '#4A5D23', borderRadius: 4 }]
-            },
-            options: {
-                indexAxis: 'y',
-                plugins: { legend: { display: false } },
-                scales: { 
-                    x: { display: false }, 
-                    y: { grid: { display: false }, ticks: { font: { size: 10 } } } 
-                }
-            }
+            data: { labels: labels, datasets: [{ data: values, backgroundColor: '#4A5D23', borderRadius: 4 }] },
+            options: { indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { grid: { display: false }, ticks: { font: { size: 10 } } } } }
         });
     }
 </script>
