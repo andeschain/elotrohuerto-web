@@ -2,234 +2,148 @@
 <html lang="es-CL">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Huerta de Control | V7.0 Business Intelligence</title>
+    <title>Huerta de Control | El Otro Huerto BI</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:wght@600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --bg-page: #FDFCFB;
-            --bg-alt: #F4F6F0;
-            --text-main: #1D1D1F;
-            --text-muted: #515154;
-            --accent: #4A5D23;
-            --border: #EAEAEA;
-            --danger: #D93025;
-            --success: #27AE60;
+            --bg-page: #FDFCFB; --bg-alt: #F4F6F0; --accent: #4A5D23;
+            --text-main: #1D1D1F; --text-muted: #515154; --border: #EAEAEA;
         }
-
-        body { font-family: 'Inter', sans-serif; background: var(--bg-page); color: var(--text-main); margin: 0; padding: 0; overflow-x: hidden; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-page); color: var(--text-main); margin: 0; padding: 0; }
         
-        /* LOGIN MODERNO CENTRADO */
         #login-overlay { position: fixed; inset: 0; background: var(--bg-page); z-index: 10000; display: flex; align-items: center; justify-content: center; }
-        .login-card { background: #fff; padding: 48px; border-radius: 32px; box-shadow: 0 20px 60px rgba(0,0,0,0.05); text-align: center; width: 100%; max-width: 380px; border: 1px solid var(--border); }
-        .login-card h2 { font-family: 'Lora', serif; font-size: 28px; margin-bottom: 8px; }
-        .login-input { width: 100%; padding: 18px; border: 1px solid var(--border); border-radius: 16px; margin-bottom: 20px; text-align: center; font-size: 18px; outline: none; background: #FAFAFA; transition: 0.3s; }
-        .login-input:focus { border-color: var(--accent); background: #fff; }
-        .login-btn { width: 100%; background: var(--accent); color: #fff; border: none; padding: 18px; border-radius: 16px; font-weight: 700; cursor: pointer; font-size: 16px; transition: 0.2s; }
-        .login-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        .login-card { background: #fff; padding: 48px; border-radius: 32px; box-shadow: 0 20px 60px rgba(0,0,0,0.05); text-align: center; width: 340px; border: 1px solid var(--border); }
+        .login-input { width: 100%; padding: 18px; border: 1px solid var(--border); border-radius: 16px; margin-bottom: 20px; text-align: center; font-size: 18px; outline: none; background: #FAFAFA; }
+        .login-btn { width: 100%; background: var(--accent); color: #fff; border: none; padding: 18px; border-radius: 16px; font-weight: 700; cursor: pointer; }
 
-        /* LAYOUT DASHBOARD */
         #admin-content { display: none; padding: 40px 24px; max-width: 1300px; margin: 0 auto; }
         header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; border-bottom: 1px solid var(--border); padding-bottom: 24px; }
         
-        /* KPI CARDS ESTILO FINTUAL */
         .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; margin-bottom: 40px; }
-        .kpi-card { background: #fff; padding: 28px; border-radius: 24px; border: 1px solid var(--border); transition: 0.3s; position: relative; overflow: hidden; }
-        .kpi-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(74, 93, 35, 0.08); }
+        .kpi-card { background: #fff; padding: 28px; border-radius: 24px; border: 1px solid var(--border); }
         .kpi-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.2px; }
         .kpi-value { font-size: 34px; font-weight: 700; color: var(--accent); margin: 12px 0; }
-        .kpi-sub { font-size: 12px; font-weight: 500; }
-        .up { color: var(--success); } .down { color: var(--danger); }
 
-        .main-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 32px; }
+        .main-grid { display: grid; grid-template-columns: 1.8fr 1fr; gap: 32px; }
         .card { background: #fff; border-radius: 24px; padding: 32px; border: 1px solid var(--border); margin-bottom: 32px; }
-        h3 { font-family: 'Lora', serif; margin: 0 0 24px 0; font-size: 22px; color: var(--text-main); display: flex; align-items: center; gap: 10px; }
+        h3 { font-family: 'Lora', serif; margin: 0 0 24px 0; font-size: 22px; color: var(--text-main); }
 
-        /* TABLAS PROFESIONALES */
-        .table-container { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; font-size: 14px; }
-        th { text-align: left; padding: 16px; border-bottom: 2px solid var(--bg-alt); color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th { text-align: left; padding: 16px; border-bottom: 2px solid var(--bg-alt); color: var(--text-muted); font-size: 11px; text-transform: uppercase; }
         td { padding: 16px; border-bottom: 1px solid var(--border); }
-        .status-tag { padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; }
-        .tag-pagado { background: #E8F5E9; color: #2E7D32; }
-        .tag-pendiente { background: #FFF3E0; color: #E65100; }
 
-        /* PICKING & MARGEN */
-        .picking-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px dashed var(--border); }
-        .picking-qty { background: var(--bg-alt); color: var(--accent); font-weight: 700; padding: 4px 12px; border-radius: 12px; font-size: 14px; }
-        
-        #map-heat { width: 100%; height: 350px; border-radius: 20px; background: #f0f0f0; border: 1px solid var(--border); }
-
-        @media (max-width: 1024px) { .main-grid { grid-template-columns: 1fr; } }
+        .picking-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed var(--border); }
+        .picking-qty { font-weight: 700; color: var(--accent); background: var(--bg-alt); padding: 2px 10px; border-radius: 8px; }
     </style>
 </head>
 <body>
 
     <div id="login-overlay">
         <div class="login-card">
-            <h2 style="color:var(--accent);">El Otro Huerto</h2>
-            <p style="color:var(--text-muted); font-size:14px; margin-bottom:32px;">Panel de Control Operativo</p>
-            <input type="password" id="pass-field" class="login-input" placeholder="••••••••" autofocus>
-            <button class="login-btn" onclick="checkAccess()">Acceder al Dashboard</button>
-            <div id="error-msg" style="color:var(--danger); font-size:13px; margin-top:16px; font-weight:500;"></div>
+            <h2 style="font-family:'Lora'; margin-top:0;">El Otro Huerto</h2>
+            <input type="password" id="pass-field" class="login-input" placeholder="Clave Maestra" autofocus>
+            <button class="login-btn" onclick="checkAccess()">Ingresar al Dashboard</button>
+            <div id="error-msg" style="color:red; font-size:12px; margin-top:16px;"></div>
         </div>
     </div>
 
     <div id="admin-content">
         <header>
             <div>
-                <h1 style="color:var(--accent);">Huerta de Control V7.0</h1>
-                <p style="color:var(--text-muted); margin: 5px 0;">Análisis Operativo & Business Intelligence</p>
+                <h1>Huerta de Control V7.1</h1>
+                <p id="data-status" style="color:var(--text-muted); margin: 5px 0;">Sincronizando con Google Sheets...</p>
             </div>
-            <div style="text-align: right;">
-                <div id="next-harvest" style="font-weight: 700; color: var(--accent); font-size: 14px; margin-bottom: 8px;"></div>
-                <button onclick="syncData()" style="background:var(--accent); color:white; border:none; padding:12px 24px; border-radius:12px; cursor:pointer; font-weight:600;">🔄 Sincronizar Datos</button>
-            </div>
+            <button onclick="syncData()" style="background:var(--accent); color:white; border:none; padding:12px 24px; border-radius:14px; cursor:pointer; font-weight:600;">🔄 Sincronizar</button>
         </header>
 
         <div class="kpi-grid">
-            <div class="kpi-card">
-                <div class="kpi-label">Ventas del Mes (MTD)</div>
-                <div class="kpi-value" id="kpi-sales">$0</div>
-                <div class="kpi-sub" id="kpi-ticket">Ticket Prom: $0</div>
-            </div>
-            <div class="kpi-card">
-                <div class="kpi-label">Utilidad Operativa Real</div>
-                <div class="kpi-value" id="kpi-utility">$0</div>
-                <div class="kpi-sub" id="kpi-margin-perc">Margen: 0%</div>
-            </div>
-            <div class="kpi-card">
-                <div class="kpi-label">Órdenes Totales</div>
-                <div class="kpi-value" id="kpi-orders">0</div>
-                <div class="kpi-sub" style="color:var(--accent)">Ciclo de Marcha Blanca</div>
-            </div>
-            <div class="kpi-card">
-                <div class="kpi-label">Costo Logístico Semanal</div>
-                <div class="kpi-value">$51.000</div>
-                <div class="kpi-sub">Fijo (Viaje + Operador + Luz)</div>
-            </div>
+            <div class="kpi-card"><div class="kpi-label">Ventas Brutas</div><div class="kpi-value" id="kpi-sales">$0</div></div>
+            <div class="kpi-card"><div class="kpi-label">Utilidad Operativa</div><div class="kpi-value" id="kpi-utility">$0</div></div>
+            <div class="kpi-card"><div class="kpi-label">Margen Est.</div><div class="kpi-value" id="kpi-margin">0%</div></div>
+            <div class="kpi-card"><div class="kpi-label">N° Pedidos</div><div class="kpi-value" id="kpi-qty">0</div></div>
         </div>
 
         <div class="main-grid">
-            <div class="left-col">
-                <div class="card">
-                    <h3>📦 Gestión de Pedidos Semanales</h3>
-                    <div class="table-container">
-                        <table id="orders-table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Fecha</th>
-                                    <th>Cliente</th>
-                                    <th>Venta</th>
-                                    <th>Pago</th>
-                                    <th>Logística</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>📍 Mapa de Calor: Densidad de Despacho</h3>
-                    <div id="map-heat"></div>
-                    <p style="font-size:12px; color:var(--text-muted); margin-top:15px;">Puntos de calor basados en el radio de 1.5km Plaza Las Lilas.</p>
-                </div>
+            <div class="card">
+                <h3>📦 Registro de Órdenes</h3>
+                <div style="overflow-x: auto;"><table id="orders-table"><thead><tr><th>ID</th><th>Fecha</th><th>Cliente</th><th>Total</th><th>Pago</th></tr></thead><tbody></tbody></table></div>
             </div>
-
-            <div class="right-col">
-                <div class="card">
-                    <h3>🧺 Picking List (Cosecha del Jueves)</h3>
-                    <div id="picking-list"></div>
-                </div>
-
-                <div class="card">
-                    <h3>🏆 Ranking de Productos</h3>
-                    <canvas id="productsChart" height="250"></canvas>
-                </div>
-
-                <div class="card" style="background:var(--bg-alt); border:none;">
-                    <h3>📊 Salud Financiera Mensual</h3>
-                    <div id="financial-health">
-                        <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-                            <span>Costos Fijos (Maxxa + Cont):</span>
-                            <span style="font-weight:700;">$110.125*</span>
-                        </div>
-                        <p style="font-size:11px; color:var(--text-muted);">*Calculado con 2UF a valor actual.</p>
-                    </div>
-                </div>
+            <div class="card">
+                <h3>🧺 Picking List (Cosecha)</h3>
+                <div id="picking-list"></div>
+                <canvas id="productsChart" style="margin-top:40px;"></canvas>
             </div>
         </div>
     </div>
 
 <script>
+    // USA LA NUEVA URL QUE GENERASTE AYER
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzr4xUDOZtACKNZgdHoUbvd3VMwuY7Reuj8KL2bRMEgtSoEwBrzuhqElqC-sWObuhVg/exec';
-    const MASTER_KEY = "RU9IMjAyNg=="; // EOH2026
-    let map, heatmap;
+    const MASTER_KEY = "RU9IMjAyNg=="; 
 
-    // CONFIGURACIÓN DE COSTOS FIJOS
-    const COSTOS_SEMANALES = 16000 + 34500 + 5000; // Viaje + Persona (incl. boleta 15%) + Luz
+    // CONSTANTES DE NEGOCIO
+    const COSTOS_FIJOS_SEMANAL = 16000 + 30000 + 5000; // Viaje + Persona + Gastos
     const COMISION_MP_PORC = 0.0229 * 1.19; // 2.29% + IVA
 
-    document.getElementById('pass-field').addEventListener('keypress', e => { if (e.key === 'Enter') checkAccess(); });
-
     function checkAccess() {
-        const input = document.getElementById('pass-field').value;
-        if (btoa(input) === MASTER_KEY) {
+        if (btoa(document.getElementById('pass-field').value) === MASTER_KEY) {
             document.getElementById('login-overlay').style.display = 'none';
             document.getElementById('admin-content').style.display = 'block';
             syncData();
-            initMap();
         } else {
-            const msgs = ["⚠️ Esa clave no brotó.", "⚠️ Tierra seca en la clave.", "⚠️ Acceso denegado al huerto."];
-            document.getElementById('error-msg').innerText = msgs[Math.floor(Math.random()*msgs.length)];
-            document.getElementById('pass-field').value = "";
+            document.getElementById('error-msg').innerText = "⚠️ Clave incorrecta.";
         }
     }
 
     async function syncData() {
+        const status = document.getElementById('data-status');
+        status.innerText = "⏳ Conectando con Google...";
         try {
-            const res = await fetch(`${SCRIPT_URL}?action=getAdminData`);
+            // Bypass de caché agregando timestamp
+            const res = await fetch(`${SCRIPT_URL}?action=getAdminData&t=${Date.now()}`);
             const data = await res.json();
-            renderDashboard(data.pedidos, data.productos);
-        } catch (e) { console.error("Error sincronizando:", e); }
+            
+            console.log("Datos recibidos:", data); // AUDITORÍA EN CONSOLA (F12)
+
+            if (data.pedidos) {
+                status.innerText = `✅ Sincronizado: ${data.pedidos.length} registros.`;
+                render(data.pedidos, data.productos || []);
+            } else {
+                status.innerHTML = "<b style='color:red'>⚠️ Error: No se encontraron pedidos.</b>";
+            }
+        } catch (e) {
+            status.innerText = "❌ Error de conexión.";
+            console.error(e);
+        }
     }
 
-    function initMap() {
-        const plazaLilas = { lat: -33.433299, lng: -70.598064 };
-        map = new google.maps.Map(document.getElementById("map-heat"), {
-            zoom: 15,
-            center: plazaLilas,
-            styles: [{ featureType: "all", stylers: [{ saturation: -100 }] }]
-        });
-    }
-
-    function renderDashboard(pedidos, productos) {
-        let totalSales = 0, totalNetUtility = 0;
-        const currentMonth = new Date().getMonth();
+    function render(pedidos, productos) {
+        let sales = 0, totalUtility = 0;
         const tbody = document.querySelector('#orders-table tbody');
         tbody.innerHTML = '';
         const picking = {};
-        const mapData = [];
 
-        // Crear mapa de costos de productos
+        // Mapa de costos
         const costosMap = {};
-        productos.forEach(p => costosMap[p.nombre.trim()] = Number(p.costo || 0));
+        productos.forEach(p => {
+            const n = (p.nombre || p.Nombre || "").trim();
+            costosMap[n] = Number(p.costo || p.Costo || 0);
+        });
 
         pedidos.slice().reverse().forEach(p => {
-            const total = Number(p.total || 0);
-            const comisionMP = total * COMISION_MP_PORC;
-            const detalle = p.detalle || "";
-            
-            // Lógica de Ventas del Mes
-            const dateParts = p.fecha.split(' ')[0].split('/');
-            const pDate = new Date(dateParts[2], dateParts[1]-1, dateParts[0]);
-            if(pDate.getMonth() === currentMonth) totalSales += total;
+            // NORMALIZADOR DE CAMPOS (Tolerante a mayúsculas/minúsculas)
+            const total = Number(p.total || p.Total || 0);
+            const comisionMP = Number(p.comision_mp || p.Comision_MP || total * COMISION_MP_PORC);
+            const id = p.id_pedido || p.ID_Pedido || "---";
+            const fecha = (p.fecha || p.Fecha || "").split(' ')[0];
+            const cliente = p.nombre || p.Nombre || "---";
+            const detalle = p.detalle || p.Detalle || "";
+            const pago = p.estado_pago || p.Estado_Pago || "Pendiente";
 
-            // Cálculo de Rentabilidad por Pedido
-            let costoInsumos = 0;
+            sales += total;
+            let costoProductos = 0;
+
             const matches = detalle.match(/(\d+)x ([^|]+)/g);
             if (matches) {
                 matches.forEach(m => {
@@ -237,77 +151,52 @@
                     const q = parseInt(parts[0]);
                     const name = parts[1].trim();
                     picking[name] = (picking[name] || 0) + q;
-                    if(costosMap[name]) costoInsumos += (costosMap[name] * q);
+                    if(costosMap[name]) costoProductos += (costosMap[name] * q);
                 });
             }
 
-            totalNetUtility += (total - comisionMP - costoInsumos);
+            totalUtility += (total - comisionMP - costoProductos);
 
-            // Render Tabla
             tbody.innerHTML += `
                 <tr>
-                    <td><small>${p.id_pedido}</small></td>
-                    <td>${p.fecha.split(' ')[0]}</td>
-                    <td><strong>${p.nombre}</strong></td>
+                    <td><small>${id}</small></td>
+                    <td>${fecha}</td>
+                    <td><strong>${cliente}</strong></td>
                     <td>$${total.toLocaleString('es-CL')}</td>
-                    <td><span class="status-tag ${p.estado_pago === 'PAGADO' ? 'tag-pagado' : 'tag-pendiente'}">${p.estado_pago}</span></td>
-                    <td><small>${p.logistica}</small></td>
+                    <td><span style="font-weight:700; font-size:10px;">${pago}</span></td>
                 </tr>
             `;
         });
 
-        // KPIs Finales
-        document.getElementById('kpi-sales').innerText = `$${totalSales.toLocaleString('es-CL')}`;
-        document.getElementById('kpi-utility').innerText = `$${Math.floor(totalNetUtility - COSTOS_SEMANALES).toLocaleString('es-CL')}`;
-        document.getElementById('kpi-orders').innerText = pedidos.length;
-        document.getElementById('kpi-ticket').innerText = `Ticket Prom: $${Math.floor(totalSales / pedidos.length).toLocaleString('es-CL')}`;
-        document.getElementById('kpi-margin-perc').innerText = `Margen Est: ${Math.round(((totalNetUtility - COSTOS_SEMANALES)/totalSales)*100)}%`;
+        // Actualizar KPIs
+        const utilidadFinal = totalUtility - COSTOS_FIJOS_SEMANAL;
+        document.getElementById('kpi-sales').innerText = `$${sales.toLocaleString('es-CL')}`;
+        document.getElementById('kpi-utility').innerText = `$${Math.floor(utilidadFinal).toLocaleString('es-CL')}`;
+        document.getElementById('kpi-qty').innerText = pedidos.length;
+        document.getElementById('kpi-margin').innerText = `${Math.round((utilidadFinal/sales)*100)}%`;
 
         renderPicking(picking);
-        updateHarvestTimer();
         renderChart(picking);
     }
 
     function renderPicking(picking) {
         const container = document.getElementById('picking-list');
         container.innerHTML = '';
-        Object.entries(picking).sort((a,b) => b[1]-a[1]).forEach(([name, qty]) => {
-            container.innerHTML += `
-                <div class="picking-row">
-                    <span>${name}</span>
-                    <span class="picking-qty">${qty} un.</span>
-                </div>
-            `;
+        Object.entries(picking).sort((a,b) => b[1]-a[1]).forEach(([n, q]) => {
+            container.innerHTML += `<div class="picking-row"><span>${n}</span><span class="picking-qty">${q} un.</span></div>`;
         });
-    }
-
-    function updateHarvestTimer() {
-        const now = new Date();
-        const nextWednesday = new Date();
-        nextWednesday.setDate(now.getDate() + (3 - now.getDay() + 7) % 7);
-        nextWednesday.setHours(12, 0, 0, 0);
-        
-        const diff = nextWednesday - now;
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        
-        document.getElementById('next-harvest').innerText = `Corte de pedidos: ${days}d ${hours}h para el cierre`;
     }
 
     function renderChart(picking) {
         const ctx = document.getElementById('productsChart').getContext('2d');
         if (window.myChart) window.myChart.destroy();
         window.myChart = new Chart(ctx, {
-            type: 'doughnut',
+            type: 'bar',
             data: {
-                labels: Object.keys(picking).slice(0, 5),
-                datasets: [{
-                    data: Object.values(picking).slice(0, 5),
-                    backgroundColor: ['#4A5D23', '#6A7F3D', '#8A9F5D', '#AABF7D', '#CADF9D'],
-                    borderWidth: 0
-                }]
+                labels: Object.keys(picking).slice(0, 5).map(l => l.substring(0,12)),
+                datasets: [{ data: Object.values(picking).slice(0, 5), backgroundColor: '#4A5D23', borderRadius: 8 }]
             },
-            options: { cutout: '70%', plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } } } }
+            options: { plugins: { legend: { display: false } } }
         });
     }
 </script>
