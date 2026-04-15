@@ -304,15 +304,15 @@
             zoomControl: true
         });
         
-        // Pin Central Plaza Las Lilas (Diseño Minimalista)
+        // Pin Central Plaza Las Lilas - Color Amarillo Institucional
         new google.maps.Marker({ 
             position: center, 
             map, 
             title: "Plaza Las Lilas", 
             icon: {
                 path: google.maps.SymbolPath.CIRCLE,
-                scale: 8,
-                fillColor: "#4A5D23",
+                scale: 9,
+                fillColor: "#F1C40F", // Amarillo nítido
                 fillOpacity: 1,
                 strokeWeight: 2,
                 strokeColor: "#FFFFFF"
@@ -322,13 +322,13 @@
         const heatPoints = [];
         const geocoder = new google.maps.Geocoder();
         
-        // Gradiente Ejecutivo: Azul profundo con alta transparencia en los bordes
-        const executiveGradient = [
-            'rgba(27, 79, 114, 0)',
-            'rgba(27, 79, 114, 0.4)',
-            'rgba(27, 79, 114, 0.6)',
-            'rgba(21, 67, 96, 0.8)',
-            'rgba(21, 67, 96, 1)'
+        // Gradiente Verde #4A5D23 suavizado para puntos de calor
+        const greenGradient = [
+            'rgba(74, 93, 35, 0)',     // Transparente
+            'rgba(74, 93, 35, 0.4)',   // Verde suave
+            'rgba(74, 93, 35, 0.7)',   // Verde medio
+            'rgba(74, 93, 35, 0.9)',   // Verde intenso
+            '#4A5D23'                  // Sólido
         ];
 
         pedidos.forEach(p => {
@@ -337,20 +337,19 @@
                     if (status === "OK") {
                         heatPoints.push(res[0].geometry.location);
                         
-                        // Creación del Mapa de Calor Estilo "Pines de Densidad"
                         const heatmap = new google.maps.visualization.HeatmapLayer({ 
                             data: heatPoints, 
                             map: map, 
-                            radius: 12, // Tamaño pequeño para identificar calles exactas
-                            dissipating: true, // Permite que se vea bien en cualquier nivel de zoom
+                            radius: 12,        // Punto preciso sobre la calle
+                            dissipating: true, // Escala natural con el zoom
                             opacity: 0.8, 
-                            gradient: executiveGradient 
+                            gradient: greenGradient 
                         });
                     }
                 });
             }
         });
-    }    
+    }   
     document.getElementById('pass-field').addEventListener('keypress', e => { if (e.key === 'Enter') checkAccess(); });
 </script>
 </body>
