@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Huerta de Control | El Otro Huerto</title>
+    <title>Panel de Control | El Otro Huerto</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:wght@600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        :root { --bg: #FDFCFB; --accent: #4A5D23; --text: #1D1D1F; --border: #EAEAEA; }
+        :root { --bg: #FDFCFB; --accent: #4A5D23; --text: #1D1D1F; --border: #EAEAEA; --danger: #D93025; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 0; }
         
         /* LOGIN PROFESIONAL CENTRADO */
         #login-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center; }
         .login-card { background: #fff; padding: 48px; border-radius: 24px; border: 1px solid var(--border); box-shadow: 0 15px 35px rgba(0,0,0,0.05); text-align: center; width: 340px; }
         .login-input { width: 100%; padding: 16px; border: 1px solid var(--border); border-radius: 14px; margin-bottom: 20px; text-align: center; font-size: 18px; outline: none; background: #FAFAFA; box-sizing: border-box; }
-        .login-btn { width: 100%; background: var(--accent); color: #fff; border: none; padding: 16px; border-radius: 14px; font-weight: 700; cursor: pointer; font-size: 16px; }
+        .login-btn { width: 100%; background: var(--accent); color: #fff; border: none; padding: 16px; border-radius: 14px; font-weight: 700; cursor: pointer; }
 
         /* DASHBOARD */
         #admin-content { display: none; padding: 40px 24px; max-width: 1200px; margin: 0 auto; }
@@ -29,12 +29,11 @@
         h3 { font-family: 'Lora', serif; margin: 0 0 20px 0; font-size: 20px; color: var(--accent); }
 
         table { width: 100%; border-collapse: collapse; font-size: 13px; }
-        th { text-align: left; padding: 12px; border-bottom: 2px solid #F4F6F0; color: #666; font-weight: 600; }
+        th { text-align: left; padding: 12px; border-bottom: 2px solid #F4F6F0; color: #666; }
         td { padding: 14px 12px; border-bottom: 1px solid #f9f9f9; }
 
-        .picking-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed var(--border); font-size: 14px; }
+        .picking-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed var(--border); }
         .picking-qty { font-weight: 700; color: var(--accent); background: #F4F6F0; padding: 2px 10px; border-radius: 6px; }
-
         @media (max-width: 900px) { .main-layout { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -43,10 +42,10 @@
     <div id="login-overlay">
         <div class="login-card">
             <h2 style="font-family:'Lora'; margin-top:0;">El Otro Huerto</h2>
-            <p style="color:#666; font-size:14px; margin-bottom:30px;">Panel de Gestión Financiera</p>
-            <input type="password" id="pass-field" class="login-input" placeholder="Clave Maestra" autofocus>
+            <p style="color:#666; font-size:14px; margin-bottom:24px;">Panel Administrativo</p>
+            <input type="password" id="pass-field" class="login-input" placeholder="••••••••" autofocus>
             <button class="login-btn" onclick="checkAccess()">Ingresar</button>
-            <div id="error-msg" style="color:red; font-size:12px; margin-top:16px;"></div>
+            <div id="error-msg" style="color:var(--danger); font-size:12px; margin-top:16px;"></div>
         </div>
     </div>
 
@@ -54,32 +53,32 @@
         <header>
             <div>
                 <h1 style="font-family:'Lora'; font-size: 32px; margin:0;">Huerta de Control</h1>
-                <p id="data-status" style="color:#666; margin:4px 0;">Sincronizando cosecha...</p>
+                <p id="data-status" style="color:#666; margin:4px 0;">Sincronizando...</p>
             </div>
-            <button onclick="cargarDatosAdmin()" style="background:white; border: 1px solid var(--border); padding: 12px 24px; border-radius: 14px; cursor:pointer; font-weight:600;">🔄 Sincronizar</button>
+            <button onclick="fetchData()" style="background:white; border: 1px solid var(--border); padding: 12px 24px; border-radius: 14px; cursor:pointer; font-weight:600;">🔄 Sincronizar</button>
         </header>
 
         <div class="kpi-grid">
-            <div class="kpi-card"><div class="kpi-label">Ventas Brutas</div><div class="kpi-value" id="kpi-total">$0</div></div>
-            <div class="kpi-card"><div class="kpi-label">Utilidad Neta (Est.)</div><div class="kpi-value" id="kpi-utilidad">$0</div></div>
-            <div class="kpi-card"><div class="kpi-label">Pedidos Realizados</div><div class="kpi-value" id="kpi-pedidos">0</div></div>
+            <div class="kpi-card"><div class="kpi-label">Ventas Totales</div><div class="kpi-value" id="kpi-total">$0</div></div>
+            <div class="kpi-card"><div class="kpi-label">Margen Est. (MP)</div><div class="kpi-value" id="kpi-margin">$0</div></div>
+            <div class="kpi-card"><div class="kpi-label">Total Pedidos</div><div class="kpi-value" id="kpi-qty">0</div></div>
         </div>
 
         <div class="main-layout">
             <div class="card">
-                <h3>📦 Registro de Órdenes (13 recientes)</h3>
+                <h3>📦 Órdenes Recientes</h3>
                 <div style="overflow-x: auto;">
                     <table id="ordersTable">
-                        <thead><tr><th>Fecha</th><th>Cliente</th><th>Total</th><th>Pago</th></tr></thead>
+                        <thead><tr><th>Fecha</th><th>Cliente</th><th>Venta</th><th>Pago</th></tr></thead>
                         <tbody></tbody>
                     </table>
                 </div>
             </div>
             <div class="card">
-                <h3>🧺 Picking List (Total Cosecha)</h3>
+                <h3>🧺 Picking de Cosecha</h3>
                 <div id="picking-list"></div>
                 <div style="margin-top:40px;">
-                    <h3>📊 Mix de Productos</h3>
+                    <h3>📊 Top Productos</h3>
                     <canvas id="productsChart"></canvas>
                 </div>
             </div>
@@ -94,100 +93,96 @@
         if (btoa(document.getElementById('pass-field').value) === _0xkey) {
             document.getElementById('login-overlay').style.display = 'none';
             document.getElementById('admin-content').style.display = 'block';
-            cargarDatosAdmin();
+            fetchData();
         } else {
             document.getElementById('error-msg').innerText = "⚠️ Clave incorrecta.";
             document.getElementById('pass-field').value = "";
         }
     }
 
-    async function cargarDatosAdmin() {
+    async function fetchData() {
         const status = document.getElementById('data-status');
-        status.innerText = "⏳ Leyendo Google Sheets...";
+        status.innerText = "⏳ Conectando con Google Sheets...";
         
         try {
-            // Llamada idéntica a mercado.html pero con el parámetro action
+            // USAMOS LA LÓGICA DE MERCADO: Fetch simple.
+            // Agregamos el parámetro action para intentar entrar a la rama Admin
             const res = await fetch(`${SCRIPT_URL}?action=getAdminData`);
             const data = await res.json();
             
-            // Verificación profunda de la estructura recibida
-            const pedidos = data.pedidos || [];
-            const productos = data.productos || [];
+            // ANALIZADOR CAMALEÓN
+            let pedidos = [];
+            let productos = [];
+
+            if (data.pedidos) {
+                // El script respondió correctamente a la acción getAdminData
+                pedidos = data.pedidos;
+                productos = data.productos || [];
+            } else if (Array.isArray(data)) {
+                // EL ERROR IDENTIFICADO: El script ignoró la acción y mandó productos.
+                // Si esto pasa, informamos al usuario para no dejarlo a ciegas.
+                status.innerHTML = "<span style='color:red'>⚠️ El Script entregó PRODUCTOS en lugar de PEDIDOS. Revisa la 'Nueva Implementación' en Google Apps Script.</span>";
+                return;
+            }
 
             if (pedidos.length > 0) {
-                status.innerText = `✅ Datos actualizados: ${pedidos.length} pedidos.`;
-                renderDashboard(pedidos, productos);
-            } else {
-                status.innerText = "⚠️ No se recibieron pedidos. Revisa la pestaña 'Pedidos'.";
+                status.innerText = `✅ Sincronizado: ${pedidos.length} pedidos.`;
+                renderDashboard(pedidos);
             }
         } catch (e) {
-            status.innerText = "❌ Error de conexión con el Script.";
+            status.innerText = "❌ Error de conexión.";
             console.error(e);
         }
     }
 
-    function renderDashboard(pedidos, productos) {
-        let sumTotal = 0; let sumUtilidad = 0;
+    function renderDashboard(pedidos) {
+        let bruto = 0, margen = 0;
         const tbody = document.querySelector('#ordersTable tbody');
         tbody.innerHTML = '';
-        const counts = {};
+        const picking = {};
 
-        // Mapa de costos de los 9 productos
-        const costos = {};
-        productos.forEach(p => {
-            const n = (p.nombre || p.Nombre || "").trim();
-            costos[n] = Number(p.costo || p.Costo || 0);
-        });
-
-        // Procesar los 13 pedidos
         pedidos.slice().reverse().forEach(p => {
-            // Mapeo ultra-flexible de columnas
             const total = Number(p.total || p.Total || 0);
             const comision = Number(p.comision_mp || p.Comision_MP || 0);
             const detalle = p.detalle || p.Detalle || "";
-            const nombre = p.nombre || p.Nombre || "---";
-            const fecha = (p.fecha || p.Fecha || "").split(' ')[0];
-            const pago = p.estado_pago || p.Estado_Pago || "";
 
-            sumTotal += total;
-            let costoPedido = 0;
+            bruto += total;
+            margen += (total - comision);
 
-            // Extraer cantidades para Picking y Costos
+            tbody.innerHTML += `
+                <tr>
+                    <td>${(p.fecha || "").split(' ')[0]}</td>
+                    <td><strong>${p.nombre || p.Nombre || '---'}</strong></td>
+                    <td>$${total.toLocaleString('es-CL')}</td>
+                    <td><span style="font-weight:700; font-size:10px;">${p.estado_pago || p.Estado_Pago || ''}</span></td>
+                </tr>
+            `;
+
             const matches = detalle.match(/(\d+)x ([^|]+)/g);
             if (matches) {
                 matches.forEach(m => {
                     const parts = m.split('x ');
                     const q = parseInt(parts[0]);
-                    const item = parts[1].trim();
-                    counts[item] = (counts[item] || 0) + q;
-                    if(costos[item]) costoPedido += (costos[item] * q);
+                    const n = parts[1].trim();
+                    picking[n] = (picking[n] || 0) + q;
                 });
             }
-
-            sumUtilidad += (total - comision - costoPedido);
-
-            tbody.innerHTML += `
-                <tr>
-                    <td>${fecha}</td>
-                    <td><strong>${nombre}</strong></td>
-                    <td>$${total.toLocaleString('es-CL')}</td>
-                    <td><span style="font-weight:700; color:var(--accent); font-size:10px;">${pago}</span></td>
-                </tr>
-            `;
         });
 
-        document.getElementById('kpi-total').innerText = `$${sumTotal.toLocaleString('es-CL')}`;
-        document.getElementById('kpi-utilidad').innerText = `$${Math.floor(sumUtilidad).toLocaleString('es-CL')}`;
-        document.getElementById('kpi-pedidos').innerText = pedidos.length;
+        document.getElementById('kpi-total').innerText = `$${bruto.toLocaleString('es-CL')}`;
+        document.getElementById('kpi-margin').innerText = `$${Math.floor(margen).toLocaleString('es-CL')}`;
+        document.getElementById('kpi-qty').innerText = pedidos.length;
 
-        // Lista de Picking
         const pickDiv = document.getElementById('picking-list');
         pickDiv.innerHTML = '';
-        Object.entries(counts).sort((a,b) => b[1]-a[1]).forEach(([n, q]) => {
+        Object.entries(picking).sort((a,b) => b[1]-a[1]).forEach(([n, q]) => {
             pickDiv.innerHTML += `<div class="picking-item"><span>${n}</span><span class="picking-qty">${q} un.</span></div>`;
         });
 
-        // Gráfico de Barras
+        renderChart(picking);
+    }
+
+    function renderChart(counts) {
         const ctx = document.getElementById('productsChart').getContext('2d');
         if (window.myChart) window.myChart.destroy();
         window.myChart = new Chart(ctx, {
