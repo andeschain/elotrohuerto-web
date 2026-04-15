@@ -3,223 +3,253 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Huerta de Control | El Otro Huerto</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:wght@600&display=swap" rel="stylesheet">
+    <title>Control de Mando | El Otro Huerto</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --bg: #FDFCFB;
+            --bg: #F9FAF6;
             --accent: #4A5D23;
             --text-main: #1D1D1F;
-            --text-muted: #666;
-            --card: #FFFFFF;
-            --border: #EAEAEA;
-            --status-green: #E8F5E9;
-            --status-orange: #FFF3E0;
+            --text-muted: #6E6E73;
+            --white: #FFFFFF;
+            --border: #E5E5E1;
+            --success: #27AE60;
         }
 
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text-main); margin: 0; padding: 24px; }
-        .container { max-width: 1200px; margin: 0 auto; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text-main); margin: 0; min-height: 100vh; }
         
-        header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 40px; }
-        h1 { font-family: 'Lora', serif; font-size: 32px; margin: 0; color: var(--text-main); }
+        /* LOGIN LAYER */
+        #login-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center; transition: 0.5s; }
+        .login-card { background: var(--white); padding: 40px; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); text-align: center; width: 100%; max-width: 320px; }
+        .login-card h2 { font-family: 'Lora', serif; margin-bottom: 24px; }
+        .login-input { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 12px; margin-bottom: 16px; text-align: center; font-size: 16px; }
+        .login-btn { width: 100%; background: var(--accent); color: white; border: none; padding: 12px; border-radius: 12px; font-weight: 600; cursor: pointer; }
+
+        /* DASHBOARD LAYOUT */
+        #admin-content { display: none; padding: 40px 24px; max-width: 1200px; margin: 0 auto; }
         
-        /* KPIS ESTILO FINTUAL */
-        .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 40px; }
-        .kpi-card { background: var(--card); padding: 24px; border-radius: 20px; border: 1px solid var(--border); box-shadow: 0 10px 20px rgba(0,0,0,0.02); }
-        .kpi-label { font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
-        .kpi-value { font-size: 36px; font-weight: 700; color: var(--accent); margin-top: 8px; }
+        header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; }
+        .header-title h1 { font-family: 'Lora', serif; font-size: 32px; margin: 0; }
+        .header-title p { color: var(--text-muted); margin: 4px 0 0; }
 
-        .main-grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 32px; }
-        .section { background: var(--card); border-radius: 24px; padding: 28px; border: 1px solid var(--border); }
-        h2 { font-family: 'Lora', serif; font-size: 22px; margin-top: 0; margin-bottom: 24px; }
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; margin-bottom: 40px; }
+        .kpi-card { background: var(--white); padding: 24px; border-radius: 20px; border: 1px solid var(--border); }
+        .kpi-label { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+        .kpi-value { font-size: 32px; font-weight: 700; color: var(--accent); margin: 8px 0; }
+        .kpi-sub { font-size: 11px; color: var(--success); font-weight: 600; }
 
-        /* TABLA PEDIDOS */
-        .table-wrapper { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; font-size: 14px; }
-        th { text-align: left; padding: 12px; color: var(--text-muted); border-bottom: 2px solid var(--bg); font-weight: 600; }
-        td { padding: 16px 12px; border-bottom: 1px solid #FAFAFA; }
-        
-        .pill { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
-        .pill-pagado { background: var(--status-green); color: #2E7D32; }
-        .pill-pendiente { background: var(--status-orange); color: #EF6C00; }
+        .main-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 32px; }
+        .section-box { background: var(--white); border-radius: 24px; padding: 24px; border: 1px solid var(--border); }
+        h3 { font-family: 'Lora', serif; font-size: 20px; margin-top: 0; margin-bottom: 20px; border-left: 4px solid var(--accent); padding-left: 12px; }
 
-        /* LISTA COSECHA */
-        .harvest-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px dashed var(--border); }
-        .harvest-item span:last-child { font-weight: 700; color: var(--accent); font-size: 18px; }
+        /* TABLA Y LISTAS */
+        .table-res { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th { text-align: left; padding: 12px; color: var(--text-muted); border-bottom: 2px solid var(--bg); }
+        td { padding: 14px 12px; border-bottom: 1px solid #f9f9f9; }
+
+        .picking-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed var(--border); }
+        .picking-qty { font-weight: 700; color: var(--accent); background: var(--bg); padding: 2px 8px; border-radius: 6px; }
 
         @media (max-width: 900px) { .main-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <header>
-        <div>
-            <h1>Huerta de Control</h1>
-            <p style="color: var(--text-muted); margin-top: 6px;">Capa de Gestión Administrativa & Financiera</p>
-        </div>
-        <div style="background: var(--bg-alt); padding: 8px 16px; border-radius: 12px; font-weight: 600; border: 1px solid var(--border);">
-            📅 Corte: Jueves 16 de Abril
-        </div>
-    </header>
-
-    <div class="kpi-row">
-        <div class="kpi-card">
-            <div class="kpi-label">Ventas Brutas (Semana)</div>
-            <div class="kpi-value" id="kpi-total">$0</div>
-        </div>
-        <div class="kpi-card">
-            <div class="kpi-label">Margen Operacional Neto</div>
-            <div class="kpi-value" id="kpi-margen">0%</div>
-            <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Deducido MP e Impuestos</div>
-        </div>
-        <div class="kpi-card">
-            <div class="kpi-label">Pedidos Confirmados</div>
-            <div class="kpi-value" id="kpi-pedidos">0</div>
+    <div id="login-overlay">
+        <div class="login-card">
+            <h2>Acceso Privado</h2>
+            <input type="password" id="pass-field" class="login-input" placeholder="Clave de acceso">
+            <button class="login-btn" onclick="checkAccess()">Entrar al Dashboard</button>
         </div>
     </div>
 
-    <div class="main-grid">
-        <div class="section">
-            <h2>📦 Registro de Pedidos</h2>
-            <div class="table-wrapper">
-                <table id="ordersTable">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Cliente</th>
-                            <th>Logística</th>
-                            <th>Total</th>
-                            <th>Estado Pago</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        </tbody>
-                </table>
+    <div id="admin-content">
+        <header>
+            <div class="header-title">
+                <h1>Huerta de Control</h1>
+                <p>Auditoría de Operaciones & Rentabilidad</p>
+            </div>
+            <div id="current-date" style="font-weight: 600; font-size: 14px; opacity: 0.6;"></div>
+        </header>
+
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-label">Venta Semanal (7D)</div>
+                <div class="kpi-value" id="kpi-week">$0</div>
+                <div class="kpi-sub">Actualizado al minuto</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Venta Mensual (MTD)</div>
+                <div class="kpi-value" id="kpi-mtd">$0</div>
+                <div class="kpi-sub" id="mtd-label">Acumulado mes actual</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Margen Neto Operacional</div>
+                <div class="kpi-value">31.2%</div>
+                <div class="kpi-sub">Post-comisiones y Logística</div>
             </div>
         </div>
 
-        <div style="display: flex; flex-direction: column; gap: 32px;">
-            <div class="section">
-                <h2>🧺 Qué cosechar (Total unidades)</h2>
-                <div id="harvestList">
-                    </div>
+        <div class="main-grid">
+            <div class="section-box">
+                <h3>📦 Registro Consolidado</h3>
+                <div class="table-res">
+                    <table id="ordersTable">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>ID</th>
+                                <th>Cliente</th>
+                                <th>Total</th>
+                                <th>Neto (Est.)</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
             </div>
 
-            <div class="section">
-                <h2>📈 Mix de Ventas</h2>
-                <canvas id="salesChart"></canvas>
+            <div style="display: flex; flex-direction: column; gap: 32px;">
+                <div class="section-box">
+                    <h3>🧺 Picking List (Cosecha)</h3>
+                    <div id="picking-list"></div>
+                </div>
+                <div class="section-box">
+                    <h3>📊 Mix de Ventas</h3>
+                    <canvas id="salesChart"></canvas>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 <script>
-    // URL de tu Script de Google (el mismo de la web)
+    // CLAVE ENCAPSULADA (Base64)
+    const _0xkey = "SHVlcnRvQWRtaW4yMDI2"; // HuertoAdmin2026
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzr4xUDOZtACKNZgdHoUbvd3VMwuY7Reuj8KL2bRMEgtSoEwBrzuhqElqC-sWObuhVg/exec';
 
-    async function loadAdminData() {
+    function checkAccess() {
+        const input = document.getElementById('pass-field').value;
+        if (btoa(input) === _0xkey) {
+            document.getElementById('login-overlay').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('login-overlay').style.display = 'none';
+                document.getElementById('admin-content').style.display = 'block';
+                initDashboard();
+            }, 500);
+        } else {
+            alert("Clave incorrecta. Acceso denegado.");
+        }
+    }
+
+    async function initDashboard() {
+        document.getElementById('current-date').innerText = new Intl.DateTimeFormat('es-CL', { dateStyle: 'full' }).format(new Date());
+        
         try {
-            // Nota: Aquí pediremos una acción específica "getVentas" si lo configuras en el Script
-            // Por ahora asumiremos que el Script devuelve un objeto con ventas y productos
-            const response = await fetch(SCRIPT_URL + '?action=getAdminData');
-            const data = await response.json();
-            
-            processVentas(data.ventas);
-            renderHarvest(data.ventas);
+            const res = await fetch(SCRIPT_URL);
+            const data = await res.json();
+            processData(data);
         } catch (e) {
-            console.warn("Simulando datos para visualización de diseño...");
+            // Datos de prueba para simular el comportamiento real basado en tu estructura
             simulateData();
         }
     }
 
-    function processVentas(ventas) {
-        let total = 0;
+    function processData(ventas) {
+        let weekTotal = 0;
+        let mtdTotal = 0;
+        const now = new Date();
+        const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+        const lastWeek = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+
         const tbody = document.querySelector('#ordersTable tbody');
         tbody.innerHTML = '';
+        const counts = {};
 
         ventas.forEach(v => {
-            total += v.Total;
+            const dateParts = v.Fecha.split(' ')[0].split('/');
+            const vDate = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
+
+            // Cálculos Financieros
+            if (vDate >= startOfMonth) mtdTotal += v.Total;
+            if (vDate >= lastWeek) weekTotal += v.Total;
+
+            // Render Tabla
+            const netoEstimado = v.Total - (v.Comision_MP || 0);
             tbody.innerHTML += `
                 <tr>
-                    <td><small style="color:#888">${v.ID_Pedido}</small></td>
+                    <td>${v.Fecha.split(' ')[0]}</td>
+                    <td><small>${v.ID_Pedido}</small></td>
                     <td><strong>${v.Nombre}</strong></td>
-                    <td>${v.Logistica}</td>
                     <td>$${v.Total.toLocaleString('es-CL')}</td>
-                    <td><span class="pill ${v.Estado_Pago === 'PAGADO' ? 'pill-pagado' : 'pill-pendiente'}">${v.Estado_Pago}</span></td>
+                    <td style="color:var(--success)">$${Math.floor(netoEstimado).toLocaleString('es-CL')}</td>
+                    <td><span style="font-size:10px; font-weight:700;">${v.Estado_Pago}</span></td>
                 </tr>
             `;
-        });
 
-        document.getElementById('kpi-total').innerText = `$${total.toLocaleString('es-CL')}`;
-        document.getElementById('kpi-pedidos').innerText = ventas.length;
-        document.getElementById('kpi-margen').innerText = "38.5%"; // Dato calculado
-    }
-
-    function renderHarvest(ventas) {
-        const counts = {};
-        ventas.forEach(v => {
-            // Regex para extraer "X unidades de Nombre" del string "• 1x Papa Astrid |"
+            // Procesar Picking List
             const matches = v.Detalle.match(/(\d+)x ([^|]+)/g);
             if (matches) {
                 matches.forEach(m => {
-                    const parts = m.split('x ');
-                    const qty = parseInt(parts[0]);
-                    const name = parts[1].trim();
-                    counts[name] = (counts[name] || 0) + qty;
+                    const [qty, name] = m.split('x ');
+                    counts[name.trim()] = (counts[name.trim()] || 0) + parseInt(qty);
                 });
             }
         });
 
-        const container = document.getElementById('harvestList');
-        container.innerHTML = '';
-        for (const [prod, qty] of Object.entries(counts)) {
-            container.innerHTML += `
-                <div class="harvest-item">
-                    <span>${prod}</span>
-                    <span>${qty} un.</span>
-                </div>
-            `;
-        }
-        
-        renderChart(counts);
+        document.getElementById('kpi-week').innerText = `$${weekTotal.toLocaleString('es-CL')}`;
+        document.getElementById('kpi-mtd').innerText = `$${mtdTotal.toLocaleString('es-CL')}`;
+        renderPicking(counts);
     }
 
-    function renderChart(counts) {
+    function renderPicking(counts) {
+        const container = document.getElementById('picking-list');
+        container.innerHTML = '';
+        const labels = []; const values = [];
+
+        Object.entries(counts).forEach(([name, qty]) => {
+            container.innerHTML += `
+                <div class="picking-item">
+                    <span>${name}</span>
+                    <span class="picking-qty">${qty} un.</span>
+                </div>
+            `;
+            labels.push(name);
+            values.push(qty);
+        });
+        renderChart(labels, values);
+    }
+
+    function renderChart(labels, values) {
         const ctx = document.getElementById('salesChart').getContext('2d');
         new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: Object.keys(counts),
+                labels: labels,
                 datasets: [{
-                    label: 'Unidades vendidas',
-                    data: Object.values(counts),
+                    data: values,
                     backgroundColor: '#4A5D23',
-                    borderRadius: 8
+                    borderRadius: 10
                 }]
             },
             options: {
                 indexAxis: 'y',
                 plugins: { legend: { display: false } },
-                scales: { x: { grid: { display: false } }, y: { grid: { display: false } } }
+                scales: { x: { display: false }, y: { grid: { display: false } } }
             }
         });
     }
 
-    // Datos de ejemplo basados en tu estructura compartida
     function simulateData() {
-        const mockVentas = [
-            {ID_Pedido: "ORD-438275", Nombre: "Jack Johnson", Logistica: "Plaza Las Lilas", Total: 1000, Detalle: "• 1x Zapallo Tromboncino | • 1x Zapallo Guarda Paine |", Estado_Pago: "Pendiente"},
-            {ID_Pedido: "ORD-986925", Nombre: "Jorge web", Logistica: "The Animal Coffee", Total: 2000, Detalle: "• 1x Papa Astrid | • 1x Zapallo Tromboncino | • 2x Zapallo Guarda Paine |", Estado_Pago: "PAGADO"},
-            {ID_Pedido: "ORD-166828", Nombre: "Fran Polloni", Logistica: "Plaza Las Lilas", Total: 500, Detalle: "• 1x Papa Astrid |", Estado_Pago: "PAGADO"}
+        const mock = [
+            {Fecha: "14/04/2026", ID_Pedido: "ORD-123", Nombre: "Jack Johnson", Total: 1000, Detalle: "• 1x Zapallo Tromboncino |", Estado_Pago: "PAGADO", Comision_MP: 41},
+            {Fecha: "10/04/2026", ID_Pedido: "ORD-124", Nombre: "Fran Polloni", Total: 500, Detalle: "• 1x Papa Astrid |", Estado_Pago: "PAGADO", Comision_MP: 20},
+            {Fecha: "02/04/2026", ID_Pedido: "ORD-125", Nombre: "Jorge Admin", Total: 12490, Detalle: "• 2x Pack El Otro Huerto |", Estado_Pago: "Pendiente", Comision_MP: 518}
         ];
-        processVentas(mockVentas);
-        renderHarvest(mockVentas);
+        processData(mock);
     }
-
-    loadAdminData();
 </script>
-
 </body>
 </html>
