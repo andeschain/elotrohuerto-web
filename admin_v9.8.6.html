@@ -293,23 +293,42 @@
     function initMap(pedidos) {
         const center = { lat: -33.428384, lng: -70.594276 };
         const map = new google.maps.Map(document.getElementById("map"), { 
-            zoom: 15, center: center, 
-            styles: [{ featureType: "all", stylers: [{ saturation: -100 }] }, { featureType: "water", stylers: [{ color: "#F0F4F8" }] }] 
+            zoom: 15, 
+            center: center, 
+            styles: [
+                { featureType: "all", stylers: [{ saturation: -100 }, { lightness: 20 }] },
+                { featureType: "water", stylers: [{ color: "#F0F4F8" }] },
+                { featureType: "road", elementType: "geometry", stylers: [{ color: "#ffffff" }] }
+            ],
+            disableDefaultUI: true,
+            zoomControl: true
         });
         
-        const hubIcon = { path: google.maps.SymbolPath.CIRCLE, scale: 10, fillColor: "#4A5D23", fillOpacity: 1, strokeWeight: 2, strokeColor: "#FFFFFF" };
-        new google.maps.Marker({ position: center, map, title: "Plaza Las Lilas", icon: hubIcon });
+        // Pin Central Plaza Las Lilas (Diseño Minimalista)
+        new google.maps.Marker({ 
+            position: center, 
+            map, 
+            title: "Plaza Las Lilas", 
+            icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 8,
+                fillColor: "#4A5D23",
+                fillOpacity: 1,
+                strokeWeight: 2,
+                strokeColor: "#FFFFFF"
+            }
+        });
 
         const heatPoints = [];
         const geocoder = new google.maps.Geocoder();
         
-        // GRADIENTE CEPAL MEJORADO: Más translúcido y elegante
-        const cepalGradient = [
-            'rgba(235, 245, 251, 0)',
-            'rgba(174, 214, 241, 0.4)',
-            'rgba(93, 173, 226, 0.6)',
-            'rgba(46, 134, 193, 0.7)',
-            'rgba(27, 79, 114, 0.9)'
+        // Gradiente Ejecutivo: Azul profundo con alta transparencia en los bordes
+        const executiveGradient = [
+            'rgba(27, 79, 114, 0)',
+            'rgba(27, 79, 114, 0.4)',
+            'rgba(27, 79, 114, 0.6)',
+            'rgba(21, 67, 96, 0.8)',
+            'rgba(21, 67, 96, 1)'
         ];
 
         pedidos.forEach(p => {
@@ -317,20 +336,21 @@
                 geocoder.geocode({ address: p.direccion + ", Providencia, Chile" }, (res, status) => {
                     if (status === "OK") {
                         heatPoints.push(res[0].geometry.location);
-                        new google.maps.visualization.HeatmapLayer({ 
+                        
+                        // Creación del Mapa de Calor Estilo "Pines de Densidad"
+                        const heatmap = new google.maps.visualization.HeatmapLayer({ 
                             data: heatPoints, 
                             map: map, 
-                            radius: 20, // RADIO MÁS PEQUEÑO PARA PRECISIÓN
-                            dissipating: false, // FIJA EL TAMAÑO AL ZOOM
-                            opacity: 0.6, 
-                            gradient: cepalGradient 
+                            radius: 12, // Tamaño pequeño para identificar calles exactas
+                            dissipating: true, // Permite que se vea bien en cualquier nivel de zoom
+                            opacity: 0.8, 
+                            gradient: executiveGradient 
                         });
                     }
                 });
             }
         });
-    }
-    
+    }    
     document.getElementById('pass-field').addEventListener('keypress', e => { if (e.key === 'Enter') checkAccess(); });
 </script>
 </body>
