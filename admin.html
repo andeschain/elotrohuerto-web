@@ -58,8 +58,8 @@
         <div class="login-card">
             <h2>El Otro Huerto</h2>
             <p style="color: #666; font-size: 14px; margin-bottom: 24px;">Panel de Gestión Financiera</p>
-            <input type="password" id="pass-field" class="login-input" placeholder="EOH2026" autofocus>
-            <button class="login-btn" onclick="checkAccess()">Ingresar</button>
+            <input type="password" id="pass-field" class="login-input" placeholder="Ingrese Clave Maestra" autofocus>
+            <button class="login-btn" onclick="checkAccess()">Ingresar al Sistema</button>
             <p id="error-msg"></p>
         </div>
     </div>
@@ -103,7 +103,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td colspan="5" style="text-align:center; padding:40px; color:#aaa;">Conectando con el huerto...</td></tr>
+                            <tr><td colspan="5" style="text-align:center; padding:40px; color:#aaa;">Sincronizando con el huerto...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -123,7 +123,7 @@
     </div>
 
 <script>
-    const _0xval = "RU9IMjAyNg=="; // EOH2026
+    const _0xval = "RU9IMjAyNg=="; // EOH2026 en Base64
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzr4xUDOZtACKNZgdHoUbvd3VMwuY7Reuj8KL2bRMEgtSoEwBrzuhqElqC-sWObuhVg/exec';
 
     document.getElementById('pass-field').addEventListener('keypress', e => { if (e.key === 'Enter') checkAccess(); });
@@ -134,7 +134,9 @@
             document.getElementById('admin-content').style.display = 'block';
             initDashboard();
         } else {
-            document.getElementById('error-msg').innerText = "⚠️ Clave incorrecta.";
+            const ludicos = ["⚠️ Esa semilla no brotó. Reintenta.", "⚠️ Tierra seca en la clave.", "⚠️ Acceso denegado."];
+            document.getElementById('error-msg').innerText = ludicos[Math.floor(Math.random()*ludicos.length)];
+            document.getElementById('pass-field').value = "";
         }
     }
 
@@ -143,8 +145,8 @@
             const res = await fetch(SCRIPT_URL + "?action=getAdminData");
             const data = await res.json();
             
-            // CORRECCIÓN CLAVE: Si data es un Array directo, o si es un objeto con .pedidos
             let listaPedidos = [];
+            // Manejo flexible del Array(9) o del objeto envuelto
             if (Array.isArray(data)) {
                 listaPedidos = data;
             } else if (data && data.pedidos) {
@@ -154,11 +156,11 @@
             if (listaPedidos.length > 0) {
                 processData(listaPedidos);
             } else {
-                document.querySelector('#ordersTable tbody').innerHTML = '<tr><td colspan="5" style="text-align:center; padding:40px;">No hay pedidos registrados aún.</td></tr>';
+                document.querySelector('#ordersTable tbody').innerHTML = '<tr><td colspan="5" style="text-align:center; padding:40px;">No se encontraron registros de ventas.</td></tr>';
             }
         } catch (e) {
             console.error("Error crítico:", e);
-            document.querySelector('#ordersTable tbody').innerHTML = '<tr><td colspan="5" style="color:red; text-align:center;">Error de comunicación.</td></tr>';
+            document.querySelector('#ordersTable tbody').innerHTML = '<tr><td colspan="5" style="color:red; text-align:center;">Error de comunicación con la base de datos.</td></tr>';
         }
     }
 
@@ -195,7 +197,7 @@
                     <td><strong>${v.nombre || v.Nombre || '---'}</strong></td>
                     <td>$${totalVenta.toLocaleString('es-CL')}</td>
                     <td style="color:var(--success)">$${Math.floor(totalVenta - comision).toLocaleString('es-CL')}</td>
-                    <td><span style="font-weight:700; color:var(--accent); font-size:10px;">${v.estado_pago || v.Estado_Pago || '---'}</span></td>
+                    <td><span style="font-weight:700; color:var(--accent); font-size:10px; text-transform:uppercase;">${v.estado_pago || v.Estado_Pago || '---'}</span></td>
                 </tr>
             `;
 
