@@ -2,96 +2,177 @@
 <html lang="es-CL">
 <head>
     <meta charset="UTF-8">
-    <title>BI El Otro Huerto | Gestión Pro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:wght@600&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BI El Otro Huerto | Gestión de Cosecha</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB1CcdwY-opGXS-a9m30PxcPPYcOa4L6wE&libraries=visualization,geometry"></script>
+    
     <style>
-        :root { --bg: #FDFCFB; --accent: #4A5D23; --text: #1D1D1F; --muted: #515154; --border: #EAEAEA; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; }
-        #login-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 10000; display: flex; align-items: center; justify-content: center; }
-        .login-card { background: #fff; padding: 50px; border-radius: 32px; box-shadow: 0 20px 60px rgba(0,0,0,0.05); text-align: center; width: 360px; border: 1px solid var(--border); }
-        .login-input { width: 100%; padding: 16px; border: 1px solid var(--border); border-radius: 12px; margin-bottom: 20px; text-align: center; font-size: 18px; outline: none; }
-        .login-btn { width: 100%; background: var(--accent); color: #fff; border: none; padding: 16px; border-radius: 12px; font-weight: 700; cursor: pointer; }
+        :root {
+            --bg-page: #FDFCFB;
+            --bg-alt: #F4F6F0;
+            --text-main: #1D1D1F;
+            --text-muted: #515154;
+            --accent: #4A5D23;
+            --border: #EAEAEA;
+            --success: #27AE60;
+        }
+
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: var(--bg-page); 
+            color: var(--text-main); 
+            margin: 0; 
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* LOGIN STYLE FINTUAL */
+        #login-overlay { 
+            position: fixed; inset: 0; background: var(--bg-page); 
+            z-index: 10000; display: flex; align-items: center; justify-content: center; 
+        }
+        .login-card { 
+            background: #fff; padding: 60px 40px; border-radius: 32px; 
+            box-shadow: 0 20px 60px rgba(0,0,0,0.05); text-align: center; 
+            width: 100%; max-width: 360px; border: 1px solid var(--border); 
+        }
+        .login-card h2 { font-family: 'Lora', serif; font-size: 28px; margin-bottom: 32px; }
+        .login-input { 
+            width: 100%; padding: 18px; border: 1px solid var(--border); 
+            border-radius: 16px; margin-bottom: 20px; text-align: center; 
+            font-size: 18px; outline: none; background: #FAFAFA; transition: 0.3s;
+        }
+        .login-input:focus { border-color: var(--accent); background: #fff; }
+        .login-btn { 
+            width: 100%; background: var(--accent); color: #fff; border: none; 
+            padding: 18px; border-radius: 16px; font-weight: 700; cursor: pointer; font-size: 16px; 
+        }
+
+        /* DASHBOARD LAYOUT */
         #admin-content { display: none; padding: 40px 24px; max-width: 1400px; margin: 0 auto; }
-        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; margin-bottom: 40px; }
-        .kpi-card { background: #fff; padding: 28px; border-radius: 24px; border: 1px solid var(--border); }
-        .kpi-value { font-size: 32px; font-weight: 700; color: var(--accent); margin: 8px 0; }
-        .main-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 32px; }
-        .card { background: #fff; border-radius: 24px; padding: 32px; border: 1px solid var(--border); margin-bottom: 32px; }
+        
+        header { 
+            display: flex; justify-content: space-between; align-items: center; 
+            margin-bottom: 48px; padding-bottom: 24px; border-bottom: 1px solid var(--border);
+        }
+        h1 { font-family: 'Lora', serif; font-size: 32px; margin: 0; }
+
+        /* KPI FINTUAL DESIGN */
+        .kpi-grid { 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 24px; margin-bottom: 48px; 
+        }
+        .kpi-card { 
+            background: #fff; padding: 32px; border-radius: 24px; 
+            border: 1px solid var(--border); transition: 0.3s;
+        }
+        .kpi-card:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
+        .kpi-label { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; }
+        .kpi-value { font-size: 36px; font-weight: 700; color: var(--accent); margin: 12px 0; }
+        .kpi-trend { font-size: 13px; font-weight: 500; display: flex; gap: 8px; }
+
+        .main-grid { display: grid; grid-template-columns: 1.8fr 1fr; gap: 40px; }
+        .card { background: #fff; border-radius: 28px; padding: 32px; border: 1px solid var(--border); margin-bottom: 40px; }
+        h3 { font-family: 'Lora', serif; margin: 0 0 24px 0; font-size: 22px; }
+
         #map { width: 100%; height: 450px; border-radius: 20px; border: 1px solid var(--border); }
-        .picking-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed var(--border); }
-        .picking-qty { font-weight: 700; color: var(--accent); background: #F4F6F0; padding: 2px 10px; border-radius: 8px; }
-        table { width: 100%; border-collapse: collapse; font-size: 13px; }
-        th { text-align: left; padding: 12px; border-bottom: 2px solid #F4F6F0; color: var(--muted); text-transform: uppercase; font-size: 11px; }
-        td { padding: 12px; border-bottom: 1px solid #f9f9f9; }
+
+        .picking-row { display: flex; justify-content: space-between; padding: 16px 0; border-bottom: 1px dashed var(--border); font-size: 15px; }
+        .picking-qty { font-weight: 700; color: var(--accent); background: var(--bg-alt); padding: 4px 14px; border-radius: 12px; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th { text-align: left; padding: 16px; border-bottom: 2px solid var(--bg-alt); color: var(--text-muted); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+        td { padding: 16px; border-bottom: 1px solid #F9F9F9; font-size: 14px; }
+
+        .tag { padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+        .tag-ok { background: #E8F5E9; color: #2E7D32; }
+
+        @media (max-width: 1024px) { .main-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
 <div id="login-overlay">
     <div class="login-card">
-        <h2 style="font-family:'Lora';">El Otro Huerto</h2>
+        <h2>Huerta BI</h2>
         <input type="password" id="pass-field" class="login-input" placeholder="Clave Maestra" autofocus>
         <button class="login-btn" onclick="checkAccess()">Entrar</button>
-        <div id="error-msg" style="color:red; font-size:12px; margin-top:15px;"></div>
+        <div id="error-msg" style="color:var(--danger); font-size:12px; margin-top:20px; font-weight:500;"></div>
     </div>
 </div>
 
 <div id="admin-content">
-    <header style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;">
+    <header>
         <div>
-            <h1 style="font-family:'Lora'; margin:0;">Dashboard de Cosecha</h1>
-            <p id="data-status" style="color:var(--muted); margin:5px 0;">Sincronizado con Paine y Providencia</p>
+            <h1 style="color:var(--accent)">Consolidado de Gestión</h1>
+            <p style="color:var(--text-muted); margin:8px 0 0 0;">Análisis financiero y logístico en tiempo real.</p>
         </div>
-        <button onclick="fetchData()" style="background:var(--accent); color:white; border:none; padding:12px 24px; border-radius:12px; font-weight:600; cursor:pointer;">🔄 Sincronizar</button>
+        <button onclick="fetchData()" style="background:var(--bg-alt); color:var(--accent); border:none; padding:14px 24px; border-radius:14px; font-weight:600; cursor:pointer;">🔄 Actualizar</button>
     </header>
 
     <div class="kpi-grid">
         <div class="kpi-card">
-            <div style="font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase;">Utilidad Neta (MTD)</div>
-            <div class="kpi-value" id="kpi-utility">$0</div>
-            <div style="font-size:12px; color:var(--muted);">Post-costos operativos</div>
+            <div class="kpi-label">Ventas del Mes (MTD)</div>
+            <div class="kpi-value" id="kpi-sales-month">$0</div>
+            <div class="kpi-trend" id="kpi-ticket">Ticket Prom: $0</div>
         </div>
         <div class="kpi-card">
-            <div style="font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase;">Ventas del Mes</div>
-            <div class="kpi-value" id="kpi-sales">$0</div>
-            <div id="kpi-ticket" style="font-size:12px; color:var(--muted);">Ticket Prom: $0</div>
+            <div class="kpi-label">Utilidad Neta Est.</div>
+            <div class="kpi-value" id="kpi-net">$0</div>
+            <div class="kpi-trend">Post-fijos y operativos</div>
         </div>
         <div class="kpi-card">
-            <div style="font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase;">Corte de Pedidos</div>
-            <div class="kpi-value" id="kpi-corte">---</div>
-            <div id="timer-label" style="font-size:12px; color:var(--muted);">Próximo miércoles 12:00</div>
+            <div class="kpi-label">Margen de Operación</div>
+            <div class="kpi-value" id="kpi-margin">0%</div>
+            <div class="kpi-trend" style="color:var(--success)">Eficiencia Piloto</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-label">Ventas del Año</div>
+            <div class="kpi-value" id="kpi-sales-year">$0</div>
+            <div class="kpi-trend" id="kpi-qty-year">0 pedidos totales</div>
         </div>
     </div>
 
-    <div class="main-layout">
+    <div class="main-grid">
         <div class="left-col">
             <div class="card">
-                <h3 style="font-family:'Lora'; margin-top:0;">📍 Mapa de Calor: Demanda Real Las Lilas</h3>
+                <h3>📍 Logística Plaza Las Lilas (Radio 1.5km)</h3>
                 <div id="map"></div>
-                <p style="font-size:12px; color:var(--muted); margin-top:15px;">Mostrando densidad de pedidos geocodificados en tiempo real.</p>
+                <p style="font-size:12px; color:var(--text-muted); margin-top:20px;">
+                    Mapa de calor basado en direcciones normalizadas. Iconos marcan puntos de retiro <b>Michelangelo</b>.
+                </p>
             </div>
             <div class="card">
-                <h3 style="font-family:'Lora'; margin-top:0;">📦 Últimas Órdenes</h3>
+                <h3>📦 Registro de Órdenes</h3>
                 <div style="overflow-x:auto;">
                     <table id="orders-table">
-                        <thead><tr><th>Fecha</th><th>Cliente</th><th>Total</th><th>Pago</th><th>Logística</th></tr></thead>
+                        <thead><tr><th>Fecha</th><th>Cliente</th><th>Total</th><th>Pago</th><th>Tipo</th></tr></thead>
                         <tbody></tbody>
                     </table>
                 </div>
             </div>
         </div>
+
         <div class="right-col">
             <div class="card">
-                <h3 style="font-family:'Lora'; margin-top:0;">🧺 Picking List (Cosecha)</h3>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
+                    <h3 style="margin:0;">🧺 Picking List</h3>
+                    <span id="corte-label" style="font-size:12px; font-weight:700; color:var(--accent); background:var(--bg-alt); padding:4px 10px; border-radius:8px;">Corte Miércoles</span>
+                </div>
                 <div id="picking-list"></div>
             </div>
-            <div class="card" style="background:#F4F6F0; border:none;">
-                <h3 style="font-family:'Lora'; margin-top:0;">📊 Estructura de Costos</h3>
-                <div style="font-size:13px; line-height:1.8; color:var(--muted);">
-                    • Operación Semanal: <b>$51.000</b><br>
-                    • Fijos Mensuales: <b>$110.700</b><br>
+            
+            <div class="card">
+                <h3>🏆 Ranking de Productos</h3>
+                <canvas id="rankingChart" height="300"></canvas>
+            </div>
+
+            <div class="card" style="background:var(--bg-alt); border:none;">
+                <h3 style="font-size:16px; margin-bottom:16px;">📑 Resumen de Gastos</h3>
+                <div style="font-size:13px; line-height:2; color:var(--text-muted);">
+                    • Operación Semanal: <b>$51.000</b> (Viaje + Staff)<br>
+                    • Fijos Mensuales: <b>$110.125</b> (Maxxa + 2UF)<br>
                     • Comisión MP: <b>2.29% + IVA</b>
                 </div>
             </div>
@@ -101,13 +182,13 @@
 
 <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx0-ksuyQNTUyIbGA-zVGLTmUtCWqUqKEOOqRuPhIbLIWAwJsXz-1-uoH82VcqoN1OS/exec';
-    const MASTER_KEY = "RU9IMjAyNg==";
+    const MASTER_KEY = "RU9IMjAyNg=="; 
     let map, heatmap;
 
-    // Lógica de Negocio
-    const COSTO_OP_SEMANAL = 16000 + 34500 + 5000;
-    const COSTO_FIJO_MENSUAL = 35700 + (38000 * 2); // Maxxa + 2UF aprox.
-    const COMISION_MP_IVA = 0.02725; 
+    // FINANZAS BI
+    const SEMANAL_OP = 16000 + 34500 + 5000;
+    const MENSUAL_FIJO = 35700 + 74425; // Maxxa + 2UF aprox
+    const MP_FEE = 0.02725; 
 
     document.getElementById('pass-field').addEventListener('keypress', e => { if (e.key === 'Enter') checkAccess(); });
 
@@ -115,10 +196,11 @@
         if (btoa(document.getElementById('pass-field').value) === MASTER_KEY) {
             document.getElementById('login-overlay').style.display = 'none';
             document.getElementById('admin-content').style.display = 'block';
-            initMap();
             fetchData();
+            initMap();
         } else {
-            document.getElementById('error-msg').innerText = "⚠️ Clave incorrecta.";
+            const ludicos = ["⚠️ Esa semilla no brotó.", "⚠️ Tierra seca en la clave.", "⚠️ Acceso denegado."];
+            document.getElementById('error-msg').innerText = ludicos[Math.floor(Math.random()*ludicos.length)];
         }
     }
 
@@ -127,51 +209,53 @@
             const res = await fetch(`${SCRIPT_URL}?action=getAdminData&cb=${Date.now()}`);
             const data = await res.json();
             if (data.pedidos) renderDashboard(data.pedidos, data.productos);
-        } catch (e) { console.error("Error:", e); }
+        } catch (e) { console.error(e); }
     }
 
     function initMap() {
-        // Centro: Plaza Loreto Cousiño (Las Lilas)
-        const lasLilas = { lat: -33.433299, lng: -70.598064 };
+        // Plaza Las Lilas (Coordenadas exactas entregadas)
+        const lilas = { lat: -33.428384, lng: -70.594276 };
         map = new google.maps.Map(document.getElementById("map"), {
-            zoom: 15,
-            center: lasLilas,
-            styles: [{ "featureType": "all", "stylers": [{ "saturation": -100 }] }]
+            zoom: 15, center: lilas,
+            styles: [{ featureType: "all", stylers: [{ saturation: -100 }] }, { featureType: "poi", stylers: [{ visibility: "off" }] }]
         });
 
-        heatmap = new google.maps.visualization.HeatmapLayer({
-            data: [],
-            map: map,
-            radius: 40,
-            opacity: 0.8
+        // Hub Plaza Las Lilas
+        new google.maps.Marker({ position: lilas, map, title: "Plaza Las Lilas", icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png' });
+
+        // Hubs Michelangelo
+        const hubs = [
+            { pos: { lat: -33.4348, lng: -70.5976 }, title: "Casona Michelangelo" },
+            { pos: { lat: -33.4372, lng: -70.5925 }, title: "Casa Kinder Michelangelo" }
+        ];
+        hubs.forEach(h => {
+            new google.maps.Marker({ position: h.pos, map, title: h.title, icon: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png' });
         });
 
-        // Marcador del Hub
-        new google.maps.Marker({ position: lasLilas, map, title: "Plaza Loreto Cousiño", icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png' });
+        heatmap = new google.maps.visualization.HeatmapLayer({ data: [], map: map, radius: 40, opacity: 0.7 });
     }
 
     function renderDashboard(pedidos, productos) {
-        let brutoMTD = 0, utilidadOp = 0;
-        const currentMonth = new Date().getMonth();
+        let salesMonth = 0, salesYear = 0, utilityOp = 0;
+        const now = new Date();
         const picking = {};
         const heatPoints = [];
         const geocoder = new google.maps.Geocoder();
-
-        const costosMap = {};
-        productos.forEach(p => costosMap[(p.nombre || "").trim()] = Number(p.costo || 0));
-
         const tbody = document.querySelector('#orders-table tbody');
         tbody.innerHTML = '';
 
-        pedidos.slice().reverse().forEach(p => {
-            const total = Number(p.total || 0);
-            const fechaParts = p.fecha.split(' ')[0].split('/');
-            const pDate = new Date(fechaParts[2], fechaParts[1]-1, fechaParts[0]);
-            
-            if (pDate.getMonth() === currentMonth) brutoMTD += total;
+        const costos = {};
+        productos.forEach(p => costos[(p.nombre || "").trim()] = Number(p.costo || 0));
 
-            // Picking y Costo Insumos
-            let costoProd = 0;
+        pedidos.slice().reverse().forEach(p => {
+            const v = Number(p.total || 0);
+            const dateParts = p.fecha.split(' ')[0].split('/');
+            const pDate = new Date(dateParts[2], dateParts[1]-1, dateParts[0]);
+            
+            salesYear += v;
+            if (pDate.getMonth() === now.getMonth()) salesMonth += v;
+
+            let costoInsumos = 0;
             const matches = (p.detalle || "").match(/(\d+)x ([^|]+)/g);
             if (matches) {
                 matches.forEach(m => {
@@ -179,54 +263,66 @@
                     const q = parseInt(parts[0]);
                     const n = parts[1].trim();
                     picking[n] = (picking[n] || 0) + q;
-                    if(costosMap[n]) costoProd += (costosMap[n] * q);
+                    if(costos[n]) costoInsumos += (costos[n] * q);
                 });
             }
 
-            utilidadOp += (total - (total * COMISION_MP_IVA) - costoProd);
+            utilityOp += (v - (v * MP_FEE) - costoInsumos);
 
-            // Geocodificación para el mapa de calor
-            if (p.direccion && p.direccion.length > 5 && !p.direccion.includes("Casa Kinder") && !p.direccion.includes("Casona")) {
-                const fullAddress = p.direccion.split(',')[0] + ", Providencia, Santiago, Chile";
-                geocoder.geocode({ address: fullAddress }, (results, status) => {
+            // Geocodificación para calor
+            if (p.direccion && p.direccion.length > 10 && !p.direccion.includes("Michelangelo")) {
+                const addr = p.direccion.split(',')[0] + ", Providencia, Chile";
+                geocoder.geocode({ address: addr }, (results, status) => {
                     if (status === "OK") {
-                        const loc = results[0].geometry.location;
-                        heatPoints.push(loc);
+                        heatPoints.push(results[0].geometry.location);
                         heatmap.setData(heatPoints);
                     }
                 });
             }
 
-            tbody.innerHTML += `<tr><td>${p.fecha.split(' ')[0]}</td><td><strong>${p.nombre}</strong></td><td>$${total.toLocaleString('es-CL')}</td><td>${p.estado_pago}</td><td><small>${p.logistica}</small></td></tr>`;
+            tbody.innerHTML += `
+                <tr>
+                    <td>${p.fecha.split(' ')[0]}</td>
+                    <td><strong>${p.nombre}</strong></td>
+                    <td>$${v.toLocaleString('es-CL')}</td>
+                    <td><span class="tag ${p.estado_pago === 'PAGADO' ? 'tag-ok' : ''}">${p.estado_pago}</span></td>
+                    <td><small>${p.logistica.substring(0,15)}...</small></td>
+                </tr>
+            `;
         });
 
-        // KPIs Finales (Asumiendo 4 semanas de operación para costos fijos)
-        const utilidadNeta = utilidadOp - (COSTO_OP_SEMANAL * 4) - COSTO_FIJO_MENSUAL;
-        
-        document.getElementById('kpi-sales').innerText = `$${brutoMTD.toLocaleString('es-CL')}`;
-        document.getElementById('kpi-utility').innerText = `$${Math.floor(utilidadNeta).toLocaleString('es-CL')}`;
-        document.getElementById('kpi-ticket').innerText = `Ticket Prom: $${Math.floor(brutoMTD/pedidos.length).toLocaleString('es-CL')}`;
+        // Calculos Finales
+        const netoTotal = utilityOp - (SEMANAL_OP * 4) - MENSUAL_FIJO;
+        document.getElementById('kpi-sales-month').innerText = `$${salesMonth.toLocaleString('es-CL')}`;
+        document.getElementById('kpi-sales-year').innerText = `$${salesYear.toLocaleString('es-CL')}`;
+        document.getElementById('kpi-net').innerText = `$${Math.floor(netoTotal).toLocaleString('es-CL')}`;
+        document.getElementById('kpi-ticket').innerText = `Ticket Prom: $${Math.floor(salesYear / pedidos.length).toLocaleString('es-CL')}`;
+        document.getElementById('kpi-margin').innerText = salesYear > 0 ? Math.round((netoTotal/salesYear)*100) + "%" : "0%";
+        document.getElementById('kpi-qty-year').innerText = `${pedidos.length} pedidos totales`;
 
-        // Picking List
-        const pickDiv = document.getElementById('picking-list');
-        pickDiv.innerHTML = '';
-        Object.entries(picking).sort((a,b) => b[1]-a[1]).forEach(([n, q]) => {
-            pickDiv.innerHTML += `<div class="picking-item"><span>${n}</span><span class="picking-qty">${q}</span></div>`;
-        });
-
-        updateHarvestTimer();
+        renderPicking(picking);
+        renderChart(picking);
     }
 
-    function updateHarvestTimer() {
-        const now = new Date();
-        const nextWed = new Date();
-        nextWed.setDate(now.getDate() + (3 - now.getDay() + 7) % 7);
-        nextWed.setHours(12, 0, 0, 0);
-        const diff = nextWed - now;
-        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
-        document.getElementById('kpi-corte').innerText = nextWed.toLocaleDateString('es-CL', {day:'numeric', month:'short'});
-        document.getElementById('timer-label').innerText = `Faltan ${d}d ${h}h para el cierre`;
+    function renderPicking(counts) {
+        const div = document.getElementById('picking-list');
+        div.innerHTML = '';
+        Object.entries(counts).sort((a,b) => b[1]-a[1]).forEach(([n, q]) => {
+            div.innerHTML += `<div class="picking-row"><span>${n}</span><span class="picking-qty">${q}</span></div>`;
+        });
+    }
+
+    function renderChart(counts) {
+        const ctx = document.getElementById('rankingChart').getContext('2d');
+        if (window.myChart) window.myChart.destroy();
+        window.myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(counts).slice(0,5).map(l => l.substring(0,12)),
+                datasets: [{ data: Object.values(counts).slice(0,5), backgroundColor: '#4A5D23', borderRadius: 8 }]
+            },
+            options: { indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { grid: { display: false } } } }
+        });
     }
 </script>
 </body>
