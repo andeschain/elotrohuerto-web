@@ -2,179 +2,108 @@
 <html lang="es-CL">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BI El Otro Huerto | Gestión de Cosecha</title>
+    <title>BI El Otro Huerto | Advanced Analytics</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB1CcdwY-opGXS-a9m30PxcPPYcOa4L6wE&libraries=visualization,geometry"></script>
-    
     <style>
-        :root {
-            --bg-page: #FDFCFB;
-            --bg-alt: #F4F6F0;
-            --text-main: #1D1D1F;
-            --text-muted: #515154;
-            --accent: #4A5D23;
-            --border: #EAEAEA;
-            --success: #27AE60;
-        }
-
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background: var(--bg-page); 
-            color: var(--text-main); 
-            margin: 0; 
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* LOGIN STYLE FINTUAL */
-        #login-overlay { 
-            position: fixed; inset: 0; background: var(--bg-page); 
-            z-index: 10000; display: flex; align-items: center; justify-content: center; 
-        }
-        .login-card { 
-            background: #fff; padding: 60px 40px; border-radius: 32px; 
-            box-shadow: 0 20px 60px rgba(0,0,0,0.05); text-align: center; 
-            width: 100%; max-width: 360px; border: 1px solid var(--border); 
-        }
-        .login-card h2 { font-family: 'Lora', serif; font-size: 28px; margin-bottom: 32px; }
-        .login-input { 
-            width: 100%; padding: 18px; border: 1px solid var(--border); 
-            border-radius: 16px; margin-bottom: 20px; text-align: center; 
-            font-size: 18px; outline: none; background: #FAFAFA; transition: 0.3s;
-        }
-        .login-input:focus { border-color: var(--accent); background: #fff; }
-        .login-btn { 
-            width: 100%; background: var(--accent); color: #fff; border: none; 
-            padding: 18px; border-radius: 16px; font-weight: 700; cursor: pointer; font-size: 16px; 
-        }
-
-        /* DASHBOARD LAYOUT */
-        #admin-content { display: none; padding: 40px 24px; max-width: 1400px; margin: 0 auto; }
+        :root { --bg: #FDFCFB; --accent: #4A5D23; --text: #1D1D1F; --muted: #515154; --border: #EAEAEA; --fintual-blue: #0047FF; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; -webkit-font-smoothing: antialiased; }
+        #admin-content { padding: 40px; max-width: 1400px; margin: 0 auto; }
         
-        header { 
-            display: flex; justify-content: space-between; align-items: center; 
-            margin-bottom: 48px; padding-bottom: 24px; border-bottom: 1px solid var(--border);
-        }
-        h1 { font-family: 'Lora', serif; font-size: 32px; margin: 0; }
+        /* Fintual Style Cards */
+        .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 40px; }
+        .kpi-card { background: #fff; padding: 24px; border-radius: 20px; border: 1px solid var(--border); }
+        .kpi-label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+        .kpi-value { font-size: 28px; font-weight: 700; margin: 8px 0; color: var(--text); }
+        .kpi-sub { font-size: 12px; color: var(--accent); font-weight: 600; }
 
-        /* KPI FINTUAL DESIGN */
-        .kpi-grid { 
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
-            gap: 24px; margin-bottom: 48px; 
-        }
-        .kpi-card { 
-            background: #fff; padding: 32px; border-radius: 24px; 
-            border: 1px solid var(--border); transition: 0.3s;
-        }
-        .kpi-card:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
-        .kpi-label { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; }
-        .kpi-value { font-size: 36px; font-weight: 700; color: var(--accent); margin: 12px 0; }
-        .kpi-trend { font-size: 13px; font-weight: 500; display: flex; gap: 8px; }
-
-        .main-grid { display: grid; grid-template-columns: 1.8fr 1fr; gap: 40px; }
-        .card { background: #fff; border-radius: 28px; padding: 32px; border: 1px solid var(--border); margin-bottom: 40px; }
-        h3 { font-family: 'Lora', serif; margin: 0 0 24px 0; font-size: 22px; }
-
-        #map { width: 100%; height: 450px; border-radius: 20px; border: 1px solid var(--border); }
-
-        .picking-row { display: flex; justify-content: space-between; padding: 16px 0; border-bottom: 1px dashed var(--border); font-size: 15px; }
-        .picking-qty { font-weight: 700; color: var(--accent); background: var(--bg-alt); padding: 4px 14px; border-radius: 12px; }
-
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th { text-align: left; padding: 16px; border-bottom: 2px solid var(--bg-alt); color: var(--text-muted); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
-        td { padding: 16px; border-bottom: 1px solid #F9F9F9; font-size: 14px; }
-
-        .tag { padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
-        .tag-ok { background: #E8F5E9; color: #2E7D32; }
-
-        @media (max-width: 1024px) { .main-grid { grid-template-columns: 1fr; } }
+        .main-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
+        .card { background: #fff; border-radius: 24px; padding: 30px; border: 1px solid var(--border); margin-bottom: 30px; }
+        
+        #map { width: 100%; height: 400px; border-radius: 16px; border: 1px solid var(--border); }
+        
+        .picking-table { width: 100%; border-collapse: collapse; }
+        .picking-table td { padding: 12px 0; border-bottom: 1px solid var(--bg); }
+        .qty-badge { background: var(--accent); color: white; padding: 2px 8px; border-radius: 6px; font-weight: 700; font-size: 12px; }
+        
+        h3 { font-family: 'Lora', serif; margin-top: 0; font-size: 20px; }
     </style>
 </head>
 <body>
 
-<div id="login-overlay">
-    <div class="login-card">
-        <h2>Huerta BI</h2>
-        <input type="password" id="pass-field" class="login-input" placeholder="Clave Maestra" autofocus>
-        <button class="login-btn" onclick="checkAccess()">Entrar</button>
-        <div id="error-msg" style="color:var(--danger); font-size:12px; margin-top:20px; font-weight:500;"></div>
-    </div>
-</div>
-
 <div id="admin-content">
-    <header>
-        <div>
-            <h1 style="color:var(--accent)">Consolidado de Gestión</h1>
-            <p style="color:var(--text-muted); margin:8px 0 0 0;">Análisis financiero y logístico en tiempo real.</p>
-        </div>
-        <button onclick="fetchData()" style="background:var(--bg-alt); color:var(--accent); border:none; padding:14px 24px; border-radius:14px; font-weight:600; cursor:pointer;">🔄 Actualizar</button>
+    <header style="margin-bottom: 40px;">
+        <h1 style="font-family:'Lora'; font-size: 32px; margin:0;">Análisis de Cosecha y LTV</h1>
+        <p id="sync-status" style="color:var(--muted);">Sincronizando datos...</p>
     </header>
 
-    <div class="kpi-grid">
+    <div class="kpi-row">
         <div class="kpi-card">
-            <div class="kpi-label">Ventas del Mes (MTD)</div>
-            <div class="kpi-value" id="kpi-sales-month">$0</div>
-            <div class="kpi-trend" id="kpi-ticket">Ticket Prom: $0</div>
+            <div class="kpi-label">Ventas Semana</div>
+            <div class="kpi-value" id="v-week">$0</div>
+            <div class="kpi-sub" id="p-week">0 pedidos</div>
         </div>
         <div class="kpi-card">
-            <div class="kpi-label">Utilidad Neta Est.</div>
-            <div class="kpi-value" id="kpi-net">$0</div>
-            <div class="kpi-trend">Post-fijos y operativos</div>
+            <div class="kpi-label">Ventas Mes</div>
+            <div class="kpi-value" id="v-month">$0</div>
+            <div class="kpi-sub" id="p-month">0 pedidos</div>
         </div>
         <div class="kpi-card">
-            <div class="kpi-label">Margen de Operación</div>
-            <div class="kpi-value" id="kpi-margin">0%</div>
-            <div class="kpi-trend" style="color:var(--success)">Eficiencia Piloto</div>
+            <div class="kpi-label">Ventas Año</div>
+            <div class="kpi-value" id="v-year">$0</div>
+            <div class="kpi-sub" id="p-year">Total histórico</div>
+        </div>
+        <div class="kpi-card" style="background: var(--accent); color: white;">
+            <div class="kpi-label" style="color: rgba(255,255,255,0.7)">Margen Contribución</div>
+            <div class="kpi-value" id="v-margin" style="color: white;">$0</div>
+            <div class="kpi-sub" style="color: white;">Líquido para el bolsillo</div>
+        </div>
+    </div>
+
+    <div class="kpi-row">
+        <div class="kpi-card">
+            <div class="kpi-label">LTV (Retorno)</div>
+            <div class="kpi-value" id="v-ltv">0.0x</div>
+            <div class="kpi-sub">Frecuencia de compra</div>
         </div>
         <div class="kpi-card">
-            <div class="kpi-label">Ventas del Año</div>
-            <div class="kpi-value" id="kpi-sales-year">$0</div>
-            <div class="kpi-trend" id="kpi-qty-year">0 pedidos totales</div>
+            <div class="kpi-label">Ticket Promedio</div>
+            <div class="kpi-value" id="v-ticket">$0</div>
+            <div class="kpi-sub">Valor por cliente</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-label">Eficiencia Picking</div>
+            <div class="kpi-value">100%</div>
+            <div class="kpi-sub">Corte Miércoles 12:01</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-label">Costo Op. Mes</div>
+            <div class="kpi-value">$314.125</div>
+            <div class="kpi-sub">Fijos + 4 Viajes</div>
         </div>
     </div>
 
     <div class="main-grid">
         <div class="left-col">
             <div class="card">
-                <h3>📍 Logística Plaza Las Lilas (Radio 1.5km)</h3>
+                <h3>📍 Mapa de Calor y Hubs Michelangelo</h3>
                 <div id="map"></div>
-                <p style="font-size:12px; color:var(--text-muted); margin-top:20px;">
-                    Mapa de calor basado en direcciones normalizadas. Iconos marcan puntos de retiro <b>Michelangelo</b>.
-                </p>
             </div>
             <div class="card">
-                <h3>📦 Registro de Órdenes</h3>
-                <div style="overflow-x:auto;">
-                    <table id="orders-table">
-                        <thead><tr><th>Fecha</th><th>Cliente</th><th>Total</th><th>Pago</th><th>Tipo</th></tr></thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
+                <h3>🏆 Top 5 Productos con Mayor Margen</h3>
+                <canvas id="marginChart" height="100"></canvas>
             </div>
         </div>
-
         <div class="right-col">
             <div class="card">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
-                    <h3 style="margin:0;">🧺 Picking List</h3>
-                    <span id="corte-label" style="font-size:12px; font-weight:700; color:var(--accent); background:var(--bg-alt); padding:4px 10px; border-radius:8px;">Corte Miércoles</span>
-                </div>
-                <div id="picking-list"></div>
+                <h3>🧺 Picking List (Exacta)</h3>
+                <p style="font-size:12px; color:var(--muted); margin-bottom:20px;">Consolidado para cosecha Jueves AM.</p>
+                <div id="picking-container"></div>
             </div>
-            
             <div class="card">
-                <h3>🏆 Ranking de Productos</h3>
-                <canvas id="rankingChart" height="300"></canvas>
-            </div>
-
-            <div class="card" style="background:var(--bg-alt); border:none;">
-                <h3 style="font-size:16px; margin-bottom:16px;">📑 Resumen de Gastos</h3>
-                <div style="font-size:13px; line-height:2; color:var(--text-muted);">
-                    • Operación Semanal: <b>$51.000</b> (Viaje + Staff)<br>
-                    • Fijos Mensuales: <b>$110.125</b> (Maxxa + 2UF)<br>
-                    • Comisión MP: <b>2.29% + IVA</b>
-                </div>
+                <h3>👥 Fidelidad de Clientes</h3>
+                <div id="customer-loyalty" style="font-size:13px;"></div>
             </div>
         </div>
     </div>
@@ -182,148 +111,136 @@
 
 <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx0-ksuyQNTUyIbGA-zVGLTmUtCWqUqKEOOqRuPhIbLIWAwJsXz-1-uoH82VcqoN1OS/exec';
-    const MASTER_KEY = "RU9IMjAyNg=="; 
-    let map, heatmap;
-
-    // FINANZAS BI
-    const SEMANAL_OP = 16000 + 34500 + 5000;
-    const MENSUAL_FIJO = 35700 + 74425; // Maxxa + 2UF aprox
-    const MP_FEE = 0.02725; 
-
-    document.getElementById('pass-field').addEventListener('keypress', e => { if (e.key === 'Enter') checkAccess(); });
-
-    function checkAccess() {
-        if (btoa(document.getElementById('pass-field').value) === MASTER_KEY) {
-            document.getElementById('login-overlay').style.display = 'none';
-            document.getElementById('admin-content').style.display = 'block';
-            fetchData();
-            initMap();
-        } else {
-            const ludicos = ["⚠️ Esa semilla no brotó.", "⚠️ Tierra seca en la clave.", "⚠️ Acceso denegado."];
-            document.getElementById('error-msg').innerText = ludicos[Math.floor(Math.random()*ludicos.length)];
-        }
-    }
+    
+    // Configuración Costos
+    const COSTO_FIJO_MENSUAL = 110125;
+    const COSTO_VIAJE_SEMANAL = 51000;
+    const COMISION_MP = 0.02725;
 
     async function fetchData() {
-        try {
-            const res = await fetch(`${SCRIPT_URL}?action=getAdminData&cb=${Date.now()}`);
-            const data = await res.json();
-            if (data.pedidos) renderDashboard(data.pedidos, data.productos);
-        } catch (e) { console.error(e); }
+        const res = await fetch(`${SCRIPT_URL}?action=getAdminData&cb=${Date.now()}`);
+        const data = await res.json();
+        processData(data.pedidos, data.productos);
     }
 
-    function initMap() {
-        // Plaza Las Lilas (Coordenadas exactas entregadas)
-        const lilas = { lat: -33.428384, lng: -70.594276 };
-        map = new google.maps.Map(document.getElementById("map"), {
-            zoom: 15, center: lilas,
-            styles: [{ featureType: "all", stylers: [{ saturation: -100 }] }, { featureType: "poi", stylers: [{ visibility: "off" }] }]
-        });
-
-        // Hub Plaza Las Lilas
-        new google.maps.Marker({ position: lilas, map, title: "Plaza Las Lilas", icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png' });
-
-        // Hubs Michelangelo
-        const hubs = [
-            { pos: { lat: -33.4348, lng: -70.5976 }, title: "Casona Michelangelo" },
-            { pos: { lat: -33.4372, lng: -70.5925 }, title: "Casa Kinder Michelangelo" }
-        ];
-        hubs.forEach(h => {
-            new google.maps.Marker({ position: h.pos, map, title: h.title, icon: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png' });
-        });
-
-        heatmap = new google.maps.visualization.HeatmapLayer({ data: [], map: map, radius: 40, opacity: 0.7 });
-    }
-
-    function renderDashboard(pedidos, productos) {
-        let salesMonth = 0, salesYear = 0, utilityOp = 0;
+    function processData(pedidos, productos) {
         const now = new Date();
+        const startOfWeek = new Date(now.setDate(now.getDate() - now.getDay() + 1));
+        
+        let stats = {
+            week: { v: 0, c: 0 },
+            month: { v: 0, c: 0 },
+            year: { v: 0, c: 0 },
+            totalCostoInsumos: 0,
+            customers: {}
+        };
+
         const picking = {};
-        const heatPoints = [];
-        const geocoder = new google.maps.Geocoder();
-        const tbody = document.querySelector('#orders-table tbody');
-        tbody.innerHTML = '';
+        const productStats = {}; // Para análisis de margen
 
-        const costos = {};
-        productos.forEach(p => costos[(p.nombre || "").trim()] = Number(p.costo || 0));
+        // Mapeo de costos de productos
+        const costMap = {};
+        productos.forEach(p => costMap[p.nombre.trim()] = { costo: Number(p.costo || 0), precio: Number(p.precio || 0) });
 
-        pedidos.slice().reverse().forEach(p => {
-            const v = Number(p.total || 0);
-            const dateParts = p.fecha.split(' ')[0].split('/');
-            const pDate = new Date(dateParts[2], dateParts[1]-1, dateParts[0]);
+        pedidos.forEach(p => {
+            // Limpieza de datos
+            const monto = Number(String(p.total).replace(/[^0-9.-]+/g,""));
+            const fechaParts = p.fecha.split(' ')[0].split('/');
+            const pDate = new Date(fechaParts[2], fechaParts[1]-1, fechaParts[0]);
             
-            salesYear += v;
-            if (pDate.getMonth() === now.getMonth()) salesMonth += v;
+            // 1. Ventas por periodo
+            stats.year.v += monto; stats.year.c++;
+            if (pDate.getMonth() === new Date().getMonth()) { stats.month.v += monto; stats.month.c++; }
+            if (pDate >= startOfWeek) { stats.week.v += monto; stats.week.c++; }
 
-            let costoInsumos = 0;
-            const matches = (p.detalle || "").match(/(\d+)x ([^|]+)/g);
-            if (matches) {
-                matches.forEach(m => {
-                    const parts = m.split('x ');
-                    const q = parseInt(parts[0]);
-                    const n = parts[1].trim();
-                    picking[n] = (picking[n] || 0) + q;
-                    if(costos[n]) costoInsumos += (costos[n] * q);
-                });
-            }
+            // 2. LTV y Fidelidad
+            stats.customers[p.email] = (stats.customers[p.email] || 0) + 1;
 
-            utilityOp += (v - (v * MP_FEE) - costoInsumos);
-
-            // Geocodificación para calor
-            if (p.direccion && p.direccion.length > 10 && !p.direccion.includes("Michelangelo")) {
-                const addr = p.direccion.split(',')[0] + ", Providencia, Chile";
-                geocoder.geocode({ address: addr }, (results, status) => {
-                    if (status === "OK") {
-                        heatPoints.push(results[0].geometry.location);
-                        heatmap.setData(heatPoints);
+            // 3. Picking y Margen de productos
+            const items = (p.detalle || "").match(/(\d+)x ([^|]+)/g);
+            if (items) {
+                items.forEach(m => {
+                    const [q, name] = m.split('x ').map(s => s.trim());
+                    const qty = parseInt(q);
+                    picking[name] = (picking[name] || 0) + qty;
+                    
+                    if (costMap[name]) {
+                        const margenUnitario = costMap[name].precio - costMap[name].costo;
+                        productStats[name] = (productStats[name] || 0) + (margenUnitario * qty);
+                        stats.totalCostoInsumos += (costMap[name].costo * qty);
                     }
                 });
             }
-
-            tbody.innerHTML += `
-                <tr>
-                    <td>${p.fecha.split(' ')[0]}</td>
-                    <td><strong>${p.nombre}</strong></td>
-                    <td>$${v.toLocaleString('es-CL')}</td>
-                    <td><span class="tag ${p.estado_pago === 'PAGADO' ? 'tag-ok' : ''}">${p.estado_pago}</span></td>
-                    <td><small>${p.logistica.substring(0,15)}...</small></td>
-                </tr>
-            `;
         });
 
-        // Calculos Finales
-        const netoTotal = utilityOp - (SEMANAL_OP * 4) - MENSUAL_FIJO;
-        document.getElementById('kpi-sales-month').innerText = `$${salesMonth.toLocaleString('es-CL')}`;
-        document.getElementById('kpi-sales-year').innerText = `$${salesYear.toLocaleString('es-CL')}`;
-        document.getElementById('kpi-net').innerText = `$${Math.floor(netoTotal).toLocaleString('es-CL')}`;
-        document.getElementById('kpi-ticket').innerText = `Ticket Prom: $${Math.floor(salesYear / pedidos.length).toLocaleString('es-CL')}`;
-        document.getElementById('kpi-margin').innerText = salesYear > 0 ? Math.round((netoTotal/salesYear)*100) + "%" : "0%";
-        document.getElementById('kpi-qty-year').innerText = `${pedidos.length} pedidos totales`;
+        // Actualizar UI
+        document.getElementById('v-week').innerText = `$${stats.week.v.toLocaleString('es-CL')}`;
+        document.getElementById('p-week').innerText = `${stats.week.c} pedidos`;
+        document.getElementById('v-month').innerText = `$${stats.month.v.toLocaleString('es-CL')}`;
+        document.getElementById('p-month').innerText = `${stats.month.c} pedidos`;
+        document.getElementById('v-year').innerText = `$${stats.year.v.toLocaleString('es-CL')}`;
+        
+        const ticketProm = stats.year.v / pedidos.length;
+        document.getElementById('v-ticket').innerText = `$${Math.round(ticketProm).toLocaleString('es-CL')}`;
+
+        // Margen de Contribución Total (Fórmula solicitada)
+        const margenLiquido = stats.year.v - (stats.year.v * COMISION_MP) - stats.totalCostoInsumos - (COSTO_VIAJE_SEMANAL * 4) - COSTO_FIJO_MENSUAL;
+        document.getElementById('v-margin').innerText = `$${Math.round(margenLiquido).toLocaleString('es-CL')}`;
+
+        // LTV
+        const totalClientes = Object.keys(stats.customers).length;
+        const repetidores = Object.values(stats.customers).filter(v => v > 1).length;
+        document.getElementById('v-ltv').innerText = (repetidores/totalClientes * 100).toFixed(1) + "%";
 
         renderPicking(picking);
-        renderChart(picking);
+        renderMarginChart(productStats);
+        initMap(pedidos);
     }
 
-    function renderPicking(counts) {
-        const div = document.getElementById('picking-list');
-        div.innerHTML = '';
-        Object.entries(counts).sort((a,b) => b[1]-a[1]).forEach(([n, q]) => {
-            div.innerHTML += `<div class="picking-row"><span>${n}</span><span class="picking-qty">${q}</span></div>`;
-        });
+    function renderPicking(picking) {
+        const container = document.getElementById('picking-container');
+        container.innerHTML = '<table class="picking-table">' + 
+            Object.entries(picking).sort((a,b) => b[1]-a[1]).map(([n, q]) => 
+                `<tr><td>${n}</td><td style="text-align:right"><span class="qty-badge">${q}</span></td></tr>`
+            ).join('') + '</table>';
     }
 
-    function renderChart(counts) {
-        const ctx = document.getElementById('rankingChart').getContext('2d');
-        if (window.myChart) window.myChart.destroy();
-        window.myChart = new Chart(ctx, {
+    function renderMarginChart(pStats) {
+        const top5 = Object.entries(pStats).sort((a,b) => b[1]-a[1]).slice(0,5);
+        new Chart(document.getElementById('marginChart'), {
             type: 'bar',
             data: {
-                labels: Object.keys(counts).slice(0,5).map(l => l.substring(0,12)),
-                datasets: [{ data: Object.values(counts).slice(0,5), backgroundColor: '#4A5D23', borderRadius: 8 }]
+                labels: top5.map(x => x[0]),
+                datasets: [{ label: 'Margen acumulado ($)', data: top5.map(x => x[1]), backgroundColor: '#4A5D23' }]
             },
-            options: { indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { grid: { display: false } } } }
+            options: { indexAxis: 'y', plugins: { legend: { display: false } } }
         });
     }
+
+    function initMap(pedidos) {
+        const center = { lat: -33.428384, lng: -70.594276 };
+        const map = new google.maps.Map(document.getElementById("map"), { zoom: 15, center: center });
+        
+        // HUB: Casona Michelangelo (Eliodoro Yáñez 2740)
+        new google.maps.Marker({ position: { lat: -33.434680, lng: -70.601500 }, map, title: "Casona Michelangelo", icon: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png' });
+        
+        // HUB: Casa Kinder (Las Pimpinelas 1969)
+        new google.maps.Marker({ position: { lat: -33.439500, lng: -70.587500 }, map, title: "Casa Kinder", icon: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png' });
+        
+        // Clientes Heatmap
+        const points = [];
+        const geocoder = new google.maps.Geocoder();
+        pedidos.forEach(p => {
+            if(p.direccion.length > 10 && !p.direccion.includes("Michelangelo")) {
+                geocoder.geocode({ address: p.direccion + ", Providencia, Chile" }, (res, status) => {
+                    if(status === "OK") points.push(res[0].geometry.location);
+                });
+            }
+        });
+        new google.maps.visualization.HeatmapLayer({ data: points, map: map, radius: 30 });
+    }
+
+    fetchData();
 </script>
 </body>
 </html>
