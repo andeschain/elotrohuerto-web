@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel V9.9 | El Otro Huerto</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:wght@600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #FDFCFB; --accent: #4A5D23; --text: #1D1D1F; --border: #EAEAEA;
+        }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; }
+        .header { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto 30px; }
+        h1 { font-family: 'Lora', serif; font-size: 28px; margin: 0; }
+        
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto 40px; }
+        .stat-card { background: white; padding: 20px; border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
+        .stat-val { font-size: 24px; font-weight: 700; color: var(--accent); display: block; }
+        .stat-label { font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 1px; }
+
+        .table-container { background: white; border-radius: 16px; border: 1px solid var(--border); overflow-x: auto; max-width: 1200px; margin: 0 auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th { background: #F8F9F6; padding: 15px; text-align: left; border-bottom: 1px solid var(--border); color: #666; }
+        td { padding: 15px; border-bottom: 1px solid var(--border); }
+        
+        .badge { padding: 4px 8px; border-radius: 6px; font-weight: 600; font-size: 11px; }
+        .badge-pagado { background: #E8F5E9; color: #2E7D32; }
+        .badge-pendiente { background: #FFF3E0; color: #E65100; }
+
+        /* Estilo para el Selector Logístico */
+        .status-select {
+            padding: 6px; border-radius: 8px; border: 1px solid var(--border); 
+            font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600;
+            background: #F4F6F0; color: var(--accent); cursor: pointer; transition: 0.2s;
+        }
+        .status-select:hover { background: #E8EDDE; }
+        .status-select:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); display: none; justify-content: center; align-items: center; z-index: 1000; }
+    </style>
+</head>
+<body>
+
+    <div class="loading-overlay" id="loading">🌱 Actualizando logística...</div>
+
+    <div class="header">
+        <h1>Admin Panel <span style="font-weight: 400; color: #888;">| Pedidos</span></h1>
+        <button onclick="fetchData()" style="background: var(--accent); color: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 600;">🔄 Sincronizar</button>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card"><span class="stat-label">Total Ventas</span><span class="stat-val" id="stat-total">$0</span></div>
+        <div class="stat-card"><span class="stat-label">Pedidos Hoy</span><span class="stat-val" id="stat-count">0</span></div>
+        <div class="stat-card"><span class="stat-label">Por Cosechar</span><span class="stat-val" id="stat-pending">0</span></div>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Orden</th>
+                    <th>Cliente</th>
+                    <th>Detalle</th>
+                    <th>Total</th>
+                    <th>Pago</th>
+                    <th>Estado Logístico</th>
+                </tr>
+            </thead>
+            <tbody id="pedidosBody">
+                </tbody>
+        </table>
+    </div>
+
+    <script>
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwzfBYnLnhYktqHwXgLYGyPiyswkRpr_-hZdzLHoz9gJKI9IaMuc3UuErUbLxxogRuhNA/exec'; // <--- PEGA TU URL /EXEC AQUÍ
+
+        async function fetchData() {
+            try {
+                const res = await fetch(`${SCRIPT_URL}?action=getAdminData`);
+                const data = await res.json();
+                renderPedidos(data.pedidos);
+                updateStats(data.pedidos);
+            } catch (e) { console.error("Error cargando datos", e); }
+        }
+
+        function renderPedidos(pedidos) {
+            const body = document.getElementById('pedidosBody');
+            body.innerHTML = '';
+
+            // Ordenar por fecha (más reciente arriba)
+            pedidos.sort((a,b) => new Date(b.fecha) - new Date(a.fecha));
+
+            pedidos.forEach(p => {
+                const isPaid = p.estado_pago === "PAGADO";
+                body.innerHTML += `
+                    <tr>
+                        <td>${p.fecha}</td>
+                        <td style="font-weight:700;">${p.id}</td>
+                        <td><strong>${p.nombre}</strong><br><small style="color:#888;">${p.logistica}</small></td>
+                        <td style="max-width:200px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${p.detalle}">${p.detalle}</td>
+                        <td>$${Number(p.total).toLocaleString('es-CL')}</td>
+                        <td><span class="badge ${isPaid ? 'badge-pagado' : 'badge-pendiente'}">${p.estado_pago}</span></td>
+                        <td>
+                            <select class="status-select" onchange="updateLogistica('${p.id}', this)" ${!isPaid ? 'disabled' : ''}>
+                                <option value="Por Cosechar" ${p.estado_logistica === 'Por Cosechar' ? 'selected' : ''}>🚜 Por Cosechar</option>
+                                <option value="En Camino" ${p.estado_logistica === 'En Camino' ? 'selected' : ''}>🚚 En Camino</option>
+                                <option value="Listo para Despacho" ${p.estado_logistica === 'Listo para Despacho' ? 'selected' : ''}>🧺 Listo / Notificar</option>
+                                <option value="Entregado" ${p.estado_logistica === 'Entregado' ? 'selected' : ''}>✅ Entregado</option>
+                            </select>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        async function updateLogistica(orderId, selectElement) {
+            const nuevoEstado = selectElement.value;
+            const loading = document.getElementById('loading');
+            
+            if (nuevoEstado === "Listo para Despacho") {
+                if (!confirm("Esto enviará un correo automático al cliente avisando que su pedido está listo. ¿Proceder?")) {
+                    fetchData(); // Resetear vista
+                    return;
+                }
+            }
+
+            loading.style.display = 'flex';
+            selectElement.disabled = true;
+
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({
+                        action: 'updateOrder',
+                        id: orderId,
+                        status: nuevoEstado
+                    })
+                });
+                
+                const resData = await response.json();
+                if (resData.status === 'success') {
+                    console.log("Estado actualizado");
+                } else {
+                    alert("Error al actualizar en Sheets");
+                }
+            } catch (e) {
+                alert("Error de conexión");
+            } finally {
+                loading.style.display = 'none';
+                selectElement.disabled = false;
+                fetchData(); // Recargar para confirmar cambios
+            }
+        }
+
+        function updateStats(pedidos) {
+            const total = pedidos.reduce((acc, p) => p.estado_pago === "PAGADO" ? acc + Number(p.total) : acc, 0);
+            const pending = pedidos.filter(p => p.estado_logistica === "Por Cosechar" && p.estado_pago === "PAGADO").length;
+            
+            document.getElementById('stat-total').innerText = `$${total.toLocaleString('es-CL')}`;
+            document.getElementById('stat-count').innerText = pedidos.length;
+            document.getElementById('stat-pending').innerText = pending;
+        }
+
+        // Carga inicial
+        fetchData();
+        // Auto-refresh cada 2 minutos
+        setInterval(fetchData, 120000);
+    </script>
+</body>
+</html>
