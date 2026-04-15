@@ -3,82 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Administrativo | El Otro Huerto</title>
+    <title>Huerta de Control | El Otro Huerto</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:wght@600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        :root { --bg: #FDFCFB; --bg-alt: #F4F6F0; --accent: #4A5D23; --text: #1D1D1F; --border: #EAEAEA; }
+        :root { --bg: #FDFCFB; --accent: #4A5D23; --text: #1D1D1F; --border: #EAEAEA; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 0; }
         
-        /* LOGIN ESTILO MERCADO */
-        #login-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .login-card { background: #fff; padding: 40px; border-radius: 20px; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; width: 100%; max-width: 360px; }
-        .login-input { width: 100%; padding: 16px; border: 1px solid var(--border); border-radius: 12px; margin-bottom: 20px; text-align: center; font-size: 16px; outline: none; background: #FAFAFA; }
-        .login-btn { width: 100%; background: var(--accent); color: #fff; border: none; padding: 16px; border-radius: 12px; font-weight: 700; cursor: pointer; }
+        /* LOGIN PROFESIONAL CENTRADO */
+        #login-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center; }
+        .login-card { background: #fff; padding: 48px; border-radius: 24px; border: 1px solid var(--border); box-shadow: 0 15px 35px rgba(0,0,0,0.05); text-align: center; width: 340px; }
+        .login-input { width: 100%; padding: 16px; border: 1px solid var(--border); border-radius: 14px; margin-bottom: 20px; text-align: center; font-size: 18px; outline: none; background: #FAFAFA; box-sizing: border-box; }
+        .login-btn { width: 100%; background: var(--accent); color: #fff; border: none; padding: 16px; border-radius: 14px; font-weight: 700; cursor: pointer; font-size: 16px; }
 
-        /* DASHBOARD PROFESIONAL */
+        /* DASHBOARD */
         #admin-content { display: none; padding: 40px 24px; max-width: 1200px; margin: 0 auto; }
         header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
-        h1 { font-family: 'Lora', serif; font-size: 32px; margin: 0; }
-
-        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 40px; }
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; margin-bottom: 40px; }
         .kpi-card { background: #fff; padding: 24px; border-radius: 20px; border: 1px solid var(--border); }
         .kpi-label { font-size: 11px; font-weight: 700; color: #666; text-transform: uppercase; letter-spacing: 1px; }
-        .kpi-value { font-size: 28px; font-weight: 700; color: var(--accent); margin: 8px 0; }
+        .kpi-value { font-size: 32px; font-weight: 700; color: var(--accent); margin: 8px 0; }
 
-        .main-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px; }
-        .card { background: #fff; border-radius: 20px; padding: 24px; border: 1px solid var(--border); }
-        h3 { font-family: 'Lora', serif; margin-top: 0; color: var(--accent); }
+        .main-layout { display: grid; grid-template-columns: 1.5fr 1fr; gap: 32px; }
+        .card { background: #fff; border-radius: 24px; padding: 28px; border: 1px solid var(--border); }
+        h3 { font-family: 'Lora', serif; margin: 0 0 20px 0; font-size: 20px; color: var(--accent); }
 
         table { width: 100%; border-collapse: collapse; font-size: 13px; }
-        th { text-align: left; padding: 12px; border-bottom: 2px solid var(--bg-alt); color: #666; }
-        td { padding: 12px; border-bottom: 1px solid var(--border); }
+        th { text-align: left; padding: 12px; border-bottom: 2px solid #F4F6F0; color: #666; font-weight: 600; }
+        td { padding: 14px 12px; border-bottom: 1px solid #f9f9f9; }
 
-        .picking-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed var(--border); }
-        .picking-qty { font-weight: 700; color: var(--accent); }
+        .picking-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed var(--border); font-size: 14px; }
+        .picking-qty { font-weight: 700; color: var(--accent); background: #F4F6F0; padding: 2px 10px; border-radius: 6px; }
 
-        @media (max-width: 900px) { .main-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 900px) { .main-layout { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
     <div id="login-overlay">
         <div class="login-card">
-            <h2 style="font-family:'Lora'; margin-top:0;">Huerta Admin</h2>
-            <p style="font-size:14px; color:#666; margin-bottom:24px;">Ingresa la clave maestra</p>
-            <input type="password" id="pass-field" class="login-input" placeholder="••••••••" autofocus>
+            <h2 style="font-family:'Lora'; margin-top:0;">El Otro Huerto</h2>
+            <p style="color:#666; font-size:14px; margin-bottom:30px;">Panel de Gestión Financiera</p>
+            <input type="password" id="pass-field" class="login-input" placeholder="Clave Maestra" autofocus>
             <button class="login-btn" onclick="checkAccess()">Ingresar</button>
-            <div id="error-msg" style="color:red; font-size:12px; margin-top:16px; font-weight:600;"></div>
+            <div id="error-msg" style="color:red; font-size:12px; margin-top:16px;"></div>
         </div>
     </div>
 
     <div id="admin-content">
         <header>
             <div>
-                <h1>Panel de Cosecha</h1>
-                <p id="data-status" style="color:#666; margin:4px 0;">Sincronizando con Google Sheets...</p>
+                <h1 style="font-family:'Lora'; font-size: 32px; margin:0;">Huerta de Control</h1>
+                <p id="data-status" style="color:#666; margin:4px 0;">Sincronizando cosecha...</p>
             </div>
-            <button onclick="cargarDatosAdmin()" style="background:white; border:1px solid var(--border); padding:10px 20px; border-radius:12px; cursor:pointer; font-weight:600;">🔄 Sincronizar</button>
+            <button onclick="cargarDatosAdmin()" style="background:white; border: 1px solid var(--border); padding: 12px 24px; border-radius: 14px; cursor:pointer; font-weight:600;">🔄 Sincronizar</button>
         </header>
 
         <div class="kpi-grid">
-            <div class="kpi-card">
-                <div class="kpi-label">Ventas Totales</div>
-                <div class="kpi-value" id="kpi-total">$0</div>
-            </div>
-            <div class="kpi-card">
-                <div class="kpi-label">Utilidad Neta (Est.)</div>
-                <div class="kpi-value" id="kpi-utilidad">$0</div>
-            </div>
-            <div class="kpi-card">
-                <div class="kpi-label">Pedidos</div>
-                <div class="kpi-value" id="kpi-pedidos">0</div>
-            </div>
+            <div class="kpi-card"><div class="kpi-label">Ventas Brutas</div><div class="kpi-value" id="kpi-total">$0</div></div>
+            <div class="kpi-card"><div class="kpi-label">Utilidad Neta (Est.)</div><div class="kpi-value" id="kpi-utilidad">$0</div></div>
+            <div class="kpi-card"><div class="kpi-label">Pedidos Realizados</div><div class="kpi-value" id="kpi-pedidos">0</div></div>
         </div>
 
-        <div class="main-grid">
+        <div class="main-layout">
             <div class="card">
-                <h3>📦 Registro de Órdenes</h3>
+                <h3>📦 Registro de Órdenes (13 recientes)</h3>
                 <div style="overflow-x: auto;">
                     <table id="ordersTable">
                         <thead><tr><th>Fecha</th><th>Cliente</th><th>Total</th><th>Pago</th></tr></thead>
@@ -89,7 +78,7 @@
             <div class="card">
                 <h3>🧺 Picking List (Total Cosecha)</h3>
                 <div id="picking-list"></div>
-                <div style="margin-top:30px;">
+                <div style="margin-top:40px;">
                     <h3>📊 Mix de Productos</h3>
                     <canvas id="productsChart"></canvas>
                 </div>
@@ -98,11 +87,8 @@
     </div>
 
 <script>
-    // USAMOS EL MISMO LINK Y LA MISMA LÓGICA DE MERCADO.HTML
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzr4xUDOZtACKNZgdHoUbvd3VMwuY7Reuj8KL2bRMEgtSoEwBrzuhqElqC-sWObuhVg/exec';
-    const _0xkey = "RU9IMjAyNg=="; // Clave: EOH2026
-
-    document.getElementById('pass-field').addEventListener('keypress', e => { if (e.key === 'Enter') checkAccess(); });
+    const _0xkey = "RU9IMjAyNg=="; // EOH2026
 
     function checkAccess() {
         if (btoa(document.getElementById('pass-field').value) === _0xkey) {
@@ -110,94 +96,98 @@
             document.getElementById('admin-content').style.display = 'block';
             cargarDatosAdmin();
         } else {
-            const ludicos = ["⚠️ Esa semilla no brotó.", "⚠️ Tierra seca en la clave.", "⚠️ Acceso denegado."];
-            document.getElementById('error-msg').innerText = ludicos[Math.floor(Math.random()*ludicos.length)];
+            document.getElementById('error-msg').innerText = "⚠️ Clave incorrecta.";
             document.getElementById('pass-field').value = "";
         }
     }
 
-    // FUNCIÓN IDÉNTICA A "cargarProductos()" DE MERCADO.HTML
     async function cargarDatosAdmin() {
+        const status = document.getElementById('data-status');
+        status.innerText = "⏳ Leyendo Google Sheets...";
+        
         try {
-            // Llamamos exactamente igual que en mercado.html
-            const res = await fetch(SCRIPT_URL + "?action=getAdminData");
+            // Llamada idéntica a mercado.html pero con el parámetro action
+            const res = await fetch(`${SCRIPT_URL}?action=getAdminData`);
             const data = await res.json();
             
-            // data.pedidos tiene los 13 registros
-            // data.productos tiene los 9 productos (para el costo)
-            if(data.pedidos && data.productos) {
-                renderDashboard(data.pedidos, data.productos);
-                document.getElementById('data-status').innerText = `✅ Última sincronización: ${new Date().toLocaleTimeString()}`;
+            // Verificación profunda de la estructura recibida
+            const pedidos = data.pedidos || [];
+            const productos = data.productos || [];
+
+            if (pedidos.length > 0) {
+                status.innerText = `✅ Datos actualizados: ${pedidos.length} pedidos.`;
+                renderDashboard(pedidos, productos);
+            } else {
+                status.innerText = "⚠️ No se recibieron pedidos. Revisa la pestaña 'Pedidos'.";
             }
         } catch (e) {
+            status.innerText = "❌ Error de conexión con el Script.";
             console.error(e);
-            document.getElementById('data-status').innerText = "❌ Error de conexión con el huerto.";
         }
     }
 
     function renderDashboard(pedidos, productos) {
-        let totalSum = 0;
-        let utilidadSum = 0;
+        let sumTotal = 0; let sumUtilidad = 0;
         const tbody = document.querySelector('#ordersTable tbody');
         tbody.innerHTML = '';
         const counts = {};
 
-        // Creamos mapa de costos
+        // Mapa de costos de los 9 productos
         const costos = {};
         productos.forEach(p => {
-            costos[(p.nombre || p.Nombre || "").trim()] = Number(p.costo || p.Costo || 0);
+            const n = (p.nombre || p.Nombre || "").trim();
+            costos[n] = Number(p.costo || p.Costo || 0);
         });
 
-        // Procesamos los 13 pedidos
+        // Procesar los 13 pedidos
         pedidos.slice().reverse().forEach(p => {
+            // Mapeo ultra-flexible de columnas
             const total = Number(p.total || p.Total || 0);
             const comision = Number(p.comision_mp || p.Comision_MP || 0);
             const detalle = p.detalle || p.Detalle || "";
-            
-            totalSum += total;
+            const nombre = p.nombre || p.Nombre || "---";
+            const fecha = (p.fecha || p.Fecha || "").split(' ')[0];
+            const pago = p.estado_pago || p.Estado_Pago || "";
+
+            sumTotal += total;
             let costoPedido = 0;
 
-            // Lógica de Picking
+            // Extraer cantidades para Picking y Costos
             const matches = detalle.match(/(\d+)x ([^|]+)/g);
             if (matches) {
                 matches.forEach(m => {
                     const parts = m.split('x ');
                     const q = parseInt(parts[0]);
-                    const name = parts[1].trim();
-                    counts[name] = (counts[name] || 0) + q;
-                    if(costos[name]) costoPedido += (costos[name] * q);
+                    const item = parts[1].trim();
+                    counts[item] = (counts[item] || 0) + q;
+                    if(costos[item]) costoPedido += (costos[item] * q);
                 });
             }
 
-            utilidadSum += (total - comision - costoPedido);
+            sumUtilidad += (total - comision - costoPedido);
 
             tbody.innerHTML += `
                 <tr>
-                    <td>${(p.fecha || p.Fecha || "").split(' ')[0]}</td>
-                    <td><strong>${p.nombre || p.Nombre || '---'}</strong></td>
+                    <td>${fecha}</td>
+                    <td><strong>${nombre}</strong></td>
                     <td>$${total.toLocaleString('es-CL')}</td>
-                    <td><span style="font-weight:700; font-size:10px;">${p.estado_pago || p.Estado_Pago || ''}</span></td>
+                    <td><span style="font-weight:700; color:var(--accent); font-size:10px;">${pago}</span></td>
                 </tr>
             `;
         });
 
-        // Actualizar KPIs
-        document.getElementById('kpi-total').innerText = `$${totalSum.toLocaleString('es-CL')}`;
-        document.getElementById('kpi-utilidad').innerText = `$${Math.floor(utilidadSum).toLocaleString('es-CL')}`;
+        document.getElementById('kpi-total').innerText = `$${sumTotal.toLocaleString('es-CL')}`;
+        document.getElementById('kpi-utilidad').innerText = `$${Math.floor(sumUtilidad).toLocaleString('es-CL')}`;
         document.getElementById('kpi-pedidos').innerText = pedidos.length;
 
-        // Render Picking List
+        // Lista de Picking
         const pickDiv = document.getElementById('picking-list');
         pickDiv.innerHTML = '';
         Object.entries(counts).sort((a,b) => b[1]-a[1]).forEach(([n, q]) => {
             pickDiv.innerHTML += `<div class="picking-item"><span>${n}</span><span class="picking-qty">${q} un.</span></div>`;
         });
 
-        // Gráfico
-        renderChart(counts);
-    }
-
-    function renderChart(counts) {
+        // Gráfico de Barras
         const ctx = document.getElementById('productsChart').getContext('2d');
         if (window.myChart) window.myChart.destroy();
         window.myChart = new Chart(ctx, {
