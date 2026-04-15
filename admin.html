@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Control de Mando | El Otro Huerto</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@600&display=swap" rel="stylesheet">
+    <title>Dashboard Admin | El Otro Huerto</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:wght@600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
@@ -15,42 +15,43 @@
             --white: #FFFFFF;
             --border: #E5E5E1;
             --success: #27AE60;
+            --danger: #D93025;
         }
 
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text-main); margin: 0; min-height: 100vh; }
         
         /* LOGIN LAYER */
-        #login-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center; transition: 0.5s; }
+        #login-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center; }
         .login-card { background: var(--white); padding: 40px; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); text-align: center; width: 100%; max-width: 320px; }
         .login-card h2 { font-family: 'Lora', serif; margin-bottom: 24px; }
-        .login-input { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 12px; margin-bottom: 16px; text-align: center; font-size: 16px; }
-        .login-btn { width: 100%; background: var(--accent); color: white; border: none; padding: 12px; border-radius: 12px; font-weight: 600; cursor: pointer; }
+        .login-input { width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 12px; margin-bottom: 16px; text-align: center; font-size: 16px; outline: none; }
+        .login-input:focus { border-color: var(--accent); }
+        .login-btn { width: 100%; background: var(--accent); color: white; border: none; padding: 14px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        #error-msg { color: var(--danger); font-size: 13px; margin-top: 12px; display: none; font-weight: 500; }
 
-        /* DASHBOARD LAYOUT */
+        /* DASHBOARD CONTENT */
         #admin-content { display: none; padding: 40px 24px; max-width: 1200px; margin: 0 auto; }
         
         header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; }
         .header-title h1 { font-family: 'Lora', serif; font-size: 32px; margin: 0; }
-        .header-title p { color: var(--text-muted); margin: 4px 0 0; }
 
         .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; margin-bottom: 40px; }
         .kpi-card { background: var(--white); padding: 24px; border-radius: 20px; border: 1px solid var(--border); }
         .kpi-label { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
         .kpi-value { font-size: 32px; font-weight: 700; color: var(--accent); margin: 8px 0; }
-        .kpi-sub { font-size: 11px; color: var(--success); font-weight: 600; }
 
         .main-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 32px; }
         .section-box { background: var(--white); border-radius: 24px; padding: 24px; border: 1px solid var(--border); }
         h3 { font-family: 'Lora', serif; font-size: 20px; margin-top: 0; margin-bottom: 20px; border-left: 4px solid var(--accent); padding-left: 12px; }
 
-        /* TABLA Y LISTAS */
+        /* TABLA */
         .table-res { overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; font-size: 13px; }
         th { text-align: left; padding: 12px; color: var(--text-muted); border-bottom: 2px solid var(--bg); }
         td { padding: 14px 12px; border-bottom: 1px solid #f9f9f9; }
 
         .picking-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed var(--border); }
-        .picking-qty { font-weight: 700; color: var(--accent); background: var(--bg); padding: 2px 8px; border-radius: 6px; }
+        .picking-qty { font-weight: 700; color: var(--accent); background: var(--bg-alt); padding: 2px 8px; border-radius: 6px; }
 
         @media (max-width: 900px) { .main-grid { grid-template-columns: 1fr; } }
     </style>
@@ -59,9 +60,11 @@
 
     <div id="login-overlay">
         <div class="login-card">
-            <h2>Acceso Privado</h2>
-            <input type="password" id="pass-field" class="login-input" placeholder="Clave de acceso">
-            <button class="login-btn" onclick="checkAccess()">Entrar al Dashboard</button>
+            <img src="assets/logo.svg" alt="" style="height:40px; margin-bottom: 20px;" onerror="this.style.display='none'">
+            <h2>Acceso Admin</h2>
+            <input type="password" id="pass-field" class="login-input" placeholder="Clave Maestra" autofocus>
+            <button class="login-btn" onclick="checkAccess()">Entrar al Huerto</button>
+            <p id="error-msg"></p>
         </div>
     </div>
 
@@ -69,41 +72,40 @@
         <header>
             <div class="header-title">
                 <h1>Huerta de Control</h1>
-                <p>Auditoría de Operaciones & Rentabilidad</p>
+                <p style="color:var(--text-muted)">Gestión Financiera & Picking List</p>
             </div>
-            <div id="current-date" style="font-weight: 600; font-size: 14px; opacity: 0.6;"></div>
+            <button onclick="location.reload()" style="background:none; border: 1px solid var(--border); padding: 8px 16px; border-radius: 10px; cursor:pointer; font-weight:600;">🔄 Sincronizar</button>
         </header>
 
         <div class="kpi-grid">
             <div class="kpi-card">
-                <div class="kpi-label">Venta Semanal (7D)</div>
-                <div class="kpi-value" id="kpi-week">$0</div>
-                <div class="kpi-sub">Actualizado al minuto</div>
-            </div>
-            <div class="kpi-card">
-                <div class="kpi-label">Venta Mensual (MTD)</div>
+                <div class="kpi-label">Venta Acumulada (Abril MTD)</div>
                 <div class="kpi-value" id="kpi-mtd">$0</div>
-                <div class="kpi-sub" id="mtd-label">Acumulado mes actual</div>
+                <div style="font-size:11px; color:var(--success)">● Ventas del mes en curso</div>
             </div>
             <div class="kpi-card">
-                <div class="kpi-label">Margen Neto Operacional</div>
-                <div class="kpi-value">31.2%</div>
-                <div class="kpi-sub">Post-comisiones y Logística</div>
+                <div class="kpi-label">Margen Real Bruto (Est.)</div>
+                <div class="kpi-value" id="kpi-margin">$0</div>
+                <div style="font-size:11px; color:var(--text-muted)">Deducida comisión Mercado Pago</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Pedidos en este Ciclo</div>
+                <div class="kpi-value" id="kpi-pedidos">0</div>
+                <div style="font-size:11px; color:var(--accent)">Órdenes totales registradas</div>
             </div>
         </div>
 
         <div class="main-grid">
             <div class="section-box">
-                <h3>📦 Registro Consolidado</h3>
+                <h3>📦 Historial de Pedidos</h3>
                 <div class="table-res">
                     <table id="ordersTable">
                         <thead>
                             <tr>
                                 <th>Fecha</th>
-                                <th>ID</th>
                                 <th>Cliente</th>
+                                <th>Logística</th>
                                 <th>Total</th>
-                                <th>Neto (Est.)</th>
                                 <th>Estado</th>
                             </tr>
                         </thead>
@@ -114,11 +116,11 @@
 
             <div style="display: flex; flex-direction: column; gap: 32px;">
                 <div class="section-box">
-                    <h3>🧺 Picking List (Cosecha)</h3>
+                    <h3>🧺 Picking List de Cosecha</h3>
                     <div id="picking-list"></div>
                 </div>
                 <div class="section-box">
-                    <h3>📊 Mix de Ventas</h3>
+                    <h3>📊 Rendimiento de Productos</h3>
                     <canvas id="salesChart"></canvas>
                 </div>
             </div>
@@ -126,81 +128,99 @@
     </div>
 
 <script>
-    // CLAVE ENCAPSULADA (Base64)
-    const _0xkey = "SHVlcnRvQWRtaW4yMDI2"; // HuertoAdmin2026
+    // CLAVE EOH2026 ENCAPSULADA
+    const _0xval = "RU9IMjAyNg=="; 
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzr4xUDOZtACKNZgdHoUbvd3VMwuY7Reuj8KL2bRMEgtSoEwBrzuhqElqC-sWObuhVg/exec';
+
+    // Manejar Enter en el campo de password
+    document.getElementById('pass-field').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') checkAccess();
+    });
 
     function checkAccess() {
         const input = document.getElementById('pass-field').value;
-        if (btoa(input) === _0xkey) {
-            document.getElementById('login-overlay').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('login-overlay').style.display = 'none';
-                document.getElementById('admin-content').style.display = 'block';
-                initDashboard();
-            }, 500);
+        const error = document.getElementById('error-msg');
+        
+        if (btoa(input) === _0xval) {
+            document.getElementById('login-overlay').style.display = 'none';
+            document.getElementById('admin-content').style.display = 'block';
+            initDashboard();
         } else {
-            alert("Clave incorrecta. Acceso denegado.");
+            const ludicos = [
+                "⚠️ Esa clave no ha germinado. Intenta otra vez.",
+                "⚠️ ¡Cuidado! Plaga detectada en la contraseña.",
+                "⚠️ Clave incorrecta. El huerto necesita más amor.",
+                "⚠️ Acceso denegado. Esa llave es de otro huerto."
+            ];
+            error.innerText = ludicos[Math.floor(Math.random() * ludicos.length)];
+            error.style.display = 'block';
+            document.getElementById('pass-field').value = "";
         }
     }
 
     async function initDashboard() {
-        document.getElementById('current-date').innerText = new Intl.DateTimeFormat('es-CL', { dateStyle: 'full' }).format(new Date());
-        
         try {
             const res = await fetch(SCRIPT_URL);
             const data = await res.json();
             processData(data);
         } catch (e) {
-            // Datos de prueba para simular el comportamiento real basado en tu estructura
-            simulateData();
+            // Cargar datos del usuario si el fetch falla para testing
+            simulateRealData();
         }
     }
 
+    function parseDate(dateStr) {
+        // Maneja formatos tipo "25/03/2026 15:43:36"
+        const parts = dateStr.split(' ')[0].split('/');
+        return new Date(parts[2], parts[1] - 1, parts[0]);
+    }
+
     function processData(ventas) {
-        let weekTotal = 0;
         let mtdTotal = 0;
+        let marginTotal = 0;
         const now = new Date();
-        const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-        const lastWeek = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+        const currentMonth = now.getMonth();
+        const currentYear = now.getFullYear();
 
         const tbody = document.querySelector('#ordersTable tbody');
         tbody.innerHTML = '';
         const counts = {};
 
-        ventas.forEach(v => {
-            const dateParts = v.Fecha.split(' ')[0].split('/');
-            const vDate = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
+        ventas.sort((a,b) => parseDate(b.Fecha) - parseDate(a.Fecha)).forEach(v => {
+            const vDate = parseDate(v.Fecha);
+            
+            // Lógica MTD (Mes Actual)
+            if (vDate.getMonth() === currentMonth && vDate.getFullYear() === currentYear) {
+                mtdTotal += Number(v.Total);
+            }
 
-            // Cálculos Financieros
-            if (vDate >= startOfMonth) mtdTotal += v.Total;
-            if (vDate >= lastWeek) weekTotal += v.Total;
+            marginTotal += (Number(v.Total) - Number(v.Comision_MP || 0));
 
             // Render Tabla
-            const netoEstimado = v.Total - (v.Comision_MP || 0);
             tbody.innerHTML += `
                 <tr>
-                    <td>${v.Fecha.split(' ')[0]}</td>
-                    <td><small>${v.ID_Pedido}</small></td>
+                    <td><small>${v.Fecha.split(' ')[0]}</small></td>
                     <td><strong>${v.Nombre}</strong></td>
-                    <td>$${v.Total.toLocaleString('es-CL')}</td>
-                    <td style="color:var(--success)">$${Math.floor(netoEstimado).toLocaleString('es-CL')}</td>
-                    <td><span style="font-size:10px; font-weight:700;">${v.Estado_Pago}</span></td>
+                    <td><small>${v.Logistica}</small></td>
+                    <td>$${Number(v.Total).toLocaleString('es-CL')}</td>
+                    <td><span style="font-size:10px; font-weight:700; color:var(--accent)">${v.Estado_Pago}</span></td>
                 </tr>
             `;
 
-            // Procesar Picking List
+            // Procesar Picking (Regex mejorada)
             const matches = v.Detalle.match(/(\d+)x ([^|]+)/g);
             if (matches) {
                 matches.forEach(m => {
                     const [qty, name] = m.split('x ');
-                    counts[name.trim()] = (counts[name.trim()] || 0) + parseInt(qty);
+                    const cleanName = name.split('|')[0].trim();
+                    counts[cleanName] = (counts[cleanName] || 0) + parseInt(qty);
                 });
             }
         });
 
-        document.getElementById('kpi-week').innerText = `$${weekTotal.toLocaleString('es-CL')}`;
         document.getElementById('kpi-mtd').innerText = `$${mtdTotal.toLocaleString('es-CL')}`;
+        document.getElementById('kpi-margin').innerText = `$${Math.floor(marginTotal).toLocaleString('es-CL')}`;
+        document.getElementById('kpi-pedidos').innerText = ventas.length;
         renderPicking(counts);
     }
 
@@ -209,7 +229,7 @@
         container.innerHTML = '';
         const labels = []; const values = [];
 
-        Object.entries(counts).forEach(([name, qty]) => {
+        Object.entries(counts).sort((a,b) => b[1] - a[1]).forEach(([name, qty]) => {
             container.innerHTML += `
                 <div class="picking-item">
                     <span>${name}</span>
@@ -228,27 +248,23 @@
             type: 'bar',
             data: {
                 labels: labels,
-                datasets: [{
-                    data: values,
-                    backgroundColor: '#4A5D23',
-                    borderRadius: 10
-                }]
+                datasets: [{ data: values, backgroundColor: '#4A5D23', borderRadius: 6 }]
             },
             options: {
                 indexAxis: 'y',
                 plugins: { legend: { display: false } },
-                scales: { x: { display: false }, y: { grid: { display: false } } }
+                scales: { x: { display: false }, y: { grid: { display: false }, ticks: { font: { size: 10 } } } }
             }
         });
     }
 
-    function simulateData() {
-        const mock = [
-            {Fecha: "14/04/2026", ID_Pedido: "ORD-123", Nombre: "Jack Johnson", Total: 1000, Detalle: "• 1x Zapallo Tromboncino |", Estado_Pago: "PAGADO", Comision_MP: 41},
-            {Fecha: "10/04/2026", ID_Pedido: "ORD-124", Nombre: "Fran Polloni", Total: 500, Detalle: "• 1x Papa Astrid |", Estado_Pago: "PAGADO", Comision_MP: 20},
-            {Fecha: "02/04/2026", ID_Pedido: "ORD-125", Nombre: "Jorge Admin", Total: 12490, Detalle: "• 2x Pack El Otro Huerto |", Estado_Pago: "Pendiente", Comision_MP: 518}
+    function simulateRealData() {
+        const data = [
+            {Fecha:"25/03/2026", Nombre:"Jack Johnson", Total:1000, Logistica:"Plaza Las Lilas", Detalle:"• 1x Zapallo Tromboncino | • 1x Zapallo Guarda Paine |", Estado_Pago:"Pendiente", Comision_MP:41},
+            {Fecha:"07/04/2026", Nombre:"Jorge", Total:12490, Logistica:"Domicilio", Detalle:"• 1x Pack El Otro Huerto |", Estado_Pago:"Pendiente", Comision_MP:518},
+            {Fecha:"14/04/2026", Nombre:"Test User", Total:72450, Logistica:"Domicilio", Detalle:"• 4x Pack El Otro Huerto | • 1x Papa Astrid (3Kgs) |", Estado_Pago:"Pendiente", Comision_MP:3008}
         ];
-        processData(mock);
+        processData(data);
     }
 </script>
 </body>
