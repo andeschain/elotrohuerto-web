@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Huerta de Control | El Otro Huerto BI</title>
+    <title>Huerta de Control | V8.5 Business Intelligence</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -15,14 +15,13 @@
 
         body { font-family: 'Inter', sans-serif; background: var(--bg-page); color: var(--text-main); margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
 
-        /* LOGIN ESTILO MERCADO V4.3 */
+        /* LOGIN ESTILO MERCADO 4.3 */
         #login-overlay { position: fixed; inset: 0; background: var(--bg-page); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px; }
         .login-card { background: #fff; padding: 48px 32px; border-radius: 32px; box-shadow: 0 20px 60px rgba(0,0,0,0.05); text-align: center; width: 100%; max-width: 380px; border: 1px solid var(--border); }
         .login-card h2 { font-family: 'Lora', serif; font-size: 28px; margin: 0 0 8px; color: var(--text-main); }
         .login-input { width: 100%; padding: 18px; border: 1px solid var(--border); border-radius: 16px; margin-bottom: 20px; text-align: center; font-size: 18px; outline: none; background: #FAFAFA; font-family: 'Inter', sans-serif; transition: 0.3s; }
         .login-input:focus { border-color: var(--accent); background: #fff; }
         .login-btn { width: 100%; background: var(--accent); color: #fff; border: none; padding: 18px; border-radius: 16px; font-weight: 700; cursor: pointer; font-size: 16px; transition: 0.2s; }
-        .login-btn:active { transform: scale(0.98); }
 
         /* DASHBOARD UX */
         #admin-content { display: none; padding: 40px 24px; max-width: 1300px; margin: 0 auto; }
@@ -31,9 +30,8 @@
 
         .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; margin-bottom: 40px; }
         .kpi-card { background: #fff; padding: 28px; border-radius: 24px; border: 1px solid var(--border); transition: 0.3s; }
-        .kpi-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.04); }
         .kpi-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.2px; }
-        .kpi-value { font-size: 34px; font-weight: 700; color: var(--accent); margin: 12px 0; }
+        .kpi-value { font-size: 34px; font-weight: 700; color: var(--accent); margin: 8px 0; }
         .kpi-sub { font-size: 12px; color: var(--text-muted); font-weight: 500; }
 
         .main-grid { display: grid; grid-template-columns: 1.8fr 1fr; gap: 32px; }
@@ -47,7 +45,7 @@
         .picking-row { display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px dashed var(--border); }
         .picking-qty { font-weight: 700; color: var(--accent); background: var(--bg-alt); padding: 4px 12px; border-radius: 12px; }
 
-        #data-status-pill { padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-block; margin-top: 8px; }
+        #data-status-pill { padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 600; display: inline-block; margin-top: 8px; }
 
         @media (max-width: 1024px) { .main-grid { grid-template-columns: 1fr; } }
     </style>
@@ -57,9 +55,9 @@
     <div id="login-overlay">
         <div class="login-card">
             <h2>El Otro Huerto</h2>
-            <p style="color:var(--text-muted); font-size:14px; margin-bottom:32px;">Panel Operativo V8.0</p>
+            <p style="color:var(--text-muted); font-size:14px; margin-bottom:32px;">Panel BI & Finanzas</p>
             <input type="password" id="pass-field" class="login-input" placeholder="Clave Maestra" autofocus>
-            <button class="login-btn" onclick="checkAccess()">Ingresar al Dashboard</button>
+            <button class="login-btn" onclick="checkAccess()">Entrar al Dashboard</button>
             <div id="error-msg" style="color:var(--danger); font-size:13px; margin-top:16px; font-weight:500;"></div>
         </div>
     </div>
@@ -83,21 +81,21 @@
                 <div class="kpi-sub" id="kpi-ticket">Ticket Prom: $0</div>
             </div>
             <div class="kpi-card">
-                <div class="kpi-label">Utilidad Neta Est.</div>
+                <div class="kpi-label">Rentabilidad Neta</div>
                 <div class="kpi-value" id="kpi-utility">$0</div>
-                <div class="kpi-sub" id="kpi-margin">Post-costos y comisiones</div>
+                <div class="kpi-sub" id="kpi-margin">Incl. costos fijos semana</div>
             </div>
             <div class="kpi-card">
-                <div class="kpi-label">Órdenes</div>
+                <div class="kpi-label">Pedidos Acumulados</div>
                 <div class="kpi-value" id="kpi-qty">0</div>
-                <div class="kpi-sub" style="color:var(--success)">Activas esta semana</div>
+                <div class="kpi-sub" style="color:var(--success)">Total histórico piloto</div>
             </div>
         </div>
 
         <div class="main-grid">
             <div class="left-col">
                 <div class="card">
-                    <h3>📦 Gestión de Órdenes</h3>
+                    <h3>📦 Gestión de Pedidos</h3>
                     <div style="overflow-x: auto;">
                         <table id="orders-table">
                             <thead><tr><th>Fecha</th><th>Cliente</th><th>Total</th><th>Pago</th><th>Logística</th></tr></thead>
@@ -112,7 +110,7 @@
                     <div id="picking-list"></div>
                 </div>
                 <div class="card">
-                    <h3>🏆 Ranking de Productos</h3>
+                    <h3>📊 Mix de Productos</h3>
                     <canvas id="productsChart" height="200"></canvas>
                 </div>
             </div>
@@ -120,12 +118,13 @@
     </div>
 
 <script>
+    // URL DEL SCRIPT (Se usará la misma de Mercado para evitar problemas de caché)
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzr4xUDOZtACKNZgdHoUbvd3VMwuY7Reuj8KL2bRMEgtSoEwBrzuhqElqC-sWObuhVg/exec';
     const MASTER_KEY = "RU9IMjAyNg=="; // EOH2026
 
-    // CONSTANTES DE NEGOCIO (BI)
-    const COSTO_OPERATIVO_SEMANAL = 16000 + 34500 + 5000; // Viaje + Persona + Gastos
-    const COMISION_MP_PORC = 0.0272; // 2.29% + IVA aprox.
+    // BI CONSTANTS
+    const COSTO_FIJO_SEMANA = 16000 + 34500 + 5000;
+    const COMISION_MP_FACTOR = 0.0272; 
 
     document.getElementById('pass-field').addEventListener('keypress', e => { if (e.key === 'Enter') checkAccess(); });
 
@@ -135,58 +134,64 @@
             document.getElementById('admin-content').style.display = 'block';
             syncData();
         } else {
-            const msgs = ["⚠️ Esa semilla no brotó.", "⚠️ Tierra seca en la clave.", "⚠️ Intento de plaga detectado."];
-            document.getElementById('error-msg').innerText = msgs[Math.floor(Math.random()*msgs.length)];
+            const ludicos = ["⚠️ Esa semilla no brotó.", "⚠️ Tierra seca en la clave.", "⚠️ Acceso denegado."];
+            document.getElementById('error-msg').innerText = ludicos[Math.floor(Math.random()*ludicos.length)];
             document.getElementById('pass-field').value = "";
         }
     }
 
     async function syncData() {
         const pill = document.getElementById('data-status-pill');
-        pill.innerText = "⏳ Consultando...";
+        pill.innerText = "⏳ Sincronizando datos operativos...";
         pill.style.background = "var(--bg-alt)";
         
         try {
-            const res = await fetch(`${SCRIPT_URL}?action=getAdminData&cache=${Date.now()}`);
+            // PETICIÓN INTELIGENTE: Si el script falla mandando productos, 
+            // este Admin detectará que no hay pedidos y re-intentará.
+            const res = await fetch(`${SCRIPT_URL}?action=getAdminData&cb=${Date.now()}`);
             const data = await res.json();
             
-            // ANALIZADOR DE DATOS: Si Google manda productos en lugar del objeto admin
-            if (Array.isArray(data) && !data.pedidos) {
-                pill.innerHTML = "⚠️ ERROR: Google mandó Productos. Refresca la Implementación del Script.";
-                pill.style.background = "#FFEBEE";
-                pill.style.color = "var(--danger)";
-                console.error("El script ignoró el parámetro action. Recibido:", data);
-                return;
-            }
-
-            if (data.pedidos) {
-                pill.innerText = "✅ Sincronizado";
-                pill.style.background = "#E8F5E9";
-                pill.style.color = "var(--success)";
-                render(data.pedidos, data.productos);
+            // Si data es un Array, significa que Google nos mandó los Productos (error de caché)
+            if (Array.isArray(data)) {
+                pill.innerHTML = "⚠️ Google envió productos. Intentando bypass de caché...";
+                // Re-intento con parámetro distinto
+                const resRetry = await fetch(`${SCRIPT_URL}?forceAdmin=true&v=${Math.random()}`);
+                const dataRetry = await resRetry.json();
+                
+                if (dataRetry.pedidos) {
+                    processDashboard(dataRetry.pedidos, dataRetry.productos);
+                } else {
+                    pill.innerHTML = "❌ Falló el Bypass. Google tiene congelada la URL.";
+                }
+            } else if (data.pedidos) {
+                processDashboard(data.pedidos, data.productos);
             }
         } catch (e) {
             pill.innerText = "❌ Error de conexión";
-            pill.style.background = "#FFEBEE";
         }
     }
 
-    function render(pedidos, productos) {
+    function processDashboard(pedidos, productos) {
+        const pill = document.getElementById('data-status-pill');
+        pill.innerText = "✅ Sincronizado";
+        pill.style.background = "#E8F5E9";
+        pill.style.color = "var(--success)";
+
         let sales = 0, utility = 0;
         const tbody = document.querySelector('#orders-table tbody');
         tbody.innerHTML = '';
-        const counts = {};
+        const picking = {};
 
         const costosMap = {};
         productos.forEach(p => costosMap[(p.nombre || "").trim()] = Number(p.costo || 0));
 
         pedidos.slice().reverse().forEach(p => {
-            const valVenta = Number(p.total || p.Total || 0);
-            const valComision = valVenta * COMISION_MP_PORC;
-            const detalle = p.detalle || p.Detalle || "";
+            const valVenta = Number(p.total || 0);
+            const valComision = valVenta * COMISION_MP_FACTOR;
+            const detalle = p.detalle || "";
             
             sales += valVenta;
-            let costoProd = 0;
+            let costoArticulos = 0;
 
             const matches = detalle.match(/(\d+)x ([^|]+)/g);
             if (matches) {
@@ -194,16 +199,14 @@
                     const parts = m.split('x ');
                     const q = parseInt(parts[0]);
                     const n = parts[1].trim();
-                    counts[n] = (counts[n] || 0) + q;
-                    if(costosMap[n]) costoProd += (costosMap[n] * q);
+                    picking[n] = (picking[n] || 0) + q;
+                    if(costosMap[n]) costoArticulos += (costosMap[n] * q);
                 });
             }
-
-            utility += (valVenta - valComision - costoProd);
+            utility += (valVenta - valComision - costoArticulos);
 
             tbody.innerHTML += `
                 <tr>
-                    <td><small>${p.id_pedido || '---'}</small></td>
                     <td>${(p.fecha || "").split(' ')[0]}</td>
                     <td><strong>${p.nombre || '---'}</strong></td>
                     <td>$${valVenta.toLocaleString('es-CL')}</td>
@@ -213,16 +216,14 @@
             `;
         });
 
-        // KPIs
-        const finalUtility = utility - COSTO_OPERATIVO_SEMANAL;
+        const finalUtility = utility - COSTO_FIJO_SEMANA;
         document.getElementById('kpi-sales').innerText = `$${sales.toLocaleString('es-CL')}`;
         document.getElementById('kpi-utility').innerText = `$${Math.floor(finalUtility).toLocaleString('es-CL')}`;
         document.getElementById('kpi-qty').innerText = pedidos.length;
         document.getElementById('kpi-ticket').innerText = `Ticket Prom: $${Math.floor(sales/pedidos.length).toLocaleString('es-CL')}`;
-        document.getElementById('kpi-margin').innerText = `Margen: ${Math.round((finalUtility/sales)*100)}%`;
 
-        renderPicking(counts);
-        renderChart(counts);
+        renderPicking(picking);
+        renderChart(picking);
         updateTimer();
     }
 
@@ -255,7 +256,7 @@
         const diff = nextWed - now;
         const days = Math.floor(diff / (1000 * 60 * 60 * 24));
         const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        document.getElementById('corte-timer').innerText = `Próximo corte: ${days}d ${hours}h`;
+        document.getElementById('corte-timer').innerText = `Corte de pedidos: ${days}d ${hours}h`;
     }
 </script>
 </body>
