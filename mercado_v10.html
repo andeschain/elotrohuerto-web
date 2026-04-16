@@ -227,7 +227,7 @@
     </div>
 
     <script>
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyeTru3j4XhwpsTaO_yg9FjsTQ4hZoAZW1TxC92wz5-gmGXqB-ciHl2H6u3n2mk9z5o/exec';
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw-iHpS1rzew9hRrb8MylesJdat9IR3RTZ1OyvcwCEudOcnOcmqtw11sAdDoSoQ5htA/exec';
         let cart = {};
         let deliveryCost = 0;
         let isAddressValid = true;
@@ -250,24 +250,18 @@
                 });
             } catch (e) { console.warn("Maps Error"); }
         }
-async function cargarProductos() {
-    try {
-        const res = await fetch(GOOGLE_SCRIPT_URL);
-        const data = await res.json();
-        
-        // CORRECCIÓN AQUÍ: 
-        // Si data tiene la propiedad "productos", usamos esa. Si no, usamos data directamente.
-        const productos = data.productos ? data.productos : data;
-        
-        const categories = ['Todos', ...new Set(productos.filter(p => p.estado !== 'Inactivo').map(p => p.segmento))];
-        document.getElementById('categoryFilters').innerHTML = categories.map(cat => `
-            <button class="pill ${cat === 'Todos' ? 'active' : ''}" onclick="filtrarCategoria('${cat}', this)">${cat}</button>
-        `).join('');
-        renderGrid(productos);
-    } catch(e) { 
-        console.error("Error cargando productos:", e); 
-    }
-}
+
+        async function cargarProductos() {
+            try {
+                const res = await fetch(GOOGLE_SCRIPT_URL);
+                const productos = await res.json();
+                const categories = ['Todos', ...new Set(productos.filter(p => p.estado !== 'Inactivo').map(p => p.segmento))];
+                document.getElementById('categoryFilters').innerHTML = categories.map(cat => `
+                    <button class="pill ${cat === 'Todos' ? 'active' : ''}" onclick="filtrarCategoria('${cat}', this)">${cat}</button>
+                `).join('');
+                renderGrid(productos);
+            } catch(e) { console.error(e); }
+        }
 
         function renderGrid(productos) {
             const grid = document.getElementById('productGrid');
