@@ -127,7 +127,7 @@
             });
         }
         
-        async function updateLogistica(orderId, selectElement) {
+       async function updateLogistica(orderId, selectElement) {
     const nuevoEstado = selectElement.value;
     const loading = document.getElementById('loading');
     
@@ -140,21 +140,26 @@
     loading.style.display = 'flex';
     selectElement.disabled = true;
 
+    // --- CAMBIO CLAVE: Enviamos como Form Data (Compatible con no-cors) ---
+    const params = new URLSearchParams();
+    params.append('action', 'updateOrder');
+    params.append('id', orderId);
+    params.append('status', nuevoEstado);
+
     try {
-        const response = await fetch(SCRIPT_URL, {
+        await fetch(SCRIPT_URL, {
             method: 'POST',
-            mode: 'no-cors', // MODO SILENCIOSO PARA GOOGLE SCRIPTS
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ action: 'updateOrder', id: orderId, status: nuevoEstado })
+            mode: 'no-cors', // Modo silencioso
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: params.toString()
         });
         
-        // Como usamos 'no-cors', no podemos leer la respuesta, pero el cambio se ejecuta.
-        // Esperamos 1.5 segundos para que Google procese y refrescamos.
+        // Esperamos 2 segundos para dar tiempo a Google de escribir en la celda
         setTimeout(() => {
             loading.style.display = 'none';
             selectElement.disabled = false;
-            fetchData();
-        }, 1500);
+            fetchData(); // Refrescamos la tabla para ver el cambio
+        }, 2000);
 
     } catch (e) {
         alert("Error de conexión.");
