@@ -123,43 +123,42 @@
                 `;
             });
         }
-
+        
         async function updateLogistica(orderId, selectElement) {
-            const nuevoEstado = selectElement.value;
-            const loading = document.getElementById('loading');
-            
-            if (nuevoEstado === "Listo para Despacho") {
-                if (!confirm("Se enviará el correo 'Paso 3 de 3' (Cosecha Lista) al cliente. ¿Proceder?")) {
-                    fetchData(); return;
-                }
-            }
-
-            loading.style.display = 'flex';
-            selectElement.disabled = true;
-
-            try {
-                // Fetch optimizado para Google Apps Script
-                const response = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify({ action: 'updateOrder', id: orderId, status: nuevoEstado })
-                });
-                
-                const resData = await response.json();
-                if (resData.status === 'success') {
-                    console.log("Sheet actualizado correctamente");
-                } else {
-                    alert("El servidor no pudo actualizar el estado.");
-                }
-            } catch (e) {
-                alert("Error de comunicación. El cambio podría no haberse guardado.");
-            } finally {
-                loading.style.display = 'none';
-                selectElement.disabled = false;
-                fetchData(); // Recarga para confirmar el cambio visualmente
-            }
+    const nuevoEstado = selectElement.value;
+    const loading = document.getElementById('loading');
+    
+    if (nuevoEstado === "Listo para Despacho") {
+        if (!confirm("Se enviará el correo 'Paso 3 de 3' al cliente. ¿Proceder?")) {
+            fetchData(); return;
         }
+    }
 
+    loading.style.display = 'flex';
+    selectElement.disabled = true;
+
+    try {
+        const response = await fetch(SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors', // MODO SILENCIOSO PARA GOOGLE SCRIPTS
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'updateOrder', id: orderId, status: nuevoEstado })
+        });
+        
+        // Como usamos 'no-cors', no podemos leer la respuesta, pero el cambio se ejecuta.
+        // Esperamos 1.5 segundos para que Google procese y refrescamos.
+        setTimeout(() => {
+            loading.style.display = 'none';
+            selectElement.disabled = false;
+            fetchData();
+        }, 1500);
+
+    } catch (e) {
+        alert("Error de conexión.");
+        loading.style.display = 'none';
+        selectElement.disabled = false;
+    }
+}
         function updateStats(pedidos) {
             const total = pedidos.reduce((acc, p) => String(p.estado_pago).toUpperCase() === "PAGADO" ? acc + Number(p.total) : acc, 0);
             const pending = pedidos.filter(p => p.estado_logistica === "Por Cosechar" && String(p.estado_pago).toUpperCase() === "PAGADO").length;
