@@ -3,140 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logística V10.1 | El Otro Huerto</title>
+    <title>Gestión de Pedidos V10.1 | El Otro Huerto</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:wght@600&display=swap" rel="stylesheet">
     <style>
-        :root { --accent: #4A5D23; --bg: #FDFCFB; --border: #EAEAEA; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #1D1D1F; }
-        .header { display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto 30px; }
-        .table-container { background: white; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; max-width: 1100px; margin: 0 auto; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        :root {
+            --bg: #FDFCFB; --accent: #4A5D23; --text: #1D1D1F; --border: #EAEAEA;
+        }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; -webkit-font-smoothing: antialiased; }
+        .header { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto 30px; }
+        h1 { font-family: 'Lora', serif; font-size: 28px; margin: 0; }
+        
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto 40px; }
+        .stat-card { background: white; padding: 20px; border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
+        .stat-val { font-size: 24px; font-weight: 700; color: var(--accent); display: block; }
+        .stat-label { font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+
+        .table-container { background: white; border-radius: 16px; border: 1px solid var(--border); overflow-x: auto; max-width: 1200px; margin: 0 auto; }
         table { width: 100%; border-collapse: collapse; font-size: 13px; }
         th { background: #F8F9F6; padding: 15px; text-align: left; border-bottom: 1px solid var(--border); color: #666; }
         td { padding: 15px; border-bottom: 1px solid var(--border); }
-        .btn-sync { background: var(--accent); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; }
-        .status-select { padding: 6px; border-radius: 6px; border: 1px solid var(--border); background: #F4F6F0; font-size: 12px; font-weight: 600; color: var(--accent); }
-        .badge { padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; text-transform: uppercase; }
-        .PAGADO { background: #E8F5E9; color: #2E7D32; }
-        .PENDIENTE { background: #FFF3E0; color: #E65100; }
-        #loading-overlay { position: fixed; inset: 0; background: rgba(255,255,255,0.7); display: none; justify-content: center; align-items: center; z-index: 100; font-weight: bold; color: var(--accent); }
+        
+        .badge { padding: 4px 8px; border-radius: 6px; font-weight: 600; font-size: 11px; }
+        .badge-pagado { background: #E8F5E9; color: #2E7D32; }
+        .badge-pendiente { background: #FFF3E0; color: #E65100; }
+
+        .status-select {
+            padding: 6px; border-radius: 8px; border: 1px solid var(--border); 
+            font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600;
+            background: #F4F6F0; color: var(--accent); cursor: pointer; transition: 0.2s;
+        }
+        .status-select:hover { background: #E8EDDE; }
+        .status-select:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .loading-overlay { position: fixed; inset: 0; background: rgba(255,255,255,0.8); display: none; justify-content: center; align-items: center; z-index: 1000; font-weight: 700; color: var(--accent); }
     </style>
 </head>
 <body>
 
-<div id="loading-overlay">🌱 Sincronizando cosecha...</div>
+    <div class="loading-overlay" id="loading">🌱 Sincronizando con el huerto...</div>
 
-<div class="header">
-    <h1 style="font-family: 'Lora'; margin:0;">Gestión Logística <span style="font-weight:400; color:#888;">V10.1</span></h1>
-    <div style="text-align: right;">
-        <span id="lastUpdate" style="font-size: 11px; color: #999; margin-right: 15px;"></span>
-        <button class="btn-sync" onclick="fetchData()">🔄 Sincronizar</button>
+    <div class="header">
+        <h1>Gestión Logística <span style="font-weight: 400; color: #888;">| V10.1</span></h1>
+        <div style="text-align: right;">
+            <div id="lastSync" style="font-size: 11px; color: #888; margin-bottom: 5px;"></div>
+            <button onclick="fetchData()" style="background: var(--accent); color: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 600;">🔄 Sincronizar</button>
+        </div>
     </div>
-</div>
 
-<div class="table-container">
-    <table>
-        <thead>
-            <tr>
-                <th>Fecha</th>
-                <th>ID Pedido</th>
-                <th>Cliente</th>
-                <th>Entrega</th>
-                <th>Monto</th>
-                <th>Pago</th>
-                <th>Logística</th>
-            </tr>
-        </thead>
-        <tbody id="pedidosBody">
-            <tr><td colspan="7" style="text-align:center; padding:40px;">Cargando pedidos...</td></tr>
-        </tbody>
-    </table>
-</div>
+    <div class="stats-grid">
+        <div class="stat-card"><span class="stat-label">Ventas Pagadas</span><span class="stat-val" id="stat-total">$0</span></div>
+        <div class="stat-card"><span class="stat-label">Pedidos Hoy</span><span class="stat-val" id="stat-count">0</span></div>
+        <div class="stat-card"><span class="stat-label">Pendientes Cosecha</span><span class="stat-val" id="stat-pending">0</span></div>
+    </div>
 
-<script>
-    // --- ACTUALIZA ESTA URL CON TU NUEVA IMPLEMENTACIÓN V12.1 ---
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwzuY0ERtTWD7UalpHcRlFD8J0sXg2t3G09Fd5qGuNFCSwn-U2sVGbIOr_IZvfYwm5v/exec';
-
-    async function fetchData() {
-        document.getElementById('loading-overlay').style.display = 'flex';
-        try {
-            const res = await fetch(`${SCRIPT_URL}?action=getAdminData`);
-            const data = await res.json();
-            renderPedidos(data.pedidos);
-            document.getElementById('lastUpdate').innerText = "Última actualización: " + new Date().toLocaleTimeString();
-        } catch (e) {
-            console.error("Error cargando datos:", e);
-            document.getElementById('pedidosBody').innerHTML = '<tr><td colspan="7" style="text-align:center; color:red;">Error de conexión.</td></tr>';
-        }
-        document.getElementById('loading-overlay').style.display = 'none';
-    }
-
-    function renderPedidos(pedidos) {
-        const body = document.getElementById('pedidosBody');
-        body.innerHTML = '';
-
-        pedidos.forEach(p => {
-            // El Script V12.1 mapea id_pedido como p.id para facilitar esto
-            const orderId = p.id || "S/N";
-            const statusPago = (p.estado_pago || "Pendiente").toUpperCase();
-            const statusLog = p.estado_logistico || "Por Cosechar";
-            
-            body.innerHTML += `
+    <div class="table-container">
+        <table>
+            <thead>
                 <tr>
-                    <td>${p.fecha}</td>
-                    <td style="font-weight:700; color:#444;">${orderId}</td>
-                    <td><strong>${p.nombre}</strong><br><small style="color:#888">${p.email}</small></td>
-                    <td style="max-width:200px; font-size:11px;">${p.logistica}</td>
-                    <td>$${Number(p.total).toLocaleString('es-CL')}</td>
-                    <td><span class="badge ${statusPago}">${statusPago}</span></td>
-                    <td>
-                        <select class="status-select" onchange="updateStatus('${orderId}', this.value)" ${statusPago !== 'PAGADO' ? 'disabled' : ''}>
-                            <option value="Por Cosechar" ${statusLog === 'Por Cosechar' ? 'selected' : ''}>🚜 Por Cosechar</option>
-                            <option value="En Camino" ${statusLog === 'En Camino' ? 'selected' : ''}>🚚 En Camino</option>
-                            <option value="Listo para Despacho" ${statusLog === 'Listo para Despacho' ? 'selected' : ''}>🧺 Listo / Notificar</option>
-                            <option value="Entregado" ${statusLog === 'Entregado' ? 'selected' : ''}>✅ Entregado</option>
-                        </select>
-                    </td>
+                    <th>Fecha</th>
+                    <th>Orden</th>
+                    <th>Cliente</th>
+                    <th>Detalle</th>
+                    <th>Total</th>
+                    <th>Pago</th>
+                    <th>Estado Logístico</th>
                 </tr>
-            `;
-        });
-    }
+            </thead>
+            <tbody id="pedidosBody">
+                <tr><td colspan="7" style="text-align:center; padding:40px;">Cargando base de datos...</td></tr>
+            </tbody>
+        </table>
+    </div>
 
-    async function updateStatus(id, nuevoEstado) {
-        if (nuevoEstado === "Listo para Despacho") {
-            if (!confirm("Se enviará el correo 'Paso 3 de 3' al cliente. ¿Proceder?")) {
-                fetchData(); return;
+    <script>
+        // --- URL DEL SCRIPT V12.1 ---
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwzuY0ERtTWD7UalpHcRlFD8J0sXg2t3G09Fd5qGuNFCSwn-U2sVGbIOr_IZvfYwm5v/exec';
+
+        async function fetchData() {
+            document.getElementById('loading').style.display = 'flex';
+            try {
+                const res = await fetch(`${SCRIPT_URL}?action=getAdminData`);
+                const data = await res.json();
+                const pedidos = data.pedidos || [];
+                renderPedidos(pedidos);
+                updateStats(pedidos);
+                document.getElementById('lastSync').innerText = "Sincronizado: " + new Date().toLocaleTimeString();
+            } catch (e) { 
+                console.error("Error cargando datos", e);
+                document.getElementById('pedidosBody').innerHTML = '<tr><td colspan="7" style="text-align:center; color:red;">Error de conexión.</td></tr>';
+            }
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        function renderPedidos(pedidos) {
+            const body = document.getElementById('pedidosBody');
+            body.innerHTML = '';
+
+            pedidos.forEach(p => {
+                // CORRECCIÓN CLAVE: Buscamos id_pedido que es como viene del Excel
+                const orderId = p.id_pedido || p.id || "S/N";
+                const isPaid = String(p.estado_pago || "").toUpperCase() === "PAGADO";
+                const estadoLog = p.estado_logistico || "Por Cosechar";
+
+                body.innerHTML += `
+                    <tr>
+                        <td>${p.fecha}</td>
+                        <td style="font-weight:700;">${orderId}</td>
+                        <td><strong>${p.nombre}</strong><br><small style="color:#888;">${p.email}</small></td>
+                        <td style="max-width:220px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${p.detalle}">${p.detalle}</td>
+                        <td>$${Number(p.total).toLocaleString('es-CL')}</td>
+                        <td><span class="badge ${isPaid ? 'badge-pagado' : 'badge-pendiente'}">${isPaid ? 'PAGADO' : 'PENDIENTE'}</span></td>
+                        <td>
+                            <select class="status-select" onchange="updateLogistica('${orderId}', this)" ${!isPaid ? 'disabled' : ''}>
+                                <option value="Por Cosechar" ${estadoLog === 'Por Cosechar' ? 'selected' : ''}>🚜 Por Cosechar</option>
+                                <option value="En Camino" ${estadoLog === 'En Camino' ? 'selected' : ''}>🚚 En Camino</option>
+                                <option value="Listo para Despacho" ${estadoLog === 'Listo para Despacho' ? 'selected' : ''}>🧺 Listo / Notificar</option>
+                                <option value="Entregado" ${estadoLog === 'Entregado' ? 'selected' : ''}>✅ Entregado</option>
+                            </select>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        async function updateLogistica(orderId, selectElement) {
+            const nuevoEstado = selectElement.value;
+            if (nuevoEstado === "Listo para Despacho") {
+                if (!confirm("Se enviará el correo 'Paso 3 de 3' al cliente. ¿Proceder?")) {
+                    fetchData(); return;
+                }
+            }
+
+            document.getElementById('loading').style.display = 'flex';
+            
+            const params = new URLSearchParams();
+            params.append('action', 'updateOrder');
+            params.append('id', orderId);
+            params.append('status', nuevoEstado);
+
+            try {
+                await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: params.toString()
+                });
+                setTimeout(fetchData, 2000);
+            } catch (e) {
+                alert("Error de conexión.");
+                document.getElementById('loading').style.display = 'none';
             }
         }
 
-        document.getElementById('loading-overlay').style.display = 'flex';
-        
-        // Enviamos mediante URLSearchParams para que el script lo reciba sin errores CORS
-        const params = new URLSearchParams();
-        params.append('action', 'updateOrder');
-        params.append('id', id);
-        params.append('status', nuevoEstado);
-
-        try {
-            await fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors', // Modo silencioso para Google Scripts
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: params.toString()
-            });
+        function updateStats(pedidos) {
+            const total = pedidos.reduce((acc, p) => String(p.estado_pago).toUpperCase() === "PAGADO" ? acc + Number(p.total) : acc, 0);
+            const pending = pedidos.filter(p => p.estado_logistico === "Por Cosechar" && String(p.estado_pago).toUpperCase() === "PAGADO").length;
             
-            // Esperamos un momento para que Google refresque el Excel y recargamos
-            setTimeout(fetchData, 2000);
-        } catch (e) {
-            alert("Error al actualizar el estado.");
-            document.getElementById('loading-overlay').style.display = 'none';
+            document.getElementById('stat-total').innerText = `$${total.toLocaleString('es-CL')}`;
+            document.getElementById('stat-count').innerText = pedidos.length;
+            document.getElementById('stat-pending').innerText = pending;
         }
-    }
 
-    // Carga inicial
-    fetchData();
-    // Auto-sincronización cada 2 minutos
-    setInterval(fetchData, 120000);
-</script>
-
+        fetchData();
+        setInterval(fetchData, 120000);
+    </script>
 </body>
 </html>
