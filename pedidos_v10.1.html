@@ -93,13 +93,9 @@
             const body = document.getElementById('pedidosBody');
             body.innerHTML = '';
 
-            pedidos.sort((a,b) => {
-                const dateA = new Date(a.fecha.split('/').reverse().join('-'));
-                const dateB = new Date(b.fecha.split('/').reverse().join('-'));
-                return dateB - dateA;
-            }).forEach(p => {
-                // El Script V11 ahora envía 'id' directamente
-                const orderId = p.id;
+            pedidos.forEach(p => {
+                // Ahora el script envía 'id' de forma obligatoria
+                const orderId = p.id; 
                 const isPaid = String(p.estado_pago || "").toUpperCase() === "PAGADO";
                 const estadoLog = p.estado_logistica || "Por Cosechar";
 
@@ -123,7 +119,6 @@
                 `;
             });
         }
-
         async function updateLogistica(orderId, selectElement) {
             const nuevoEstado = selectElement.value;
             const loading = document.getElementById('loading');
