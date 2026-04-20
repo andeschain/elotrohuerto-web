@@ -102,7 +102,10 @@
                 const dateB = new Date(b.fecha.split('/').reverse().join('-'));
                 return dateB - dateA;
             }).forEach(p => {
-                const isPaid = String(p.estado_pago).toUpperCase() === "PAGADO";
+                // Ajuste de nombres de propiedad para coincidir con Script V10.2
+                const isPaid = String(p.estado_pago || p.estadopago).toUpperCase() === "PAGADO";
+                const estadoLog = p.estado_logistica || p.estadologistica || "Por Cosechar";
+
                 body.innerHTML += `
                     <tr>
                         <td>${p.fecha}</td>
@@ -110,13 +113,13 @@
                         <td><strong>${p.nombre}</strong><br><small style="color:#888;">${p.logistica}</small></td>
                         <td style="max-width:220px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${p.detalle}">${p.detalle}</td>
                         <td>$${Number(p.total).toLocaleString('es-CL')}</td>
-                        <td><span class="badge ${isPaid ? 'badge-pagado' : 'badge-pendiente'}">${p.estado_pago}</span></td>
+                        <td><span class="badge ${isPaid ? 'badge-pagado' : 'badge-pendiente'}">${isPaid ? 'PAGADO' : 'PENDIENTE'}</span></td>
                         <td>
                             <select class="status-select" onchange="updateLogistica('${p.id}', this)" ${!isPaid ? 'disabled' : ''}>
-                                <option value="Por Cosechar" ${p.estado_logistica === 'Por Cosechar' ? 'selected' : ''}>🚜 Por Cosechar</option>
-                                <option value="En Camino" ${p.estado_logistica === 'En Camino' ? 'selected' : ''}>🚚 En Camino</option>
-                                <option value="Listo para Despacho" ${p.estado_logistica === 'Listo para Despacho' ? 'selected' : ''}>🧺 Listo / Notificar</option>
-                                <option value="Entregado" ${p.estado_logistica === 'Entregado' ? 'selected' : ''}>✅ Entregado</option>
+                                <option value="Por Cosechar" ${estadoLog === 'Por Cosechar' ? 'selected' : ''}>🚜 Por Cosechar</option>
+                                <option value="En Camino" ${estadoLog === 'En Camino' ? 'selected' : ''}>🚚 En Camino</option>
+                                <option value="Listo para Despacho" ${estadoLog === 'Listo para Despacho' ? 'selected' : ''}>🧺 Listo / Notificar</option>
+                                <option value="Entregado" ${estadoLog === 'Entregado' ? 'selected' : ''}>✅ Entregado</option>
                             </select>
                         </td>
                     </tr>
