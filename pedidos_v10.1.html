@@ -3,39 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logística | El Otro Huerto V10.1</title>
+    <title>Logística V10.1 | El Otro Huerto</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lora:wght@600&display=swap" rel="stylesheet">
     <style>
         :root { --accent: #4A5D23; --bg: #FDFCFB; --border: #EAEAEA; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #1D1D1F; }
         .header { display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto 30px; }
-        .stats-bar { display: flex; gap: 20px; max-width: 1100px; margin: 0 auto 20px; font-size: 12px; color: #666; }
         .table-container { background: white; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; max-width: 1100px; margin: 0 auto; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
         table { width: 100%; border-collapse: collapse; font-size: 13px; }
-        th { background: #F8F9F6; padding: 15px; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background: #F8F9F6; padding: 15px; text-align: left; border-bottom: 1px solid var(--border); color: #666; }
         td { padding: 15px; border-bottom: 1px solid var(--border); }
         .btn-sync { background: var(--accent); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; }
-        .status-select { padding: 6px; border-radius: 6px; border: 1px solid var(--border); background: #F4F6F0; font-size: 12px; }
+        .status-select { padding: 6px; border-radius: 6px; border: 1px solid var(--border); background: #F4F6F0; font-size: 12px; font-weight: 600; color: var(--accent); }
         .badge { padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; text-transform: uppercase; }
-        .pagado { background: #E8F5E9; color: #2E7D32; }
-        .pendiente { background: #FFF3E0; color: #E65100; }
-        #loading { display: none; color: var(--accent); font-weight: bold; }
+        .PAGADO { background: #E8F5E9; color: #2E7D32; }
+        .PENDIENTE { background: #FFF3E0; color: #E65100; }
+        #loading-overlay { position: fixed; inset: 0; background: rgba(255,255,255,0.7); display: none; justify-content: center; align-items: center; z-index: 100; font-weight: bold; color: var(--accent); }
     </style>
 </head>
 <body>
 
+<div id="loading-overlay">🌱 Sincronizando cosecha...</div>
+
 <div class="header">
-    <h1 style="font-family: 'Lora'; margin:0;">Gestión de Pedidos</h1>
+    <h1 style="font-family: 'Lora'; margin:0;">Gestión Logística <span style="font-weight:400; color:#888;">V10.1</span></h1>
     <div style="text-align: right;">
         <span id="lastUpdate" style="font-size: 11px; color: #999; margin-right: 15px;"></span>
         <button class="btn-sync" onclick="fetchData()">🔄 Sincronizar</button>
     </div>
-</div>
-
-<div class="stats-bar" id="stats">
-    <div>Total Pagados: <strong id="statTotal">$0</strong></div>
-    <div>Pedidos Hoy: <strong id="statCount">0</strong></div>
-    <div id="loading">Sincronizando...</div>
 </div>
 
 <div class="table-container">
@@ -43,9 +38,9 @@
         <thead>
             <tr>
                 <th>Fecha</th>
-                <th>ID</th>
+                <th>ID Pedido</th>
                 <th>Cliente</th>
-                <th>Punto Entrega</th>
+                <th>Entrega</th>
                 <th>Monto</th>
                 <th>Pago</th>
                 <th>Logística</th>
@@ -58,73 +53,89 @@
 </div>
 
 <script>
+    // --- ACTUALIZA ESTA URL CON TU NUEVA IMPLEMENTACIÓN V12.1 ---
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwzuY0ERtTWD7UalpHcRlFD8J0sXg2t3G09Fd5qGuNFCSwn-U2sVGbIOr_IZvfYwm5v/exec';
 
     async function fetchData() {
-        document.getElementById('loading').style.display = 'inline';
+        document.getElementById('loading-overlay').style.display = 'flex';
         try {
             const res = await fetch(`${SCRIPT_URL}?action=getAdminData`);
             const data = await res.json();
             renderPedidos(data.pedidos);
-            document.getElementById('lastUpdate').innerText = "Última sincronización: " + new Date().toLocaleTimeString();
+            document.getElementById('lastUpdate').innerText = "Última actualización: " + new Date().toLocaleTimeString();
         } catch (e) {
-            console.error(e);
+            console.error("Error cargando datos:", e);
+            document.getElementById('pedidosBody').innerHTML = '<tr><td colspan="7" style="text-align:center; color:red;">Error de conexión.</td></tr>';
         }
-        document.getElementById('loading').style.display = 'none';
+        document.getElementById('loading-overlay').style.display = 'none';
     }
 
     function renderPedidos(pedidos) {
         const body = document.getElementById('pedidosBody');
         body.innerHTML = '';
-        let total = 0;
 
         pedidos.forEach(p => {
-            if(p.estado_pago === "PAGADO") total += Number(p.total);
-            const badgeClass = p.estado_pago === "PAGADO" ? "pagado" : "pendiente";
-
+            // El Script V12.1 mapea id_pedido como p.id para facilitar esto
+            const orderId = p.id || "S/N";
+            const statusPago = (p.estado_pago || "Pendiente").toUpperCase();
+            const statusLog = p.estado_logistico || "Por Cosechar";
+            
             body.innerHTML += `
                 <tr>
                     <td>${p.fecha}</td>
-                    <td style="font-weight:bold;">${p.id}</td>
-                    <td>${p.nombre}<br><small style="color:#999">${p.email}</small></td>
-                    <td>${p.logistica}</td>
+                    <td style="font-weight:700; color:#444;">${orderId}</td>
+                    <td><strong>${p.nombre}</strong><br><small style="color:#888">${p.email}</small></td>
+                    <td style="max-width:200px; font-size:11px;">${p.logistica}</td>
                     <td>$${Number(p.total).toLocaleString('es-CL')}</td>
-                    <td><span class="badge ${badgeClass}">${p.estado_pago}</span></td>
+                    <td><span class="badge ${statusPago}">${statusPago}</span></td>
                     <td>
-                        <select class="status-select" onchange="updateStatus('${p.id}', this.value)" ${p.estado_pago !== 'PAGADO' ? 'disabled' : ''}>
-                            <option value="Por Cosechar" ${p.estado_logistica === 'Por Cosechar' ? 'selected' : ''}>🚜 Por Cosechar</option>
-                            <option value="En Camino" ${p.estado_logistica === 'En Camino' ? 'selected' : ''}>🚚 En Camino</option>
-                            <option value="Listo para Despacho" ${p.estado_logistica === 'Listo para Despacho' ? 'selected' : ''}>🧺 Listo / Notificar</option>
-                            <option value="Entregado" ${p.estado_logistica === 'Entregado' ? 'selected' : ''}>✅ Entregado</option>
+                        <select class="status-select" onchange="updateStatus('${orderId}', this.value)" ${statusPago !== 'PAGADO' ? 'disabled' : ''}>
+                            <option value="Por Cosechar" ${statusLog === 'Por Cosechar' ? 'selected' : ''}>🚜 Por Cosechar</option>
+                            <option value="En Camino" ${statusLog === 'En Camino' ? 'selected' : ''}>🚚 En Camino</option>
+                            <option value="Listo para Despacho" ${statusLog === 'Listo para Despacho' ? 'selected' : ''}>🧺 Listo / Notificar</option>
+                            <option value="Entregado" ${statusLog === 'Entregado' ? 'selected' : ''}>✅ Entregado</option>
                         </select>
                     </td>
                 </tr>
             `;
         });
-        document.getElementById('statTotal').innerText = '$' + total.toLocaleString('es-CL');
-        document.getElementById('statCount').innerText = pedidos.length;
     }
 
-    async function updateStatus(id, status) {
-        if(status === "Listo para Despacho") {
-            if(!confirm("Esto enviará el correo de Notificación al cliente. ¿Proceder?")) return fetchData();
+    async function updateStatus(id, nuevoEstado) {
+        if (nuevoEstado === "Listo para Despacho") {
+            if (!confirm("Se enviará el correo 'Paso 3 de 3' al cliente. ¿Proceder?")) {
+                fetchData(); return;
+            }
         }
-        document.getElementById('loading').style.display = 'inline';
+
+        document.getElementById('loading-overlay').style.display = 'flex';
+        
+        // Enviamos mediante URLSearchParams para que el script lo reciba sin errores CORS
+        const params = new URLSearchParams();
+        params.append('action', 'updateOrder');
+        params.append('id', id);
+        params.append('status', nuevoEstado);
+
         try {
             await fetch(SCRIPT_URL, {
                 method: 'POST',
-                mode: 'no-cors',
+                mode: 'no-cors', // Modo silencioso para Google Scripts
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: new URLSearchParams({ action: 'updateOrder', id: id, status: status })
+                body: params.toString()
             });
-            setTimeout(fetchData, 1000);
+            
+            // Esperamos un momento para que Google refresque el Excel y recargamos
+            setTimeout(fetchData, 2000);
         } catch (e) {
-            alert("Error al actualizar");
+            alert("Error al actualizar el estado.");
+            document.getElementById('loading-overlay').style.display = 'none';
         }
     }
 
+    // Carga inicial
     fetchData();
-    setInterval(fetchData, 60000); // Auto-sync cada 1 min
+    // Auto-sincronización cada 2 minutos
+    setInterval(fetchData, 120000);
 </script>
 
 </body>
