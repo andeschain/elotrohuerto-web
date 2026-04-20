@@ -73,17 +73,14 @@
     </div>
 
     <script>
-        // --- URL DEL SCRIPT V10.1 ---
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwzuY0ERtTWD7UalpHcRlFD8J0sXg2t3G09Fd5qGuNFCSwn-U2sVGbIOr_IZvfYwm5v/exec';
+        // --- PEGA AQUÍ TU NUEVA URL DEL SCRIPT V11 ---
+        const SCRIPT_URL = 'https://script.google.com/macros/s/TU_NUEVO_ID_AQUÍ/exec';
 
         async function fetchData() {
             try {
                 const res = await fetch(`${SCRIPT_URL}?action=getAdminData`);
                 const data = await res.json();
-                
-                // Selector inteligente para asegurar que lea 'pedidos' del V10.1
                 const pedidos = data.pedidos || [];
-                
                 renderPedidos(pedidos);
                 updateStats(pedidos);
             } catch (e) { 
@@ -93,81 +90,81 @@
         }
 
         function renderPedidos(pedidos) {
-    const body = document.getElementById('pedidosBody');
-    body.innerHTML = '';
+            const body = document.getElementById('pedidosBody');
+            body.innerHTML = '';
 
-    pedidos.sort((a,b) => {
-        const dateA = new Date(a.fecha.split('/').reverse().join('-'));
-        const dateB = new Date(b.fecha.split('/').reverse().join('-'));
-        return dateB - dateA;
-    }).forEach(p => {
-        // --- CORRECCIÓN AQUÍ ---
-        // Intentamos obtener el ID probando todas las formas posibles que Google genera
-        const orderId = p.id || p.orden || p.idorden || p.nro_orden || "S/N";
-        
-        const isPaid = String(p.estado_pago || p.estadopago || "").toUpperCase() === "PAGADO";
-        const estadoLog = p.estado_logistica || p.estadologistica || "Por Cosechar";
+            pedidos.sort((a,b) => {
+                const dateA = new Date(a.fecha.split('/').reverse().join('-'));
+                const dateB = new Date(b.fecha.split('/').reverse().join('-'));
+                return dateB - dateA;
+            }).forEach(p => {
+                // El Script V11 ahora envía 'id' directamente
+                const orderId = p.id;
+                const isPaid = String(p.estado_pago || "").toUpperCase() === "PAGADO";
+                const estadoLog = p.estado_logistica || "Por Cosechar";
 
-        body.innerHTML += `
-            <tr>
-                <td>${p.fecha}</td>
-                <td style="font-weight:700;">${orderId}</td>
-                <td><strong>${p.nombre}</strong><br><small style="color:#888;">${p.logistica}</small></td>
-                <td style="max-width:220px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${p.detalle}">${p.detalle}</td>
-                <td>$${Number(p.total).toLocaleString('es-CL')}</td>
-                <td><span class="badge ${isPaid ? 'badge-pagado' : 'badge-pendiente'}">${isPaid ? 'PAGADO' : 'PENDIENTE'}</span></td>
-                <td>
-                    <select class="status-select" onchange="updateLogistica('${orderId}', this)" ${!isPaid ? 'disabled' : ''}>
-                        <option value="Por Cosechar" ${estadoLog === 'Por Cosechar' ? 'selected' : ''}>🚜 Por Cosechar</option>
-                        <option value="En Camino" ${estadoLog === 'En Camino' ? 'selected' : ''}>🚚 En Camino</option>
-                        <option value="Listo para Despacho" ${estadoLog === 'Listo para Despacho' ? 'selected' : ''}>🧺 Listo / Notificar</option>
-                        <option value="Entregado" ${estadoLog === 'Entregado' ? 'selected' : ''}>✅ Entregado</option>
-                    </select>
-                </td>
-            </tr>
-        `;
-    });
-}
-       async function updateLogistica(orderId, selectElement) {
-    const nuevoEstado = selectElement.value;
-    const loading = document.getElementById('loading');
-    
-    if (nuevoEstado === "Listo para Despacho") {
-        if (!confirm("Se enviará el correo 'Paso 3 de 3' al cliente. ¿Proceder?")) {
-            fetchData(); return;
+                body.innerHTML += `
+                    <tr>
+                        <td>${p.fecha}</td>
+                        <td style="font-weight:700;">${orderId}</td>
+                        <td><strong>${p.nombre}</strong><br><small style="color:#888;">${p.logistica}</small></td>
+                        <td style="max-width:220px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${p.detalle}">${p.detalle}</td>
+                        <td>$${Number(p.total).toLocaleString('es-CL')}</td>
+                        <td><span class="badge ${isPaid ? 'badge-pagado' : 'badge-pendiente'}">${isPaid ? 'PAGADO' : 'PENDIENTE'}</span></td>
+                        <td>
+                            <select class="status-select" onchange="updateLogistica('${orderId}', this)" ${!isPaid ? 'disabled' : ''}>
+                                <option value="Por Cosechar" ${estadoLog === 'Por Cosechar' ? 'selected' : ''}>🚜 Por Cosechar</option>
+                                <option value="En Camino" ${estadoLog === 'En Camino' ? 'selected' : ''}>🚚 En Camino</option>
+                                <option value="Listo para Despacho" ${estadoLog === 'Listo para Despacho' ? 'selected' : ''}>🧺 Listo / Notificar</option>
+                                <option value="Entregado" ${estadoLog === 'Entregado' ? 'selected' : ''}>✅ Entregado</option>
+                            </select>
+                        </td>
+                    </tr>
+                `;
+            });
         }
-    }
 
-    loading.style.display = 'flex';
-    selectElement.disabled = true;
+        async function updateLogistica(orderId, selectElement) {
+            const nuevoEstado = selectElement.value;
+            const loading = document.getElementById('loading');
+            
+            if (nuevoEstado === "Listo para Despacho") {
+                if (!confirm("Se enviará el correo 'Paso 3 de 3' al cliente con el punto de entrega. ¿Proceder?")) {
+                    fetchData(); return;
+                }
+            }
 
-    // --- CAMBIO CLAVE: Enviamos como Form Data (Compatible con no-cors) ---
-    const params = new URLSearchParams();
-    params.append('action', 'updateOrder');
-    params.append('id', orderId);
-    params.append('status', nuevoEstado);
+            loading.style.display = 'flex';
+            selectElement.disabled = true;
 
-    try {
-        await fetch(SCRIPT_URL, {
-            method: 'POST',
-            mode: 'no-cors', // Modo silencioso
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: params.toString()
-        });
-        
-        // Esperamos 2 segundos para dar tiempo a Google de escribir en la celda
-        setTimeout(() => {
-            loading.style.display = 'none';
-            selectElement.disabled = false;
-            fetchData(); // Refrescamos la tabla para ver el cambio
-        }, 2000);
+            // Enviamos los datos como URLSearchParams (Form Data) para que el doPost V11 los capture sin errores
+            const params = new URLSearchParams();
+            params.append('action', 'updateOrder');
+            params.append('id', orderId);
+            params.append('status', nuevoEstado);
 
-    } catch (e) {
-        alert("Error de conexión.");
-        loading.style.display = 'none';
-        selectElement.disabled = false;
-    }
-}
+            try {
+                await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', 
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: params.toString()
+                });
+                
+                // Tiempo de espera para que Google procese y guarde
+                setTimeout(() => {
+                    loading.style.display = 'none';
+                    selectElement.disabled = false;
+                    fetchData(); 
+                }, 2000);
+
+            } catch (e) {
+                alert("Error de conexión con el huerto.");
+                loading.style.display = 'none';
+                selectElement.disabled = false;
+            }
+        }
+
         function updateStats(pedidos) {
             const total = pedidos.reduce((acc, p) => String(p.estado_pago).toUpperCase() === "PAGADO" ? acc + Number(p.total) : acc, 0);
             const pending = pedidos.filter(p => p.estado_logistica === "Por Cosechar" && String(p.estado_pago).toUpperCase() === "PAGADO").length;
@@ -178,7 +175,7 @@
         }
 
         fetchData();
-        setInterval(fetchData, 120000); // Refresh cada 2 minutos
+        setInterval(fetchData, 120000); 
     </script>
 </body>
 </html>
